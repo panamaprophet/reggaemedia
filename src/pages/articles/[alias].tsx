@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 /**
@@ -17,4 +18,14 @@ export default function Article() {
             </Head>
         </>
     )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+    const { url } = ctx.req;
+
+    return {
+        props: {
+            url,
+        },
+    };
 }
