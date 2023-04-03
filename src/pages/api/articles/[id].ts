@@ -4,22 +4,17 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     console.log(request.method, request.query, request.body);
 
+    const { query } = request;
+    const { id } = query;
+
     if (request.method === 'PUT') {
-        const article = {}; // @todo: await updateArticleById(request.query.id)
-
-        return response.status(200).json({ article });
-    }
-
-    if (request.method === 'POST') {
-        const article = JSON.parse(request.body); // @todo: data = JSON.parse(request.body); await createArticle(data);
+        const article = { id }; // @todo: await updateArticleById(id)
 
         return response.status(200).json({ article });
     }
 
     if (request.method === 'GET') {
-        const { query } = request;
-        const { id } = query;
-        const article = { id }; // @todo: id ? await getArticleById(request.query.id) : (isAdmin ? getArticles() : getPublishedArticles())
+        const article = { id }; // @todo: await getArticleById(request.query.id)
 
         return response.status(200).json({ article });
     }
