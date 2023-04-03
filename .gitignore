@@ -1,38 +1,21 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
 /node_modules
-/.pnp
-.pnp.*
 /.yarn
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
+/.pnp
+/out
+/.next
 /build
+/.vscode
 
-# misc
+.pnp.*
 .DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
 .env*
-
-# vercel
-.vercel
-
-# typescript
 *.tsbuildinfo
 next-env.d.ts
 
 cdk.out
+cdk-outputs.json
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
