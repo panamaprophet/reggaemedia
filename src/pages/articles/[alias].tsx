@@ -21,11 +21,12 @@ export default function Article() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
-    const { url } = ctx.req;
+    const { query } = ctx;
+    const { alias } = query;
+
+    const article = { alias }; // @todo: await getArticleByAlias(alias);
 
     return {
-        props: {
-            url,
-        },
+        props: { article },
     };
 }
