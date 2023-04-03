@@ -3,14 +3,13 @@ import { Construct } from 'constructs';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
 import { AnyPrincipal, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { CfnEmailIdentity } from 'aws-cdk-lib/aws-ses';
+// import { CfnEmailIdentity } from 'aws-cdk-lib/aws-ses';
 import { /* Mfa, */ UserPool } from 'aws-cdk-lib/aws-cognito';
 
 
 const BUCKET_NAME = 'reggaemedia_storage';
 const ARTICLES_TABLE = 'reggaemedia_articles';
 const SETTINGS_TABLE = 'reggaemedia_settings';
-const EMAIL_IDENTITY = 'test@example.com';
 const USER_POOL_NAME = 'reggaemedia_pool';
 
 
@@ -94,7 +93,7 @@ export class ReggaemediaCdkStack extends Stack {
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
-        new UserPool(this, 'userPool', {
+        const userPool = new UserPool(this, USER_POOL_NAME, {
             userPoolName: USER_POOL_NAME,
             selfSignUpEnabled: false,
             // @todo: consider the using of MFA
@@ -106,10 +105,12 @@ export class ReggaemediaCdkStack extends Stack {
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
-        new CfnEmailIdentity(this, 'root', { emailIdentity: EMAIL_IDENTITY });
+        // @todo: consider using of ses to deliver the notifications
+        // new CfnEmailIdentity(this, 'root', { emailIdentity: EMAIL_IDENTITY });
 
         new CfnOutput(this, 'bucket', { value: bucket.bucketName });
         new CfnOutput(this, 'articles', { value: articlesTable.tableName });
         new CfnOutput(this, 'settings', { value: settingsTable.tableName });
+        new CfnOutput(this, 'userPool', { value: userPool.userPoolId });
     }
 }
