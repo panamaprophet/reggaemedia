@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "stack:deploy": "cdk deploy"
+    "stack:deploy": "cdk deploy",
+    "postinstall": "git config --local core.hooksPath .githooks/"
   },
   "devDependencies": {
     "@types/node": "18.15.11",
