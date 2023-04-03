@@ -1,18 +1,115 @@
-import * as cdk from 'aws-cdk-lib';
+import { Stack, StackProps, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3';
+import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
+import { AnyPrincipal, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { CfnEmailIdentity } from 'aws-cdk-lib/aws-ses';
+import { /* Mfa, */ UserPool } from 'aws-cdk-lib/aws-cognito';
 
-export class ReggaemediaCdkStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
 
-    // new cdk.aws_s3.Bucket() storage (images only or audio and video files as well?)
+const BUCKET_NAME = 'reggaemedia_storage';
+const ARTICLES_TABLE = 'reggaemedia_articles';
+const SETTINGS_TABLE = 'reggaemedia_settings';
+const EMAIL_IDENTITY = 'test@example.com';
+const USER_POOL_NAME = 'reggaemedia_pool';
 
-    // new cdk.aws_dynamodb.Table() articles (id, userId, title, ...)
-    // new cdk.aws_dynamodb.Table() comments (id, articleId, userId, parentCommentId)
-    // new cdk.aws_dynamodb.Table() settings (key, value, updatedBy, updatedOn)
 
-    // new cdk.aws_cognito.UserPool() users (?)
+export class ReggaemediaCdkStack extends Stack {
+    constructor(scope: Construct, id: string, props?: StackProps) {
+        super(scope, id, props);
 
-    // cdk.aws_ses.CfnEmailIdentity() identity to use as email send notification
-  }
+        const bucket = new Bucket(this, BUCKET_NAME, {
+            cors: [
+                {
+                    allowedMethods: [
+                        HttpMethods.GET,
+                        HttpMethods.HEAD,
+                        HttpMethods.PUT,
+                        HttpMethods.POST,
+                        HttpMethods.DELETE,
+                    ],
+                    allowedOrigins: [
+                        '*',
+                    ],
+                    allowedHeaders: [
+                        '*',
+                    ],
+                    exposedHeaders: [
+                        'Access-Control-Allow-Origin'
+                    ],
+                },
+            ],
+            publicReadAccess: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+        });
+
+        bucket.addToResourcePolicy(
+            new PolicyStatement({
+                sid: 'Allow All',
+                effect: Effect.ALLOW,
+                principals: [new AnyPrincipal()],
+                actions: [
+                    's3:GetObject',
+                    's3:ListBucket',
+                    's3:PutObject',
+                ],
+                resources: [
+                    bucket.bucketArn,
+                    bucket.arnForObjects('*'),
+                ],
+            })
+        );
+
+        const articlesTable = new Table(this, ARTICLES_TABLE, {
+            partitionKey: {
+                name: 'id',
+                type: AttributeType.STRING,
+            },
+            sortKey: {
+                name: 'createdOn',
+                type: AttributeType.NUMBER,
+            },
+            removalPolicy: RemovalPolicy.DESTROY,
+        });
+
+        articlesTable.addGlobalSecondaryIndex({
+            indexName: 'aliasIndex',
+            partitionKey: {
+                name: 'alias',
+                type: AttributeType.STRING,
+            },
+            sortKey: {
+                name: 'createdOn',
+                type: AttributeType.NUMBER,
+            },
+            readCapacity: 1,
+            writeCapacity: 1,
+        });
+
+        const settingsTable = new Table(this, SETTINGS_TABLE, {
+            partitionKey: {
+                name: 'key',
+                type: AttributeType.STRING,
+            },
+            removalPolicy: RemovalPolicy.DESTROY,
+        });
+
+        new UserPool(this, 'userPool', {
+            userPoolName: USER_POOL_NAME,
+            selfSignUpEnabled: false,
+            // @todo: consider the using of MFA
+            // mfa: Mfa.REQUIRED,
+            // mfaMessage: 'Код проверки {####}',
+            signInAliases: {
+                email: true,
+            },
+            removalPolicy: RemovalPolicy.DESTROY,
+        });
+
+        new CfnEmailIdentity(this, 'root', { emailIdentity: EMAIL_IDENTITY });
+
+        new CfnOutput(this, 'bucket', { value: bucket.bucketName });
+        new CfnOutput(this, 'articles', { value: articlesTable.tableName });
+        new CfnOutput(this, 'settings', { value: settingsTable.tableName });
+    }
 }

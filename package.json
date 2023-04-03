@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "stack:deploy": "cdk deploy",
+    "stack:destroy": "cdk destroy",
     "postinstall": "git config --local core.hooksPath .githooks/"
   },
   "devDependencies": {

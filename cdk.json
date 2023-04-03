@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts scripts/cdk/stack.ts",
+  "app": "npx ts-node --prefer-ts-exts -P cdk.tsconfig.json scripts/cdk/stack.ts",
   "watch": {
     "include": [
       "**"
