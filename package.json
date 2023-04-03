@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "stack:deploy": "cdk deploy",
+    "stack:deploy": "cdk deploy --outputs-file ./cdk-outputs.json",
     "stack:destroy": "cdk destroy",
     "postinstall": "git config --local core.hooksPath .githooks/"
   },
