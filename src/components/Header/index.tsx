@@ -15,7 +15,7 @@ export const Header = () => {
     return (
         <header>
             <Row className="justify-between mt-2 mr-4 ml-4">
-                <List className="flex flex-row gap-5" wrap align="center">
+                <List className="flex flex-row gap-5">
                     <Link href="/" >
                         <Text>Статьи</Text>
                     </Link>
