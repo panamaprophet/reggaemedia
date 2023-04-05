@@ -17,7 +17,7 @@ export default function Home() {
       <main>
         <Section>
           <Container>
-            <Header />
+            <Header onSearch={(text) => console.log(text)} />
           </Container>
         </Section>
       </main>
