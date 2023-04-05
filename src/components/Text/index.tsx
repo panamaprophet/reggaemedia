@@ -6,5 +6,5 @@ interface Props {
 }
 
 export const Text = ({ children }: Props) => {
-    return <div className="leading-10 uppercase text-gray-600">{children}</div>;
+    return <div className="text-xs uppercase">{children}</div>;
 };
