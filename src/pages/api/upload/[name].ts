@@ -10,7 +10,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse<{ url:
     const target = `uploads/${name}`;
     const url = await getUploadUrl(BUCKET_NAME, target);
 
-    return response.status(200).json({ url });
+    return response.json({ url });
 };
 
 
