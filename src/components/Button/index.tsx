@@ -5,8 +5,6 @@ interface Props {
     onClick: () => void,
 }
 
-export const Button = ({ children, onClick }: Props) => {
-    return (
-        <button className="outline-none bg-none" onClick={onClick}>{children}</button>
-    );
-};
+export const Button = ({ children, onClick }: Props) => (
+    <button className="outline-none bg-none text-inherit" onClick={onClick}>{children}</button>
+)
