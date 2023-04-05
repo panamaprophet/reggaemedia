@@ -1,26 +1,28 @@
+import { getArticleById, removeArticleById, updateArticleById } from '@/resolvers/articles';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
-    console.log(request.method, request.query, request.body);
+    console.log('/api/articles', request.method, request.query, request.body);
 
     const { query } = request;
-    const { id } = query;
+    const id = String(query.id);
 
     if (request.method === 'PUT') {
-        const article = { id }; // @todo: await updateArticleById(id)
+        const payload = JSON.parse(request.body);
+        const article = await updateArticleById(id, payload);
 
         return response.status(200).json({ article });
     }
 
     if (request.method === 'GET') {
-        const article = { id }; // @todo: await getArticleById(request.query.id)
+        const article = await getArticleById(id);
 
         return response.status(200).json({ article });
     }
 
     if (request.method === 'DELETE') {
-        const success = true; // @todo: await removeArticleById(request.query.id)
+        const success = await removeArticleById(id);
 
         return response.status(200).json({ success });
     }

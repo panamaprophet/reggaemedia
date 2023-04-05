@@ -1,18 +1,21 @@
-import { Article } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { createArticle, getArticles, getPublishedArticles } from '@/resolvers/articles';
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
-    console.log(request.method, request.query, request.body);
+    console.log('/api/articles', request.method, request.query, request.body);
+
+    const isAdmin = false;
 
     if (request.method === 'POST') {
-        const article = JSON.parse(request.body); // @todo: data = JSON.parse(request.body); await createArticle(data);
+        const payload = JSON.parse(request.body);
+        const article = await createArticle(payload);
 
         return response.status(200).json({ article });
     }
 
     if (request.method === 'GET') {
-        const articles: Article[] = []; // @todo: (isAdmin ? getArticles() : getPublishedArticles())
+        const articles = await (isAdmin ? getArticles() : getPublishedArticles());
 
         return response.status(200).json({ articles });
     }

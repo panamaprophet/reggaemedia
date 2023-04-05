@@ -16,7 +16,10 @@ export interface Article {
 
     createdOn: number,
     updatedOn: number,
+    // @todo: consider publishedOn: number,
 
     alias?: string,
     isPublished: boolean,
+
+    // @todo: define assets: [{ id: string }]
 }
