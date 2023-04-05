@@ -13,6 +13,10 @@
     "postinstall": "git config --local core.hooksPath .githooks/"
   },
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.306.0",
+    "@aws-sdk/client-s3": "^3.306.0",
+    "@aws-sdk/s3-request-presigner": "^3.306.0",
+    "@aws-sdk/util-dynamodb": "^3.306.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
