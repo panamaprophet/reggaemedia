@@ -72,6 +72,18 @@ export class ReggaemediaCdkStack extends Stack {
         });
 
         articlesTable.addGlobalSecondaryIndex({
+            indexName: 'publishedIndex',
+            partitionKey: {
+                name: 'isPublished',
+                type: AttributeType.NUMBER,
+            },
+            sortKey: {
+                name: 'createdOn',
+                type: AttributeType.NUMBER,
+            },
+        });
+
+        articlesTable.addGlobalSecondaryIndex({
             indexName: 'aliasIndex',
             partitionKey: {
                 name: 'alias',
