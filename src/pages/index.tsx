@@ -1,6 +1,4 @@
 import Head from 'next/head';
-
-import { Container } from '@/components/Container';
 import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
 
@@ -16,9 +14,7 @@ export default function Home() {
       </Head>
       <main>
         <Section>
-          <Container>
-            <Header onSearch={(text) => console.log(text)} />
-          </Container>
+          <Header onSearch={(text) => console.log(text)} />
         </Section>
       </main>
     </>
