@@ -59,13 +59,13 @@ export const Header = ({ onSearch }: Props) => {
                     </Link>
                 </List>
                 <div className="flex flex-row items-center gap-4">
-                    <MediaLink link={links.youtube} background="bg-blue-500">
+                    <MediaLink link={links.vk} background="bg-blue-500">
                         <VK size={14} />
                     </MediaLink>
                     <MediaLink link={links.youtube} background="bg-red-500">
                         <YouTube size={14} />
                     </MediaLink>
-                    <MediaLink link={links.youtube} background="bg-blue-500">
+                    <MediaLink link={links.instagram} background="bg-blue-500">
                         <Instagram size={14} />
                     </MediaLink>
                     <Button onClick={() => setSearch(!isSearch)}>
