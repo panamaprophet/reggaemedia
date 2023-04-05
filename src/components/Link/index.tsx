@@ -13,8 +13,9 @@ export const Link = ({
     children,
     href,
     target = '_self',
+    className
 }: Props) => (
-    <a target={target} href={href} >
+    <a className={className} target={target} href={href} >
         {children}
     </a>
 );
