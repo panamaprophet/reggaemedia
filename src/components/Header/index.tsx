@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Row } from "../Layout";
 import { Link } from "../Link";
 import { List } from "../List";
