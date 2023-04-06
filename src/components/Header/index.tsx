@@ -35,16 +35,10 @@ interface Props {
 }
 
 export const Header = ({ onSearch }: Props) => {
-    const [isSearch, setSearch] = useState(false);
-    const [query, setQuery] = useState('');
     const links = {
         youtube: 'https://www.youtube.com/watch?v=7ip0XCgggFQ',
         vk: 'https://vk.com/reggaemedia',
         instagram: 'https://www.instagram.com/reggaemedia/',
-    }
-
-    const submitQuery = (text: string) => {
-        onSearch(text);
     }
 
     return (
@@ -68,25 +62,9 @@ export const Header = ({ onSearch }: Props) => {
                     <MediaLink link={links.instagram} background="bg-blue-500">
                         <Instagram size={14} />
                     </MediaLink>
-                    <Button onClick={() => setSearch(!isSearch)}>
-                        {isSearch ? <Close size={16} /> : <SearchIcon size={16} />}
-                    </Button>
+                    <Search onSubmit={(query: string) => onSearch(query)} />
                 </div>
             </Row>
-            {isSearch && (
-                <Modal
-                    className="top-1/4 -translate-y-1/4 gap-4"
-                    size="w-screen h-screen"
-                    isOpen={isSearch} onClose={() => setSearch(false)}
-                >
-                    <Search
-                        query={query}
-                        onChange={(text) => setQuery(text)}
-                        onSubmit={(text) => submitQuery(text)}
-                    />
-                </Modal>
-            )}
-
         </header>
     );
 };
