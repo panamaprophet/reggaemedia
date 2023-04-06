@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Column, Row } from "../Layout";
-import { Text } from "../Text";
 import { InputText } from "../Input/InputText";
 import { Button } from "../Button";
 import { Search as SearchIcon } from '../Icons/Search';
@@ -39,7 +38,7 @@ export const Search = ({ onSubmit }: Props) => {
                     isOpen={isSearch} onClose={() => setSearch(false)}
                 >
                     <Column className="items-center justify-center gap-4">
-                        <Text>Search site</Text>
+                        <p className="text-xs uppercase">Поиск по сайту</p>
                         <Row className="gap-4">
                             <InputText
                                 className="text-2xl"
@@ -50,6 +49,7 @@ export const Search = ({ onSubmit }: Props) => {
                             <Button onClick={() => onSubmit(query)}><SearchIcon size={32} /></Button>
                         </Row>
                     </Column >
+                    <strong>CLICK ME!!!</strong>
                 </Modal>
             )}
         </>

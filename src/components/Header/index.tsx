@@ -1,16 +1,11 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { Row } from "../Layout";
 import { Link } from "../Link";
 import { List } from "../List";
-import { Text } from "../Text";
 import { Search } from "../Search";
-import { Modal } from "../Modal";
 import { YouTube } from "../Icons/YouTube";
 import { VK } from "../Icons/VK";
 import { Instagram } from "../Icons/Instagram";
-import { Close } from "../Icons/Close";
-import { Search as SearchIcon } from "../Icons/Search";
-import { Button } from "../Button";
 import { cx } from "@/helpers";
 
 
@@ -46,10 +41,10 @@ export const Header = ({ onSearch }: Props) => {
             <Row className="justify-between mt-2 mr-4 ml-4 p-2">
                 <List className="flex flex-row gap-12 items-center">
                     <Link href="/" >
-                        <Text>Статьи</Text>
+                        <p className="text-xs uppercase">Статьи</p>
                     </Link>
                     <Link href="/" >
-                        <Text>Связаться с нами</Text>
+                        <p className="text-xs uppercase">Связаться с нами</p>
                     </Link>
                 </List>
                 <div className="flex flex-row items-center gap-4">
