@@ -50,7 +50,6 @@ export const Search = ({ onSubmit }: Props) => {
                             <Button onClick={() => onSubmit(query)}><SearchIcon size={32} /></Button>
                         </Row>
                     </Column >
-                    <strong>CLICK ME!!!</strong>
                 </Modal>
             )}
         </>
