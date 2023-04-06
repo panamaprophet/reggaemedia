@@ -1,18 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Column, Row } from "../Layout";
 import { Text } from "../Text";
 import { InputText } from "../Input/InputText";
 import { Button } from "../Button";
 import { Search as SearchIcon } from '../Icons/Search';
+import { Modal } from "../Modal";
+import { Close } from "../Icons/Close";
 
 interface Props {
-    query: string,
-    onChange: (text: string) => void,
     onSubmit: (text: string) => void,
 }
 
 
-export const Search = ({ query, onChange, onSubmit }: Props) => {
+export const Search = ({ onSubmit }: Props) => {
+    const [isSearch, setSearch] = useState(false);
+    const [query, setQuery] = useState('');
+    const Icon = isSearch ? Close : SearchIcon;
+
     useEffect(() => {
         const handleKeyboardClick = (event: KeyboardEvent) => {
             if (event.code === 'Enter') onSubmit(query)
@@ -24,17 +28,30 @@ export const Search = ({ query, onChange, onSubmit }: Props) => {
     }, [query, onSubmit])
 
     return (
-        <Column className="items-center justify-center gap-4">
-            <Text>Search site</Text>
-            <Row className="gap-4">
-                <InputText
-                    className="text-2xl"
-                    value={query}
-                    placeholder="Type and hit enter to search"
-                    onChange={text => onChange(text)}
-                />
-                <Button onClick={() => onSubmit(query)}><SearchIcon size={32} /></Button>
-            </Row>
-        </Column >
+        <>
+            <Button onClick={() => setSearch(!isSearch)}>
+                <Icon size={16} />
+            </Button>
+            {isSearch && (
+                <Modal
+                    className="top-1/4 -translate-y-1/4 gap-4"
+                    size="w-screen h-screen"
+                    isOpen={isSearch} onClose={() => setSearch(false)}
+                >
+                    <Column className="items-center justify-center gap-4">
+                        <Text>Search site</Text>
+                        <Row className="gap-4">
+                            <InputText
+                                className="text-2xl"
+                                value={query}
+                                placeholder="Type and hit enter to search"
+                                onChange={text => setQuery(text)}
+                            />
+                            <Button onClick={() => onSubmit(query)}><SearchIcon size={32} /></Button>
+                        </Row>
+                    </Column >
+                </Modal>
+            )}
+        </>
     );
 };
