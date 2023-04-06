@@ -1,3 +1,3 @@
 
 
-export const cx = (...args: string[]) => [...args].join(' ')
+export const cx = (...args: string[]) => args.filter(Boolean);
