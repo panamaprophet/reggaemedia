@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
+import { Footer } from '@/components/Footer';
 
 
 export default function Home() {
@@ -15,6 +16,9 @@ export default function Home() {
       <main>
         <Section>
           <Header onSearch={(text) => console.log(text)} />
+        </Section>
+        <Section>
+          <Footer />
         </Section>
       </main>
     </>
