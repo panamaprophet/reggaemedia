@@ -10,7 +10,7 @@
     "lint": "next lint",
     "stack:deploy": "cdk deploy --outputs-file ./cdk-outputs.json",
     "stack:destroy": "cdk destroy",
-    "postinstall": "git config --local core.hooksPath .githooks/"
+    "postinstall": "git config --local core.hooksPath .github/hooks"
   },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "^3.306.0",

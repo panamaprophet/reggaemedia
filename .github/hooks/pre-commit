@@ -3,7 +3,3 @@
 echo "run eslint..."
 
 yarn lint
-
-echo "run build..."
-
-yarn build
