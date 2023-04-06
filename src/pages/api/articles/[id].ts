@@ -1,5 +1,5 @@
-import { getArticleById, removeArticleById, updateArticleById } from '@/resolvers/articles';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getArticleById, removeArticleById, updateArticleById } from '@/resolvers/articles';
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
@@ -12,19 +12,19 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         const payload = JSON.parse(request.body);
         const article = await updateArticleById(id, payload);
 
-        return response.status(200).json({ article });
+        return response.json({ article });
     }
 
     if (request.method === 'GET') {
         const article = await getArticleById(id);
 
-        return response.status(200).json({ article });
+        return response.json({ article });
     }
 
     if (request.method === 'DELETE') {
         const success = await removeArticleById(id);
 
-        return response.status(200).json({ success });
+        return response.json({ success });
     }
 
     return response.status(501).json({ error: 'not implemented' });
