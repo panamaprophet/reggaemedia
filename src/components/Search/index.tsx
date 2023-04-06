@@ -31,6 +31,7 @@ export const Search = ({ onSubmit }: Props) => {
             <Button onClick={() => setSearch(!isSearch)}>
                 <Icon size={16} />
             </Button>
+
             {isSearch && (
                 <Modal
                     className="top-1/4 -translate-y-1/4 gap-4"
