@@ -40,11 +40,11 @@ export const Header = ({ onSearch }: Props) => {
         <header className="leading-10 uppercase text-gray-600">
             <Row className="justify-between mt-2 mr-4 ml-4 p-2">
                 <List className="flex flex-row gap-12 items-center">
-                    <Link href="/" >
-                        <p className="text-xs uppercase">Статьи</p>
+                    <Link className="text-xs uppercase" href="/" >
+                        <p>Статьи</p>
                     </Link>
-                    <Link href="/" >
-                        <p className="text-xs uppercase">Связаться с нами</p>
+                    <Link className="text-xs uppercase" href="/" >
+                        <p>Связаться с нами</p>
                     </Link>
                 </List>
                 <div className="flex flex-row items-center gap-4">
