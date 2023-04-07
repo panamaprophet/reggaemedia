@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Column, Row } from "../Layout";
-import { InputText } from "../Input/InputText";
-import { Button } from "../Button";
+import { useEffect, useState } from 'react';
+import { Column, Row } from '../Layout';
+import { InputText } from '../Input/InputText';
+import { Button } from '../Button';
 import { Search as SearchIcon } from '../Icons/Search';
-import { Modal } from "../Modal";
-import { Close } from "../Icons/Close";
+import { Modal } from '../Modal';
+import { Close } from '../Icons/Close';
 
 interface Props {
     onSubmit: (text: string) => void,

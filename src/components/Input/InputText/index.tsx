@@ -18,7 +18,7 @@ export const InputText = ({ value, className = '', placeholder, onChange }: Prop
 
     return (
         <input
-            className={cx("outline-none bg-transparent", className)}
+            className={cx('outline-none bg-transparent', className)}
             placeholder={placeholder}
             type="text"
             value={String(value)}
