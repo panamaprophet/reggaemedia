@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
 import { Footer } from '@/components/Footer';
+import { Logo } from '@/components/Logo';
 
 
 export default function Home() {
@@ -16,6 +17,11 @@ export default function Home() {
       <main>
         <Section>
           <Header onSearch={(text) => console.log(text)} />
+        </Section>
+        <Section>
+          <div className='flex justify-center items-center my-16'>
+            <Logo size="medium" />
+          </div>
         </Section>
         <Section>
           <Footer />
