@@ -1,5 +1,5 @@
 import Image from "next/image";
-import icon from './Logo.svg'
+import icon from './logo.svg'
 
 interface Props {
     size: 'small' | 'medium' | 'large',
