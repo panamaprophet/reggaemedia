@@ -20,7 +20,7 @@ export default function Home() {
         </Section>
         <Section>
           <div className='flex justify-center items-center my-16'>
-            <Logo />
+            <Logo size="medium" />
           </div>
         </Section>
         <Section>
