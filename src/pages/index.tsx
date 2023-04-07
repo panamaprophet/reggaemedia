@@ -19,7 +19,9 @@ export default function Home() {
           <Header onSearch={(text) => console.log(text)} />
         </Section>
         <Section>
-          <Logo />
+          <div className='flex justify-center items-center my-16'>
+            <Logo />
+          </div>
         </Section>
         <Section>
           <Footer />
