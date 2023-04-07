@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Container } from "../Container";
+import { ReactNode } from 'react';
+import { Container } from '../Container';
 
 interface Props {
     children: ReactNode,
