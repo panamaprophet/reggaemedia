@@ -1,4 +1,4 @@
-import { Stack, StackProps, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
+import { Stack, StackProps, CfnOutput, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
@@ -117,12 +117,27 @@ export class ReggaemediaCdkStack extends Stack {
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
+        const userPoolClient = userPool.addClient('client', {
+            generateSecret: true,
+            accessTokenValidity: Duration.minutes(60),
+            oAuth: {
+                flows: {
+                    authorizationCodeGrant: true,
+                },
+                callbackUrls: [
+                    String(process.env.COGNITO_CALLBACK_URL),
+                ],
+            }
+        });
+
         // @todo: consider using of ses to deliver the notifications
         // new CfnEmailIdentity(this, 'root', { emailIdentity: EMAIL_IDENTITY });
 
         new CfnOutput(this, 'bucket', { value: bucket.bucketName });
         new CfnOutput(this, 'articles', { value: articlesTable.tableName });
         new CfnOutput(this, 'settings', { value: settingsTable.tableName });
-        new CfnOutput(this, 'userPool', { value: userPool.userPoolId });
+        new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
+        new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
+        new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret) });
     }
 }
