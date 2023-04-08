@@ -1,19 +1,22 @@
-import { getUserInfo, login } from '@/resolvers/auth';
-import { AttributeType } from '@aws-sdk/client-cognito-identity-provider';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { AttributeType, AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider';
+import { getUserInfo, getAccessToken, refreshAccessToken } from '@/resolvers/auth';
 
 
 const getAttributeValueByName =
     (name: string, attributes: AttributeType[]) =>
         attributes.find(attribute => attribute.Name === name)?.Value;
 
-const SESSION_MAX_AGE_SECONDS = 60 * 60;
+const getAccessTokenFromAuthenticationResult =
+    (result: AuthenticationResultType) =>
+        ({
+            accessToken: result.AccessToken,
+            refreshToken: result.RefreshToken,
+            accessTokenExpiresIn: Date.now() + (result.ExpiresIn || 0) * 1000,
+        });
 
 export const authOptions = {
-    session: {
-        maxAge: SESSION_MAX_AGE_SECONDS,
-    },
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -34,7 +37,7 @@ export const authOptions = {
                 }
 
                 try {
-                    const { AuthenticationResult } = await login(credentials.username, credentials.password);
+                    const { AuthenticationResult } = await getAccessToken(credentials.username, credentials.password);
                     const { UserAttributes } = await getUserInfo(credentials.username);
 
                     if (!AuthenticationResult || !AuthenticationResult.AccessToken) {
@@ -55,6 +58,7 @@ export const authOptions = {
                     return {
                         id,
                         email,
+                        ...getAccessTokenFromAuthenticationResult(AuthenticationResult),
                     }
                 } catch (error) {
                     console.log('auth error =', error);
@@ -64,6 +68,44 @@ export const authOptions = {
             },
         })
     ],
+    callbacks: {
+        jwt: async ({ token, user }: { token: any, user: any }) => {
+            if (user) {
+                return {
+                    ...token,
+                    ...user,
+                };
+            }
+
+            if (Date.now() < token.accessTokenExpiresIn) {
+                return token;
+            }
+
+            try {
+                const { AuthenticationResult } = await refreshAccessToken(token.id, token.refreshToken);
+
+                if (!AuthenticationResult) {
+                    throw Error('can\'t refresh token');
+                }
+
+                return {
+                    ...token,
+                    ...getAccessTokenFromAuthenticationResult(AuthenticationResult),
+                }
+            } catch (error) {
+                console.log('auth error =', error);
+            }
+
+            return null;
+        },
+        session: async ({ session, token }: { session: any, token: any }) => {
+            if (!token) {
+                return null;
+            }
+
+            return { ...session, token };
+        },
+    }
 };
 
 
