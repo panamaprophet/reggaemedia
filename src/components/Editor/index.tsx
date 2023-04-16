@@ -40,7 +40,7 @@ interface Props {
 }
 
 export const Editor = ({ onChange }: Props) => {
-    const [editor, setEditor] = useState<EditorState>()
+    const [_editor, setEditor] = useState<EditorState>()
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
@@ -56,9 +56,11 @@ export const Editor = ({ onChange }: Props) => {
         ]
     };
 
-    useEffect(() => {
-        onChange(editor);
-    }, [editor])
+    const _onChange = (state: EditorState) => {
+        setEditor(state);
+
+        onChange(state);
+    }
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
@@ -69,7 +71,7 @@ export const Editor = ({ onChange }: Props) => {
                     placeholder={<div>Enter some text...</div>}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
-                <OnChangePlugin onChange={(state: EditorState) => setEditor(state)} />
+                <OnChangePlugin onChange={_onChange} />
                 <HistoryPlugin />
                 <ListPlugin />
                 <LinkPlugin />
@@ -77,7 +79,7 @@ export const Editor = ({ onChange }: Props) => {
                 <CheckListPlugin />
                 <MyCustomAutoFocusPlugin />
             </div>
-            {/* <TreeViewPlugin /> */}
+            <TreeViewPlugin />
         </LexicalComposer>
     );
 }
