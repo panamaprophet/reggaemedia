@@ -1,9 +1,9 @@
 import Editor from "@/components/Editor";
 import { EditorState } from "lexical";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export const NewArticle = () => {
-    const [article, setArticle] = useState();
+    const [article, setArticle] = useState<EditorState | undefined>();
     const tags = ['qwe', 'asd', 'zxc'];
 
     const handleSave = () => console.log(JSON.stringify(article))
