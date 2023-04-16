@@ -15,10 +15,9 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { ToolbarPlugin, TreeViewPlugin } from './plugins';
+import { ToolbarPlugin, TreeViewPlugin, ImagesPlugin } from './plugins';
 
 import theme from './theme';
-import ImagesPlugin from './plugins/Image';
 import { ImageNode } from './nodes/ImageNode';
 
 export const MyCustomAutoFocusPlugin = () => {
