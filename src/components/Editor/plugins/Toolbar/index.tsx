@@ -19,6 +19,7 @@ import { blockTypeToBlockName } from '../../settings';
 import { UndoRedo } from './elements/UndoRedo';
 import { Format } from './elements/Format';
 import { Align } from './elements/Align';
+import { Image } from './elements/Image';
 
 const IS_APPLE = false;
 
@@ -137,7 +138,7 @@ export const ToolbarPlugin = () => {
     }, [$updateToolbar, activeEditor, editor]);
 
     return (
-        <div className="flex items-center justify-between p-1">
+        <div className="flex items-center justify-between p-1 sticky">
             <UndoRedo
                 editor={activeEditor}
                 canUndo={canUndo}
@@ -168,6 +169,7 @@ export const ToolbarPlugin = () => {
             />
             <Format editor={editor} IS_APPLE={IS_APPLE} isEditable={isEditable} isBold={isBold} isItalic={isItalic} isUnderline={isUnderline} isLink={isLink} />
             <Align editor={activeEditor} isEditable={isEditable} />
+            <Image />
         </div>
     );
 };
