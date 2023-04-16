@@ -18,11 +18,11 @@ export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> = createCo
     "INSERT_IMAGE_COMMAND"
 );
 
-export default function ImagesPlugin({
+export const ImagesPlugin = ({
     captionsEnabled
 }: {
     captionsEnabled?: boolean;
-}): JSX.Element | null {
+}): JSX.Element | null => {
     const [editor] = useLexicalComposerContext();
 
     useEffect(() => {
