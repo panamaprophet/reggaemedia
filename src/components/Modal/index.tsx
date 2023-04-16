@@ -6,12 +6,12 @@ import { createPortal } from 'react-dom';
 interface Props {
     children: ReactNode;
     isOpen: boolean;
-    size: string,
+    size?: string,
     onClose?: () => void;
     className?: string;
 }
 
-export const Modal = ({ children, isOpen, size, className = '', onClose = () => { } }: Props) => {
+export const Modal = ({ children, isOpen, size = "w-auto h-auto", className = '', onClose = () => { } }: Props) => {
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'visible';
     }, [isOpen]);
@@ -29,9 +29,9 @@ export const Modal = ({ children, isOpen, size, className = '', onClose = () => 
     }
 
     return createPortal(
-        <div className={cx("fixed h-full w-full top-0", size)}>
+        <div className={cx("fixed h-full w-full top-0")}>
             <div className="top-0 left-0 right-0 bottom-0 fixed bg-slate-50/95" onClick={onClose} />
-            <div className={cx("w-full fixed flex items-center justify-center", className)}>{children}</div>
+            <div className={cx("w-full fixed flex items-center justify-center", size, className)}>{children}</div>
         </div >,
         document.body
     );
