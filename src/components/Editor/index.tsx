@@ -7,6 +7,7 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
@@ -16,11 +17,14 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { ToolbarPlugin, TreeViewPlugin } from './plugins';
 
+import theme from './theme';
+import ImagesPlugin from './plugins/Image';
+import { ImageNode } from './nodes/ImageNode';
+
 export const MyCustomAutoFocusPlugin = () => {
     const [editor] = useLexicalComposerContext();
 
     useEffect(() => {
-        // Focus the editor when the effect fires!
         editor.focus();
     }, [editor]);
 
@@ -39,6 +43,7 @@ export const Editor = ({ onChange }: Props) => {
     const [editor, setEditor] = useState<EditorState>()
     const initialConfig = {
         namespace: 'MyEditor',
+        theme,
         onError,
         nodes: [
             HeadingNode,
@@ -47,6 +52,7 @@ export const Editor = ({ onChange }: Props) => {
             LinkNode,
             AutoLinkNode,
             QuoteNode,
+            ImageNode
         ]
     };
 
@@ -67,10 +73,11 @@ export const Editor = ({ onChange }: Props) => {
                 <HistoryPlugin />
                 <ListPlugin />
                 <LinkPlugin />
+                <ImagesPlugin />
                 <CheckListPlugin />
                 <MyCustomAutoFocusPlugin />
             </div>
-            <TreeViewPlugin />
+            {/* <TreeViewPlugin /> */}
         </LexicalComposer>
     );
 }
