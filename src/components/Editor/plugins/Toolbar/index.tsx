@@ -169,6 +169,7 @@ export const ToolbarPlugin = () => {
             />
             <Format editor={editor} IS_APPLE={IS_APPLE} isEditable={isEditable} isBold={isBold} isItalic={isItalic} isUnderline={isUnderline} isLink={isLink} />
             <Align editor={activeEditor} isEditable={isEditable} />
+            {/* eslint-disable-next-line */}
             <Image />
         </div>
     );
