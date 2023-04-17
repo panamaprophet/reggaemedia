@@ -1,6 +1,6 @@
 import { FONT_FAMILY_OPTIONS, FONT_SIZE_OPTIONS, dropDownActiveClass } from "@/components/Editor/settings";
 import { Font } from "@/components/Icons/Font";
-import DropDown, { DropDownItem } from "@/components/Editor/elements/DropDown";
+import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
 import { $patchStyleText } from "@lexical/selection";
 import { $getSelection, $isRangeSelection, LexicalEditor } from "lexical";
 import { useCallback } from "react";
@@ -46,7 +46,7 @@ export const FontDropDown = ({
             {(isFontFamily ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS).map(
                 ([option, text]) => (
                     <DropDownItem
-                        className={`item ${dropDownActiveClass(value === option)}`}
+                        isActive={value === option}
                         onClick={() => handleClick(option)}
                         key={option}>
                         <span className="text">{text}</span>

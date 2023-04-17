@@ -24,8 +24,6 @@ export const Image = () => {
         dispatchImage({ altText: data.name, src: window.URL.createObjectURL(data) });
     }
 
-    const closeModal = () => setModalOpen(false);
-
     return (
         <>
             <Item onClick={() => setModalOpen(true)}>
@@ -36,22 +34,24 @@ export const Image = () => {
             </Item>
 
             <Modal
-                className="top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col gap-6 border p-4 rounded"
+                className="top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
             >
-                <div>
-                    <p>Write down an URL and press Enter</p>
-                    <input
-                        type='text'
-                        onChange={(event) => {
-                            dispatchImage({ altText: event.target.value, src: event.target.value });
-                            setModalOpen(false);
-                        }}
-                    />
+                <div className='flex flex-col'>
+                    <div>
+                        <p>Write down an URL and press Enter</p>
+                        <input
+                            type='text'
+                            onChange={(event) => {
+                                dispatchImage({ altText: event.target.value, src: event.target.value });
+                                setModalOpen(false);
+                            }}
+                        />
+                    </div>
+                    <p>OR</p>
+                    <InputFile onChange={(data) => handleInputData(data)} />
                 </div>
-                <p>OR</p>
-                <InputFile onChange={(data) => handleInputData(data)} />
             </Modal>
         </>
     );

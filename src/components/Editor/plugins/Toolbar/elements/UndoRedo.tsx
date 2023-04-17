@@ -3,7 +3,6 @@ import { CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, LexicalE
 
 import { Undo as UndoIcon } from "@/components/Icons/Undo";
 import { Redo as RedoIcon } from "@/components/Icons/Redo";
-import { Button } from "@/components/Button";
 import { Item } from "./Item";
 
 interface Props {

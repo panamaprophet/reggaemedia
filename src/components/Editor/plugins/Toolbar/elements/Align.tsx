@@ -2,7 +2,7 @@ import { AlignCenter } from "@/components/Icons/Align/AlignCenter";
 import { AlignJustify } from "@/components/Icons/Align/AlignJustify";
 import { AlignLeft } from "@/components/Icons/Align/AlignLeft";
 import { AlignRight } from "@/components/Icons/Align/AlignRight";
-import DropDown, { DropDownItem } from "@/components/Editor/elements/DropDown";
+import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
 import { LexicalEditor, FORMAT_ELEMENT_COMMAND } from "lexical";
 
 interface Props {
@@ -24,7 +24,6 @@ export const Align = ({ editor, isEditable }: Props) => {
                         'left',
                     );
                 }}
-                className="item"
             >
                 <AlignLeft size={15} />
                 <span>Left Align</span>
@@ -35,8 +34,7 @@ export const Align = ({ editor, isEditable }: Props) => {
                         FORMAT_ELEMENT_COMMAND,
                         'center',
                     );
-                }}
-                className="item">
+                }}>
                 <AlignCenter size={15} />
                 <span>Center Align</span>
             </DropDownItem>
@@ -47,7 +45,6 @@ export const Align = ({ editor, isEditable }: Props) => {
                         'right',
                     );
                 }}
-                className="item"
             >
                 <AlignRight size={15} />
                 <span>Right Align</span>
@@ -59,7 +56,6 @@ export const Align = ({ editor, isEditable }: Props) => {
                         'justify',
                     );
                 }}
-                className="item"
             >
                 <AlignJustify size={15} />
                 <span>Justify Align</span>

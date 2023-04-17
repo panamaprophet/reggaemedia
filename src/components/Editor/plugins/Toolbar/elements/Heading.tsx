@@ -5,7 +5,7 @@ import { Heading3 } from '@/components/Icons/Formatting/Heading3';
 import { OrderList } from '@/components/Icons/Formatting/OrderList';
 import { Paragraph } from '@/components/Icons/Formatting/Paragraph';
 import { UnorderList } from '@/components/Icons/Formatting/UnorderList';
-import DropDown, { DropDownItem } from '@/components/Editor/elements/DropDown';
+import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import {
   INSERT_UNORDERED_LIST_COMMAND,
   REMOVE_LIST_COMMAND,
@@ -87,57 +87,57 @@ export const BlockFormatDropDown = ({
       buttonLabel={blockTypeToBlockName[blockType]}
       buttonAriaLabel="Formatting options for text style">
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'paragraph')}
+        isActive={blockType === 'paragraph'}
         onClick={formatParagraph}>
         <Paragraph size={15} />
-        <span className="text">Normal</span>
+        <span className="text whitespace-nowrap">Normal</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'h1')}
+        isActive={blockType === 'h1'}
         onClick={() => formatHeading('h1')}
       >
         <Heading1 size={15} />
-        <span className="text">Heading 1</span>
+        <span className="text whitespace-nowrap">Heading 1</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'h2')}
+        isActive={blockType === 'h2'}
         onClick={() => formatHeading('h2')}
       >
         <Heading2 size={15} />
-        <span className="text">Heading 2</span>
+        <span className="text whitespace-nowrap">Heading 2</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'h3')}
+        isActive={blockType === 'h3'}
         onClick={() => formatHeading('h3')}
       >
         <Heading3 size={15} />
-        <span className="text">Heading 3</span>
+        <span className="text whitespace-nowrap">Heading 3</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'bullet')}
+        isActive={blockType === 'bullet'}
         onClick={formatBulletList}
       >
         <UnorderList size={15} />
-        <span className="text">Bullet List</span>
+        <span className="text whitespace-nowrap">Bullet List</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'number')}
+        isActive={blockType === 'number'}
         onClick={formatNumberedList}
       >
         <OrderList size={15} />
-        <span className="text">Numbered List</span>
+        <span className="text whitespace-nowrap">Numbered List</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'check')}
+        isActive={blockType === 'check'}
         onClick={formatCheckList}
       >
-        <span className="text">Check List</span>
+        <span className="text whitespace-nowrap">Check List</span>
       </DropDownItem>
       <DropDownItem
-        className={'w-full hover:bg-slate-300 rounded ' + dropDownActiveClass(blockType === 'quote')}
+        isActive={blockType === 'quote'}
         onClick={formatQuote}
       >
-        <span className="text">Quote</span>
+        <span className="text whitespace-nowrap">Quote</span>
       </DropDownItem>
     </DropDown>
   );
