@@ -1,10 +1,12 @@
-import { blockTypeToBlockName, dropDownActiveClass } from '@/components/Editor/settings';
-import { Heading1 } from '@/components/Icons/Formatting/Heading1';
-import { Heading2 } from '@/components/Icons/Formatting/Heading2';
-import { Heading3 } from '@/components/Icons/Formatting/Heading3';
-import { OrderList } from '@/components/Icons/Formatting/OrderList';
-import { Paragraph } from '@/components/Icons/Formatting/Paragraph';
-import { UnorderList } from '@/components/Icons/Formatting/UnorderList';
+import { blockTypeToBlockName } from '@/components/Editor/settings';
+import {
+  Heading1,
+  Heading2,
+  Heading3,
+  OrderList,
+  Paragraph,
+  UnorderList,
+} from '@/components/Icons/Formatting';
 import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import {
   INSERT_UNORDERED_LIST_COMMAND,

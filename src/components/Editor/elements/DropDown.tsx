@@ -1,4 +1,4 @@
-import { Children, Component, FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Chevron } from '@/components/Icons/Chevron';
 
 

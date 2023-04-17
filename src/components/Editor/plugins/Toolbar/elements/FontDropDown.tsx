@@ -1,4 +1,4 @@
-import { FONT_FAMILY_OPTIONS, FONT_SIZE_OPTIONS, dropDownActiveClass } from "@/components/Editor/settings";
+import { FONT_FAMILY_OPTIONS, FONT_SIZE_OPTIONS } from "@/components/Editor/settings";
 import { Font } from "@/components/Icons/Font";
 import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
 import { $patchStyleText } from "@lexical/selection";

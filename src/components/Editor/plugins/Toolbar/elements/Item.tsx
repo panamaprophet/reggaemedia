@@ -1,4 +1,3 @@
-import { LexicalEditor } from "lexical";
 import { MutableRefObject, ReactNode } from "react";
 
 interface Props {

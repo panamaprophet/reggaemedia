@@ -7,7 +7,6 @@ import { useCallback } from "react"
 import { Item } from "./Item"
 import { Underline } from "@/components/Icons/Underline"
 import { Link } from "@/components/Icons/Link"
-import { Code } from "@/components/Icons/Code"
 
 interface Props {
     editor: LexicalEditor,

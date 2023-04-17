@@ -1,5 +1,5 @@
 import { EditorState } from 'lexical';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
