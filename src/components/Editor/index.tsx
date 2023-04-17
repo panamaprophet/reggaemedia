@@ -15,10 +15,10 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { ToolbarPlugin, TreeViewPlugin, ImagesPlugin } from './plugins';
+import { ToolbarPlugin, ImagePlugin } from './plugins';
 
+import { ImageNode } from './plugins/Image/node';
 import theme from './theme';
-import { ImageNode } from './nodes/ImageNode';
 
 export const MyCustomAutoFocusPlugin = () => {
     const [editor] = useLexicalComposerContext();
@@ -39,7 +39,6 @@ interface Props {
 }
 
 export const Editor = ({ onChange }: Props) => {
-    const [_editor, setEditor] = useState<EditorState>()
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
@@ -55,12 +54,6 @@ export const Editor = ({ onChange }: Props) => {
         ]
     };
 
-    const _onChange = (state: EditorState) => {
-        setEditor(state);
-
-        onChange(state);
-    }
-
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <ToolbarPlugin />
@@ -70,15 +63,14 @@ export const Editor = ({ onChange }: Props) => {
                     placeholder={<div>Enter some text...</div>}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
-                <OnChangePlugin onChange={_onChange} />
+                <OnChangePlugin onChange={onChange} />
                 <HistoryPlugin />
                 <ListPlugin />
                 <LinkPlugin />
-                <ImagesPlugin />
+                <ImagePlugin />
                 <CheckListPlugin />
                 <MyCustomAutoFocusPlugin />
             </div>
-            <TreeViewPlugin />
         </LexicalComposer>
     );
 }
