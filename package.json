@@ -13,7 +13,6 @@
     "postinstall": "git config --local core.hooksPath .github/hooks"
   },
   "devDependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.309.0",
     "@aws-sdk/client-dynamodb": "^3.306.0",
     "@aws-sdk/client-s3": "^3.306.0",
     "@aws-sdk/s3-request-presigner": "^3.306.0",
@@ -25,15 +24,22 @@
     "aws-cdk": "2.69.0",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
-    "next-auth": "^4.21.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.1",
     "ts-node": "^10.9.1",
     "typescript": "5.0.2"
   },
   "dependencies": {
+    "@lexical/clipboard": "^0.9.1",
+    "@lexical/link": "^0.9.1",
+    "@lexical/list": "^0.9.1",
+    "@lexical/react": "^0.9.1",
+    "@lexical/rich-text": "^0.9.1",
+    "@lexical/selection": "^0.9.1",
+    "@lexical/utils": "^0.9.1",
     "aws-cdk-lib": "2.69.0",
     "constructs": "^10.0.0",
+    "lexical": "^0.9.1",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
