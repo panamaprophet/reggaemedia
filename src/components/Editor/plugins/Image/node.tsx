@@ -1,5 +1,4 @@
 import type {
-    DOMConversionMap,
     DOMExportOutput,
     EditorConfig,
     LexicalEditor,
@@ -10,15 +9,17 @@ import type {
 } from "lexical";
 
 import { createEditor, DecoratorNode } from "lexical";
-import { ImageComponent } from '../component';
-import { Dimension, ImagePayload } from "../types";
+import { ImageComponent } from './Component';
+import { Dimension, ImagePayload } from "./types";
 
 
 const convertImageElement = (domNode: Node) => {
     if (domNode instanceof HTMLImageElement) {
         const { alt: altText, src } = domNode;
-        const node = $createImageNode({ altText, src });
-        return { node };
+
+        return {
+            node: new ImageNode({ altText, src })
+        };
     }
     return null;
 }
@@ -100,9 +101,9 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         return { element };
     }
 
-    static importDOM(): DOMConversionMap | null {
+    static importDOM() {
         return {
-            img: (_node: Node) => ({
+            img: () => ({
                 conversion: convertImageElement,
                 priority: 0
             })

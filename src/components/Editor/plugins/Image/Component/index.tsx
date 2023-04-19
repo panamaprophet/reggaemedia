@@ -20,16 +20,17 @@ export const ImageComponent = (props: Props): JSX.Element => {
     const imageRef = useRef<null | HTMLImageElement>(null);
 
     return (
-        // eslint-disable-next-line
-        <img
-            src={src}
-            alt={altText}
-            ref={imageRef}
-            style={{
-                height,
-                maxWidth,
-                width
-            }}
-        />
+        <picture>
+            <img
+                src={src}
+                alt={altText}
+                ref={imageRef}
+                style={{
+                    height,
+                    maxWidth,
+                    width
+                }}
+            />
+        </picture>
     );
 }

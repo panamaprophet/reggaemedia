@@ -1,4 +1,4 @@
 export * from './Plugin';
-export * from './component';
+export * from './Component';
 export * from './node';
 export * from './command';
