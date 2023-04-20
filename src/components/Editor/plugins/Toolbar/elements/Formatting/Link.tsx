@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 import { Link as LinkIcon } from '@/components/Icons/Link';
 import { Item } from "../Item";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { sanitizeUrl } from "@/components/Editor/utils/url";
-import { mergeRegister } from "@lexical/utils";
 import { $getSelection, $isRangeSelection } from "lexical";
 import { getSelectedNode } from "@/components/Editor/utils/getSelectedNode";
+import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
+import { EditorEntity } from "@/components/Editor/types";
 
 
 export const Link = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
-    const [isEditable, setEditable] = useState(() => editor.isEditable());
+    const [isEditable, setEditable] = useState(editor.isEditable());
     const color = isActive ? 'black' : 'gray';
 
     const insertLink = () =>
@@ -21,25 +22,24 @@ export const Link = () => {
             ? editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl('https://'))
             : editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
 
-    useEffect(() => {
-        return mergeRegister(
-            editor.registerEditableListener(setEditable),
-            editor.registerUpdateListener(({ editorState }) => {
-                editorState.read(() => {
-                    const selection = $getSelection();
-                    if ($isRangeSelection(selection)) {
-                        const node = getSelectedNode(selection);
-                        const parent = node.getParent();
-                        if ($isLinkNode(parent) || $isLinkNode(node)) {
-                            setActive(true);
-                        } else {
-                            setActive(false);
-                        }
-                    }
-                });
-            })
-        );
-    }, [editor]);
+    const $updateActive = ({ editorState }: EditorEntity) => {
+        editorState.read(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                const node = getSelectedNode(selection);
+                const parent = node.getParent();
+                if ($isLinkNode(parent) || $isLinkNode(node)) {
+                    setActive(true);
+                } else {
+                    setActive(false);
+                }
+            }
+        });
+
+        return false;
+    }
+
+    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
 
     return (
         <Item

@@ -3,29 +3,29 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 
 import { Underline as UnderlineIcon } from '@/components/Icons/Underline';
 import { Item } from "../Item";
-import { useEffect, useState } from "react";
-import { mergeRegister } from "@lexical/utils";
+import { useState } from "react";
+import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
+import { EditorEntity } from "@/components/Editor/types";
 
 
 export const Underline = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
-    const [isEditable, setEditable] = useState(() => editor.isEditable());
+    const [isEditable, setEditable] = useState(editor.isEditable());
     const color = isActive ? 'black' : 'gray';
 
-    useEffect(() => {
-        return mergeRegister(
-            editor.registerEditableListener(setEditable),
-            editor.registerUpdateListener(({ editorState }) => {
-                editorState.read(() => {
-                    const selection = $getSelection();
-                    if ($isRangeSelection(selection)) {
-                        setActive(selection.hasFormat('underline'));
-                    }
-                });
-            })
-        );
-    }, [editor]);
+    const $updateActive = ({ editorState }: EditorEntity) => {
+        editorState.read(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                setActive(selection.hasFormat('underline'));
+            }
+        });
+
+        return false;
+    };
+
+    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
 
     return (
         <Item

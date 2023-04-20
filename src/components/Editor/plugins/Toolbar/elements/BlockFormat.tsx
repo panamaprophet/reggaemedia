@@ -2,11 +2,11 @@ import { blockTypeToBlockName } from '@/components/Editor/settings';
 import { Heading1, Heading2, Heading3, OrderList, Paragraph as ParagraphIcon, UnorderList } from '@/components/Icons/Formatting';
 import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useCallback, useEffect, useState } from 'react';
-import { $findMatchingParent, $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
+import { useCallback, useState } from 'react';
+import { $findMatchingParent, $getNearestNodeOfType } from '@lexical/utils';
 import { $isHeadingNode } from '@lexical/rich-text';
 import { $isListNode, ListNode } from '@lexical/list';
-import { $getSelection, $isRangeSelection, $isRootOrShadowRoot, COMMAND_PRIORITY_CRITICAL, SELECTION_CHANGE_COMMAND } from 'lexical';
+import { $getSelection, $isRangeSelection, $isRootOrShadowRoot } from 'lexical';
 import {
   formatParagraph,
   formatQuote,
@@ -15,6 +15,8 @@ import {
   formatCheckList,
   formatNumberedList,
 } from './formatters';
+import { useMergeRegister, useSelectionChangeCommand } from '@/components/Editor/hooks/useLexicalHooks';
+import { EditorEntity } from '@/components/Editor/types';
 
 
 export const BlockFormatDropDown = () => {
@@ -23,74 +25,57 @@ export const BlockFormatDropDown = () => {
   const [blockType, setBlockType] =
     useState<keyof typeof blockTypeToBlockName>('paragraph');
 
-  const $updateBlockStyle = useCallback(() => {
-    const selection = $getSelection();
-    if ($isRangeSelection(selection)) {
-      const anchorNode = selection.anchor.getNode();
-      let element =
-        anchorNode.getKey() === 'root'
-          ? anchorNode
-          : $findMatchingParent(anchorNode, (e) => {
-            const parent = e.getParent();
-            return parent !== null && $isRootOrShadowRoot(parent);
-          });
+  const $updateBlockStyle = useCallback(({ editorState }: EditorEntity) => {
+    editorState.read(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        const anchorNode = selection.anchor.getNode();
+        let element =
+          anchorNode.getKey() === 'root'
+            ? anchorNode
+            : $findMatchingParent(anchorNode, (e) => {
+              const parent = e.getParent();
+              return parent !== null && $isRootOrShadowRoot(parent);
+            });
 
-      if (element === null) {
-        element = anchorNode.getTopLevelElementOrThrow();
-      }
+        if (element === null) {
+          element = anchorNode.getTopLevelElementOrThrow();
+        }
 
-      const elementKey = element.getKey();
-      const elementDOM = editor.getElementByKey(elementKey);
+        const elementKey = element.getKey();
+        const elementDOM = editor.getElementByKey(elementKey);
 
-      if (elementDOM !== null) {
-        if ($isListNode(element)) {
-          const parentList = $getNearestNodeOfType<ListNode>(
-            anchorNode,
-            ListNode,
-          );
+        if (elementDOM !== null) {
+          if ($isListNode(element)) {
+            const parentList = $getNearestNodeOfType<ListNode>(
+              anchorNode,
+              ListNode,
+            );
 
-          const type = parentList
-            ? parentList.getListType()
-            : element.getListType();
+            const type = parentList
+              ? parentList.getListType()
+              : element.getListType();
 
-          setBlockType(type);
-        } else {
-          const type = $isHeadingNode(element)
-            ? element.getTag()
-            : element.getType();
+            setBlockType(type);
+          } else {
+            const type = $isHeadingNode(element)
+              ? element.getTag()
+              : element.getType();
 
-          if (type in blockTypeToBlockName) {
-            setBlockType(type as keyof typeof blockTypeToBlockName);
+            if (type in blockTypeToBlockName) {
+              setBlockType(type as keyof typeof blockTypeToBlockName);
+            }
           }
         }
       }
-    }
-  }, [editor]);
+    })
 
-  useEffect(() => {
-    return editor.registerCommand(
-      SELECTION_CHANGE_COMMAND,
-      (_payload, _newEditor) => {
-        $updateBlockStyle();
+    return false;
+  }, [editor])
 
-        return false;
-      },
-      COMMAND_PRIORITY_CRITICAL,
-    );
-  }, [editor, $updateBlockStyle]);
+  useMergeRegister({ onEdit: setEditable, onUpdate: $updateBlockStyle });
+  useSelectionChangeCommand($updateBlockStyle);
 
-  useEffect(() => {
-    return mergeRegister(
-      editor.registerEditableListener(setEditable),
-      editor.registerUpdateListener(({ editorState }) => {
-        editorState.read(() => {
-          $updateBlockStyle;
-        });
-      }),
-    );
-  }, [$updateBlockStyle, editor]);
-
-  // separate \|/
   return (
     <DropDown
       disabled={!isEditable}
@@ -101,7 +86,7 @@ export const BlockFormatDropDown = () => {
         isActive={blockType === 'paragraph'}
         onClick={() => formatParagraph(editor)}>
         <ParagraphIcon size={15} />
-        <span className="text whitespace-nowrap">Normal</span>
+        <span className="text whitespace-nowrap">Paragraph</span>
       </DropDownItem>
       <DropDownItem
         isActive={blockType === 'h1'}

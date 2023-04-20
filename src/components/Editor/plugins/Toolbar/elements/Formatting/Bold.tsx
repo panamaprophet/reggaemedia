@@ -3,29 +3,29 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 
 import { Bold as BoldIcon } from '@/components/Icons/Bold';
 import { Item } from "../Item";
-import { useEffect, useState } from "react";
-import { mergeRegister } from "@lexical/utils";
+import { useState } from "react";
+import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
+import { EditorEntity } from "@/components/Editor/types";
 
 
 export const Bold = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
-    const [isEditable, setEditable] = useState(() => editor.isEditable());
+    const [isEditable, setEditable] = useState(editor.isEditable());
     const color = isActive ? 'black' : 'gray';
 
-    useEffect(() => {
-        return mergeRegister(
-            editor.registerEditableListener(setEditable),
-            editor.registerUpdateListener(({ editorState }) => {
-                editorState.read(() => {
-                    const selection = $getSelection();
-                    if ($isRangeSelection(selection)) {
-                        setActive(selection.hasFormat('bold'));
-                    }
-                });
-            })
-        );
-    }, [editor]);
+    const $updateActive = ({ editorState }: EditorEntity) => {
+        editorState.read(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                setActive(selection.hasFormat('bold'));
+            }
+        })
+
+        return false;
+    };
+
+    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
 
     return (
         <Item

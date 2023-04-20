@@ -1,22 +1,19 @@
-import { FONT_FAMILY_OPTIONS, FONT_SIZE_OPTIONS } from "@/components/Editor/settings";
-import { Font } from "@/components/Icons/Font";
-import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
-import { $patchStyleText } from "@lexical/selection";
-import { $getSelection, $isRangeSelection, LexicalEditor } from "lexical";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
-export const FontDropDown = ({
-    editor,
-    value,
-    style,
-    disabled = false,
-}: {
-    editor: LexicalEditor;
-    value: string;
-    style: string;
-    disabled?: boolean;
-}) => {
-    const isFontFamily = style === 'font-family'
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
+import { $getSelection, $isRangeSelection } from "lexical";
+
+import { FONT_SIZE_OPTIONS } from "@/components/Editor/settings";
+import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
+import { useSelectionChangeCommand, useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
+import { EditorEntity } from "@/components/Editor/types";
+
+
+export const FontSizeDropDown = () => {
+    const [editor] = useLexicalComposerContext();
+    const [fontSize, setFontSize] = useState<string>('15px');
+    const [isEditable, setEditable] = useState(editor.isEditable());
 
     const handleClick = useCallback(
         (option: string) => {
@@ -24,29 +21,41 @@ export const FontDropDown = ({
                 const selection = $getSelection();
                 if ($isRangeSelection(selection)) {
                     $patchStyleText(selection, {
-                        [style]: option,
+                        'font-size': option,
                     });
                 }
             });
         },
-        [editor, style],
+        [editor],
     );
 
-    const buttonAriaLabel =
-        isFontFamily
-            ? 'Formatting options for font family'
-            : 'Formatting options for font size';
+    const $updateFontSize = useCallback(({ editorState }: EditorEntity) => {
+        editorState.read(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                setFontSize(
+                    $getSelectionStyleValueForProperty(selection, 'font-size', '16px')
+                );
+            }
+        });
+
+        return false;
+    }, []);
+
+
+    useSelectionChangeCommand($updateFontSize);
+    useMergeRegister({ onEdit: setEditable, onUpdate: $updateFontSize });
 
     return (
         <DropDown
-            disabled={disabled}
-            buttonLabel={value}
-            ButtonIconComponent={isFontFamily ? <Font size={15} /> : null}
-            buttonAriaLabel={isFontFamily ? '' : buttonAriaLabel}>
-            {(isFontFamily ? FONT_FAMILY_OPTIONS : FONT_SIZE_OPTIONS).map(
+            disabled={!isEditable}
+            buttonLabel={fontSize}
+            buttonAriaLabel="Formatting options for font size"
+        >
+            {(FONT_SIZE_OPTIONS).map(
                 ([option, text]) => (
                     <DropDownItem
-                        isActive={value === option}
+                        isActive={'font-size' === option}
                         onClick={() => handleClick(option)}
                         key={option}>
                         <span className="text">{text}</span>

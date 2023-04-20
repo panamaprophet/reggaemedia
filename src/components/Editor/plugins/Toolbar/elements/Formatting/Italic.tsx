@@ -3,29 +3,29 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 
 import { Italic as ItalicIcon } from '@/components/Icons/Italic';
 import { Item } from "../Item";
-import { useEffect, useState } from "react";
-import { mergeRegister } from "@lexical/utils";
+import { useState } from "react";
+import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
+import { EditorEntity } from "@/components/Editor/types";
 
 
 export const Italic = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
-    const [isEditable, setEditable] = useState(() => editor.isEditable());
+    const [isEditable, setEditable] = useState(editor.isEditable());
     const color = isActive ? 'black' : 'gray';
 
-    useEffect(() => {
-        return mergeRegister(
-            editor.registerEditableListener(setEditable),
-            editor.registerUpdateListener(({ editorState }) => {
-                editorState.read(() => {
-                    const selection = $getSelection();
-                    if ($isRangeSelection(selection)) {
-                        setActive(selection.hasFormat('italic'));
-                    }
-                });
-            })
-        );
-    }, [editor]);
+    const $updateActive = ({ editorState }: EditorEntity) => {
+        editorState.read(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                setActive(selection.hasFormat('italic'));
+            }
+        });
+
+        return false;
+    };
+
+    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
 
     return (
         <Item
