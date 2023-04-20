@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Chevron } from '@/components/Icons/Chevron';
 
 
@@ -41,9 +41,30 @@ export const DropDownItem = ({ isActive = false, onClick, children }: IDropDownI
 
 export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = false, ButtonIconComponent }: IDropDown): JSX.Element => {
     const [showDropDown, setShowDropDown] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleMouseDown = (event: MouseEvent) => {
+            if (!event.target) {
+                return;
+            }
+
+            if (!ref.current?.contains(event.target as HTMLDivElement)) {
+                setShowDropDown(false)
+            }
+
+            if (ref.current === event.target) {
+                setShowDropDown(false)
+            }
+        };
+
+        document.addEventListener('mousedown', handleMouseDown)
+
+        return () => document.removeEventListener('mousedown', handleMouseDown)
+    })
 
     return (
-        <div className='relative'>
+        <div className='relative' ref={ref}>
             <button
                 disabled={disabled}
                 aria-label={buttonAriaLabel || buttonLabel}
@@ -56,7 +77,7 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
             </button>
 
             {showDropDown && (
-                <div className='absolute border rounded bg-white p-1' onClick={() => setShowDropDown(false)}>
+                <div className='absolute border rounded bg-white p-3' onClick={() => setShowDropDown(false)}>
                     {children}
                 </div>
             )}
