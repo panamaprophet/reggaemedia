@@ -5,15 +5,13 @@ import { createPortal } from 'react-dom';
 
 const modalSizes = {
     'auto': 'w-auto h-auto',
-    'small': 'w-8 h-8',
-    'medium': 'w-16 h-16',
-    'large': 'w-36 h-36',
     'screen': 'w-screen h-screen'
 }
+
 interface Props {
     children: ReactNode;
     isOpen: boolean;
-    size?: 'auto' | 'small' | 'medium' | 'large' | 'screen',
+    size?: 'auto' | 'screen',
     onClose?: () => void;
     className?: string;
 }
