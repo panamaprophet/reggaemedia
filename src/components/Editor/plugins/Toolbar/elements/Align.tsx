@@ -5,12 +5,11 @@ import { AlignRight } from "@/components/Icons/Align/AlignRight";
 import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
 import { FORMAT_ELEMENT_COMMAND } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useState } from "react";
 
 
 export const Align = () => {
     const [editor] = useLexicalComposerContext();
-    const [isEditable] = useState(editor.isEditable());
+    const isEditable = editor.isEditable();
 
     return (
         <DropDown
