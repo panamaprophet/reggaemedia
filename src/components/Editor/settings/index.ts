@@ -5,7 +5,7 @@ export const blockTypeToBlockName = {
     h2: 'Heading 2',
     h3: 'Heading 3',
     number: 'Numbered List',
-    paragraph: 'Normal',
+    paragraph: 'Paragrapgh',
     quote: 'Quote',
 };
 
