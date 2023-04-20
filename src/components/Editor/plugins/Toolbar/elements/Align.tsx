@@ -3,14 +3,15 @@ import { AlignJustify } from "@/components/Icons/Align/AlignJustify";
 import { AlignLeft } from "@/components/Icons/Align/AlignLeft";
 import { AlignRight } from "@/components/Icons/Align/AlignRight";
 import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
-import { LexicalEditor, FORMAT_ELEMENT_COMMAND } from "lexical";
+import { FORMAT_ELEMENT_COMMAND } from "lexical";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useState } from "react";
 
-interface Props {
-    editor: LexicalEditor,
-    isEditable: boolean,
-}
 
-export const Align = ({ editor, isEditable }: Props) => {
+export const Align = () => {
+    const [editor] = useLexicalComposerContext();
+    const [isEditable] = useState(editor.isEditable());
+
     return (
         <DropDown
             disabled={!isEditable}
