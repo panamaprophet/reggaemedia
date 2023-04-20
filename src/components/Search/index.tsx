@@ -34,7 +34,6 @@ export const Search = ({ onSubmit }: Props) => {
 
             {isSearch && (
                 <Modal
-                    className="top-1/4 -translate-y-1/4 gap-4"
                     size="screen"
                     isOpen={isSearch} onClose={() => setSearch(false)}
                 >
