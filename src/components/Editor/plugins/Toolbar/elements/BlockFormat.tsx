@@ -15,7 +15,7 @@ import {
   formatCheckList,
   formatNumberedList,
 } from './formatters';
-import { useRegisterCommand, useRegisterCommandCritical, useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterCommandCritical, useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const BlockFormatDropDown = () => {
