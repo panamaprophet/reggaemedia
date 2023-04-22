@@ -1,6 +1,6 @@
-import Editor from "@/components/Editor";
-import { EditorState } from "lexical";
-import { useState } from "react";
+import Editor from '@/components/Editor';
+import { EditorState } from 'lexical';
+import { useState } from 'react';
 
 export const NewArticle = () => {
     const [article, setArticle] = useState<EditorState | undefined>();

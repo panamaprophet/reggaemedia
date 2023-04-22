@@ -1,16 +1,16 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $wrapNodeInElement, mergeRegister } from "@lexical/utils";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 import {
     $createParagraphNode,
     $insertNodes,
     $isRootOrShadowRoot,
     COMMAND_PRIORITY_EDITOR,
-} from "lexical";
-import { useEffect } from "react";
+} from 'lexical';
+import { useEffect } from 'react';
 
-import { $createImageNode, ImageNode } from "./node";
-import { INSERT_IMAGE_COMMAND } from "./command";
-import { InsertImagePayload } from "./types";
+import { $createImageNode, ImageNode } from './node';
+import { INSERT_IMAGE_COMMAND } from './command';
+import { InsertImagePayload } from './types';
 
 
 export const ImagePlugin = ({

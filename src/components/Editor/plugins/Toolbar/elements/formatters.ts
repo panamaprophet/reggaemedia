@@ -1,7 +1,7 @@
-import { INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND } from "@lexical/list";
-import { $createHeadingNode, $createQuoteNode, HeadingTagType } from "@lexical/rich-text";
-import { $setBlocksType } from "@lexical/selection";
-import { $createParagraphNode, $getSelection, $isRangeSelection, LexicalEditor } from "lexical";
+import { INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND } from '@lexical/list';
+import { $createHeadingNode, $createQuoteNode, HeadingTagType } from '@lexical/rich-text';
+import { $setBlocksType } from '@lexical/selection';
+import { $createParagraphNode, $getSelection, $isRangeSelection, LexicalEditor } from 'lexical';
 import { blockTypeToBlockName } from '@/components/Editor/settings';
 
 type BlockTypeKey = keyof typeof blockTypeToBlockName;

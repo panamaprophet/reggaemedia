@@ -1,10 +1,10 @@
-import { AlignCenter } from "@/components/Icons/Align/AlignCenter";
-import { AlignJustify } from "@/components/Icons/Align/AlignJustify";
-import { AlignLeft } from "@/components/Icons/Align/AlignLeft";
-import { AlignRight } from "@/components/Icons/Align/AlignRight";
-import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
-import { FORMAT_ELEMENT_COMMAND } from "lexical";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { AlignCenter } from '@/components/Icons/Align/AlignCenter';
+import { AlignJustify } from '@/components/Icons/Align/AlignJustify';
+import { AlignLeft } from '@/components/Icons/Align/AlignLeft';
+import { AlignRight } from '@/components/Icons/Align/AlignRight';
+import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
+import { FORMAT_ELEMENT_COMMAND } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 
 export const Align = () => {

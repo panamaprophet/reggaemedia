@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useState } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import { Link as LinkIcon } from '@/components/Icons/Link';
-import { Item } from "../Item";
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
-import { $getSelection, $isRangeSelection } from "lexical";
-import { getSelectedNode } from "@/components/Editor/utils/getSelectedNode";
-import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
+import { Item } from '../Item';
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { $getSelection, $isRangeSelection } from 'lexical';
+import { getSelectedNode } from '@/components/Editor/utils/getSelectedNode';
+import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const Link = () => {

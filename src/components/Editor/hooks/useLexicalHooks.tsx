@@ -1,4 +1,4 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
     COMMAND_PRIORITY_CRITICAL,
     COMMAND_PRIORITY_NORMAL,
@@ -7,9 +7,9 @@ import {
     EditableListener,
     LexicalCommand,
     LexicalEditor,
-} from "lexical";
-import { UpdateListener } from "lexical/LexicalEditor";
-import { useEffect } from "react";
+} from 'lexical';
+import { UpdateListener } from 'lexical/LexicalEditor';
+import { useEffect } from 'react';
 
 
 type Payload =

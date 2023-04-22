@@ -1,10 +1,10 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 
 import { Underline as UnderlineIcon } from '@/components/Icons/Underline';
-import { Item } from "../Item";
-import { useState } from "react";
-import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
+import { Item } from '../Item';
+import { useState } from 'react';
+import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const Underline = () => {

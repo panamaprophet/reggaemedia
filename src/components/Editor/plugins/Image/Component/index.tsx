@@ -1,5 +1,5 @@
-import type { LexicalEditor, NodeKey } from "lexical";
-import { useRef } from "react";
+import type { LexicalEditor, NodeKey } from 'lexical';
+import { useRef } from 'react';
 
 
 interface Props {

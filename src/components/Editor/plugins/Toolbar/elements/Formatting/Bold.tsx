@@ -1,10 +1,10 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 
 import { Bold as BoldIcon } from '@/components/Icons/Bold';
-import { Item } from "../Item";
-import { useState } from "react";
-import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
+import { Item } from '../Item';
+import { useState } from 'react';
+import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const Bold = () => {

@@ -1,10 +1,10 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 
-import { Item } from "../Item";
-import { useState } from "react";
+import { Item } from '../Item';
+import { useState } from 'react';
 import { Italic as ItalicIcon } from '@/components/Icons/Italic';
-import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
+import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const Italic = () => {

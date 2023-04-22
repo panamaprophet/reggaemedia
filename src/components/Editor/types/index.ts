@@ -1,4 +1,4 @@
-import { EditorState } from "lexical"
+import { EditorState } from 'lexical'
 
 export type EditorEntity = {
     editorState: EditorState,

@@ -1,12 +1,12 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
-import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from "lexical";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelectionStyleValueForProperty, $patchStyleText } from '@lexical/selection';
+import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from 'lexical';
 
-import { FONT_SIZE_OPTIONS } from "@/components/Editor/settings";
-import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
-import { useRegisterCommandCritical, useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
+import { FONT_SIZE_OPTIONS } from '@/components/Editor/settings';
+import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
+import { useRegisterCommandCritical, useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const FontSizeDropDown = () => {

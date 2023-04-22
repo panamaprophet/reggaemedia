@@ -1,4 +1,4 @@
-import { LexicalEditor, NodeKey } from "lexical";
+import { LexicalEditor, NodeKey } from 'lexical';
 
 export type InsertImagePayload = Readonly<ImagePayload>;
 
