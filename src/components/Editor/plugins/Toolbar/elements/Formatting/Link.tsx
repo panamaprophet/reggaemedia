@@ -5,7 +5,6 @@ import { Link as LinkIcon } from '@/components/Icons/Link';
 import { Item } from '../Item';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $getSelection, $isRangeSelection } from 'lexical';
-import { getSelectedNode } from '@/components/Editor/utils/getSelectedNode';
 import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
@@ -24,7 +23,7 @@ export const Link = () => {
         editor.getEditorState().read(() => {
             const selection = $getSelection();
             if ($isRangeSelection(selection)) {
-                const node = getSelectedNode(selection);
+                const node = selection.anchor.getNode();
                 const parent = node.getParent();
                 if ($isLinkNode(parent) || $isLinkNode(node)) {
                     setActive(true);
