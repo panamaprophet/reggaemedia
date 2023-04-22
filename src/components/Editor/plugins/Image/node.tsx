@@ -1,27 +1,28 @@
 import type {
-    DOMExportOutput,
     EditorConfig,
     LexicalEditor,
     LexicalNode,
     SerializedEditor,
     SerializedLexicalNode,
-    Spread
+    Spread,
+    NodeKey
 } from 'lexical';
 
 import { createEditor, DecoratorNode } from 'lexical';
 import { ImageComponent } from './Component';
-import { Dimension, ImagePayload } from './types';
 
+export type Dimension = 'inherit' | number;
 
-const convertImageElement = (domNode: Node) => {
-    if (domNode instanceof HTMLImageElement) {
-        const { alt: altText, src } = domNode;
-
-        return {
-            node: new ImageNode({ altText, src })
-        };
-    }
-    return null;
+export interface ImagePayload {
+    altText: string;
+    src: string;
+    key?: NodeKey;
+    width?: Dimension;
+    height?: Dimension;
+    maxWidth?: number;
+    showCaption?: boolean;
+    caption?: LexicalEditor;
+    captionsEnabled?: boolean;
 }
 
 type SerializedImageNode = Spread<
@@ -39,6 +40,18 @@ type SerializedImageNode = Spread<
     SerializedLexicalNode
 >;
 
+
+const convertImageElement = (domNode: Node) => {
+    if (domNode instanceof HTMLImageElement) {
+        const { alt: altText, src } = domNode;
+
+        return {
+            node: new ImageNode({ altText, src })
+        };
+    }
+    return null;
+}
+
 export class ImageNode extends DecoratorNode<JSX.Element> {
     __src: string;
     __altText: string;
@@ -50,11 +63,11 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     // Captions cannot yet be used within editor cells
     __captionsEnabled: boolean;
 
-    static getType(): string {
+    static getType() {
         return 'image';
     }
 
-    static clone(node: ImageNode): ImageNode {
+    static clone(node: ImageNode) {
         return new ImageNode({
             src: node.__src,
             altText: node.__altText,
@@ -68,7 +81,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         });
     }
 
-    static importJSON(serializedNode: SerializedImageNode): ImageNode {
+    static importJSON(serializedNode: SerializedImageNode) {
         const {
             altText,
             height,
@@ -94,7 +107,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         return node;
     }
 
-    exportDOM(): DOMExportOutput {
+    exportDOM() {
         const element = document.createElement('img');
         element.setAttribute('src', this.__src);
         element.setAttribute('alt', this.__altText);
@@ -134,7 +147,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
     }
 
-    exportJSON(): SerializedImageNode {
+    exportJSON() {
         return {
             altText: this.getAltText(),
             caption: this.__caption.toJSON(),
@@ -148,20 +161,20 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         };
     }
 
-    setWidthAndHeight(width: Dimension, height: Dimension): void {
+    setWidthAndHeight(width: Dimension, height: Dimension) {
         const writable = this.getWritable();
         writable.__width = width;
         writable.__height = height;
     }
 
-    setShowCaption(showCaption: boolean): void {
+    setShowCaption(showCaption: boolean) {
         const writable = this.getWritable();
         writable.__showCaption = showCaption;
     }
 
     // View
 
-    createDOM(config: EditorConfig): HTMLElement {
+    createDOM(config: EditorConfig) {
         const span = document.createElement('span');
         const theme = config.theme;
         const className = theme.image;
@@ -171,19 +184,19 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         return span;
     }
 
-    updateDOM(): false {
+    updateDOM() {
         return false;
     }
 
-    getSrc(): string {
+    getSrc() {
         return this.__src;
     }
 
-    getAltText(): string {
+    getAltText() {
         return this.__altText;
     }
 
-    decorate(): JSX.Element {
+    decorate() {
         return (
             <ImageComponent
                 src={this.__src}
