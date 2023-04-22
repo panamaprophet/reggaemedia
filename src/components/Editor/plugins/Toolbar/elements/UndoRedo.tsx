@@ -11,6 +11,7 @@ import {
 import { Undo as UndoIcon } from '@/components/Icons/Undo';
 import { Redo as RedoIcon } from '@/components/Icons/Redo';
 import { Item } from './Item';
+import { useRegisterCommandCritical } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const UndoRedo = () => {
@@ -18,24 +19,20 @@ export const UndoRedo = () => {
     const [canUndo, setUndo] = useState(false);
     const [canRedo, setRedo] = useState(false);
 
-    useEffect(() => {
-        editor.registerCommand<boolean>(
-            CAN_UNDO_COMMAND,
-            (payload) => {
-                setUndo(payload);
-                return false;
-            },
-            COMMAND_PRIORITY_CRITICAL,
-        );
-        editor.registerCommand<boolean>(
-            CAN_REDO_COMMAND,
-            (payload) => {
-                setRedo(payload);
-                return false;
-            },
-            COMMAND_PRIORITY_CRITICAL,
-        );
-    }, [editor]);
+    useRegisterCommandCritical<boolean>(
+        CAN_UNDO_COMMAND,
+        (payload) => {
+            setUndo(payload);
+            return false;
+        },
+    );
+    useRegisterCommandCritical<boolean>(
+        CAN_REDO_COMMAND,
+        (payload) => {
+            setRedo(payload);
+            return false;
+        },
+    );
 
     return (
         <>
