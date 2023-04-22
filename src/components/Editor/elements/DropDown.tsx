@@ -2,22 +2,13 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Chevron } from '@/components/Icons/Chevron';
 
 
-interface IDropDown {
-    children: ReactNode;
-    disabled?: boolean;
-    buttonLabel?: string;
-    buttonAriaLabel?: string;
-    stopCloseOnClickSelf?: boolean;
-    ButtonIconComponent?: ReactNode | null;
-}
-
-interface IDropDownItems {
+interface ItemProps {
     isActive?: boolean,
     onClick: () => void,
     children: ReactNode,
 }
 
-export const DropDownItem = ({ isActive = false, onClick, children }: IDropDownItems) => {
+export const DropDownItem = ({ isActive = false, onClick, children }: ItemProps) => {
     return (
         <div
             className={`
@@ -39,7 +30,16 @@ export const DropDownItem = ({ isActive = false, onClick, children }: IDropDownI
     )
 }
 
-export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = false, ButtonIconComponent }: IDropDown): JSX.Element => {
+interface Props {
+    children: ReactNode;
+    disabled?: boolean;
+    buttonLabel?: string;
+    buttonAriaLabel?: string;
+    stopCloseOnClickSelf?: boolean;
+    ButtonIconComponent?: ReactNode | null;
+}
+
+export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = false, ButtonIconComponent }: Props): JSX.Element => {
     const [showDropDown, setShowDropDown] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
