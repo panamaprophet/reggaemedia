@@ -1,10 +1,10 @@
-import { Row } from "../Layout";
-import { Link } from "../Link";
-import { List } from "../List";
-import { Search } from "../Search";
-import { YouTube } from "../Icons/YouTube";
-import { VK } from "../Icons/VK";
-import { Instagram } from "../Icons/Instagram";
+import { Row } from '../Layout';
+import { Link } from '../Link';
+import { List } from '../List';
+import { Search } from '../Search';
+import { YouTube } from '../Icons/YouTube';
+import { VK } from '../Icons/VK';
+import { Instagram } from '../Icons/Instagram';
 
 
 interface Props {
