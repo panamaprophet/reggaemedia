@@ -35,14 +35,14 @@ export const useRegisterListener = (...[event, listener]: Payload) => {
     }, [event, editor, listener]);
 };
 
-export const useRegisterCommand = (
+export const useRegisterCommand = <T,>(
     command: LexicalCommand<LexicalEditor>,
-    callback: CommandListener<LexicalEditor>,
+    callback: CommandListener<T>,
     priority: CommandListenerPriority = COMMAND_PRIORITY_NORMAL,
 ) => {
     const [editor] = useLexicalComposerContext();
 
-    return useEffect(() => editor.registerCommand(command, callback, priority), [
+    return useEffect(() => editor.registerCommand<T>(command, callback, priority), [
         editor,
         command,
         callback,
@@ -50,7 +50,7 @@ export const useRegisterCommand = (
     ]);
 };
 
-export const useRegisterCommandCritical = (
+export const useRegisterCommandCritical = <T,>(
     command: LexicalCommand<LexicalEditor>,
-    callback: CommandListener<LexicalEditor>,
+    callback: CommandListener<T>,
 ) => useRegisterCommand(command, callback, COMMAND_PRIORITY_CRITICAL);
