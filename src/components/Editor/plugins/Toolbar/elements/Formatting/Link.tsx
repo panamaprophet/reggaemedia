@@ -4,11 +4,9 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { Link as LinkIcon } from '@/components/Icons/Link';
 import { Item } from "../Item";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
-import { sanitizeUrl } from "@/components/Editor/utils/url";
 import { $getSelection, $isRangeSelection } from "lexical";
 import { getSelectedNode } from "@/components/Editor/utils/getSelectedNode";
-import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
-import { EditorEntity } from "@/components/Editor/types";
+import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
 
 
 export const Link = () => {
@@ -19,11 +17,11 @@ export const Link = () => {
 
     const insertLink = () =>
         !isActive
-            ? editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl('https://'))
+            ? editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://google.com')
             : editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
 
-    const $updateActive = ({ editorState }: EditorEntity) => {
-        editorState.read(() => {
+    const $updateActive = () => {
+        editor.getEditorState().read(() => {
             const selection = $getSelection();
             if ($isRangeSelection(selection)) {
                 const node = getSelectedNode(selection);
@@ -34,12 +32,13 @@ export const Link = () => {
                     setActive(false);
                 }
             }
-        });
 
-        return false;
+            return false;
+        })
     }
 
-    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
+    useRegisterListener('onEdit', setEditable);
+    useRegisterListener('onUpdate', $updateActive);
 
     return (
         <Item

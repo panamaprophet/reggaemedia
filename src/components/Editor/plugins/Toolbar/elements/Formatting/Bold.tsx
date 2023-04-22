@@ -4,8 +4,7 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 import { Bold as BoldIcon } from '@/components/Icons/Bold';
 import { Item } from "../Item";
 import { useState } from "react";
-import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
-import { EditorEntity } from "@/components/Editor/types";
+import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
 
 
 export const Bold = () => {
@@ -14,8 +13,8 @@ export const Bold = () => {
     const [isEditable, setEditable] = useState(editor.isEditable());
     const color = isActive ? 'black' : 'gray';
 
-    const $updateActive = ({ editorState }: EditorEntity) => {
-        editorState.read(() => {
+    const $updateActive = () => {
+        editor.getEditorState().read(() => {
             const selection = $getSelection();
             if ($isRangeSelection(selection)) {
                 setActive(selection.hasFormat('bold'));
@@ -25,7 +24,8 @@ export const Bold = () => {
         return false;
     };
 
-    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
+    useRegisterListener('onEdit', setEditable);
+    useRegisterListener('onUpdate', $updateActive);
 
     return (
         <Item

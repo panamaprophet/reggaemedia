@@ -4,8 +4,7 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 import { Underline as UnderlineIcon } from '@/components/Icons/Underline';
 import { Item } from "../Item";
 import { useState } from "react";
-import { useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
-import { EditorEntity } from "@/components/Editor/types";
+import { useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
 
 
 export const Underline = () => {
@@ -14,18 +13,19 @@ export const Underline = () => {
     const [isEditable, setEditable] = useState(editor.isEditable());
     const color = isActive ? 'black' : 'gray';
 
-    const $updateActive = ({ editorState }: EditorEntity) => {
-        editorState.read(() => {
+    const $updateActive = () => {
+        editor.getEditorState().read(() => {
             const selection = $getSelection();
             if ($isRangeSelection(selection)) {
                 setActive(selection.hasFormat('underline'));
-            }
-        });
+            };
+        })
 
         return false;
     };
 
-    useMergeRegister({ onEdit: setEditable, onUpdate: $updateActive });
+    useRegisterListener('onEdit', setEditable);
+    useRegisterListener('onUpdate', $updateActive);
 
     return (
         <Item

@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import { $findMatchingParent, $getNearestNodeOfType } from '@lexical/utils';
 import { $isHeadingNode } from '@lexical/rich-text';
 import { $isListNode, ListNode } from '@lexical/list';
-import { $getSelection, $isRangeSelection, $isRootOrShadowRoot } from 'lexical';
+import { $getSelection, $isRangeSelection, $isRootOrShadowRoot, SELECTION_CHANGE_COMMAND } from 'lexical';
 import {
   formatParagraph,
   formatQuote,
@@ -15,8 +15,7 @@ import {
   formatCheckList,
   formatNumberedList,
 } from './formatters';
-import { useMergeRegister, useSelectionChangeCommand } from '@/components/Editor/hooks/useLexicalHooks';
-import { EditorEntity } from '@/components/Editor/types';
+import { useRegisterCommand, useRegisterCommandCritical, useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
 
 
 export const BlockFormatDropDown = () => {
@@ -25,8 +24,8 @@ export const BlockFormatDropDown = () => {
   const [blockType, setBlockType] =
     useState<keyof typeof blockTypeToBlockName>('paragraph');
 
-  const $updateBlockStyle = useCallback(({ editorState }: EditorEntity) => {
-    editorState.read(() => {
+  const $updateBlockStyle = useCallback(() =>
+    editor.getEditorState().read(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
         const anchorNode = selection.anchor.getNode();
@@ -68,13 +67,13 @@ export const BlockFormatDropDown = () => {
           }
         }
       }
-    })
 
-    return false;
-  }, [editor])
+      return false;
+    }), [editor]);
 
-  useMergeRegister({ onEdit: setEditable, onUpdate: $updateBlockStyle });
-  useSelectionChangeCommand($updateBlockStyle);
+  useRegisterListener('onEdit', setEditable);
+  useRegisterListener('onUpdate', $updateBlockStyle);
+  useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, $updateBlockStyle);
 
   return (
     <DropDown

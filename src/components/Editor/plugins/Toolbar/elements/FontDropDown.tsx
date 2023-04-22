@@ -2,12 +2,11 @@ import { useCallback, useState } from "react";
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $getSelectionStyleValueForProperty, $patchStyleText } from "@lexical/selection";
-import { $getSelection, $isRangeSelection } from "lexical";
+import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from "lexical";
 
 import { FONT_SIZE_OPTIONS } from "@/components/Editor/settings";
 import { DropDown, DropDownItem } from "@/components/Editor/elements/DropDown";
-import { useSelectionChangeCommand, useMergeRegister } from "@/components/Editor/hooks/useLexicalHooks";
-import { EditorEntity } from "@/components/Editor/types";
+import { useRegisterCommandCritical, useRegisterListener } from "@/components/Editor/hooks/useLexicalHooks";
 
 
 export const FontSizeDropDown = () => {
@@ -29,8 +28,8 @@ export const FontSizeDropDown = () => {
         [editor],
     );
 
-    const $updateFontSize = useCallback(({ editorState }: EditorEntity) => {
-        editorState.read(() => {
+    const $updateFontSize = useCallback(() => {
+        editor.getEditorState().read(() => {
             const selection = $getSelection();
             if ($isRangeSelection(selection)) {
                 setFontSize(
@@ -40,11 +39,12 @@ export const FontSizeDropDown = () => {
         });
 
         return false;
-    }, []);
+    }, [editor]);
 
 
-    useSelectionChangeCommand($updateFontSize);
-    useMergeRegister({ onEdit: setEditable, onUpdate: $updateFontSize });
+    useRegisterListener('onEdit', setEditable);
+    useRegisterListener('onUpdate', $updateFontSize);
+    useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, $updateFontSize);
 
     return (
         <DropDown
