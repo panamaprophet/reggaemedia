@@ -1,28 +1,18 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { INSERT_IMAGE_COMMAND } from '../../Image';
-import { Item } from './Item';
 import { useState } from 'react';
+
+import { Item } from './Item';
 import { Modal } from '@/components/Modal';
-import { InputFile } from '@/components/Input/InputFile';
 import { Image as ImageIcon } from '@/components/Icons/Image';
+import { UploadFile, UploadUrl } from './Uploaders';
 
 
 export const Image = () => {
-    const [editor] = useLexicalComposerContext();
     const [isModalOpen, setModalOpen] = useState(false);
+    const [inputType, setInputType] = useState<'file' | 'url' | null>(null);
 
-    const dispatchImage = (payload: { altText: string, src: string }) => {
-        editor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-    };
-
-    const handleInputData = (data: File | File[]) => {
-        if (Array.isArray(data)) {
-            data.forEach(item => dispatchImage({ altText: item.name, src: window.URL.createObjectURL(item) }));
-
-            return;
-        }
-
-        dispatchImage({ altText: data.name, src: window.URL.createObjectURL(data) });
+    const handleModalClose = () => {
+        setModalOpen(false);
+        setInputType(null);
     }
 
     return (
@@ -33,21 +23,17 @@ export const Image = () => {
 
             <Modal
                 isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
+                onClose={() => handleModalClose()}
             >
-                <div className='flex flex-col'>
-                    <div>
-                        <p>Write down an URL and press Enter</p>
-                        <input
-                            type='text'
-                            onChange={(event) => {
-                                dispatchImage({ altText: event.target.value, src: event.target.value });
-                                setModalOpen(false);
-                            }}
-                        />
-                    </div>
-                    <p>OR</p>
-                    <InputFile onChange={(data) => handleInputData(data)} />
+                <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    {inputType === null && (
+                        <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2'>
+                            <div className='bg-gray-200 rounded cursor-pointer p-2' onClick={() => setInputType('url')}>URL</div>
+                            <div className='bg-gray-200 rounded cursor-pointer p-2' onClick={() => setInputType('file')}>File</div>
+                        </div>
+                    )}
+                    {inputType === 'url' && <UploadUrl onSubmit={handleModalClose} />}
+                    {inputType === 'file' && <UploadFile onSubmit={handleModalClose} />}
                 </div>
             </Modal>
         </>
