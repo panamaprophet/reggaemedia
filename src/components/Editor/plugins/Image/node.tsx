@@ -82,25 +82,16 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     }
 
     static importJSON(serializedNode: SerializedImageNode) {
-        const {
-            altText,
-            height,
-            width,
-            maxWidth,
-            caption,
-            src,
-            showCaption
-        } = serializedNode;
         const node = $createImageNode({
-            altText,
-            height,
-            maxWidth,
-            showCaption,
-            src,
-            width
+            altText: serializedNode.altText,
+            height: serializedNode.height,
+            maxWidth: serializedNode.maxWidth,
+            showCaption: serializedNode.showCaption,
+            src: serializedNode.src,
+            width: serializedNode.width
         });
         const nestedEditor = node.__caption;
-        const editorState = nestedEditor.parseEditorState(caption.editorState);
+        const editorState = nestedEditor.parseEditorState(serializedNode.caption.editorState);
         if (!editorState.isEmpty()) {
             nestedEditor.setEditorState(editorState);
         }
@@ -124,27 +115,15 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     }
 
     constructor(props: ImagePayload) {
-        const {
-            src,
-            altText,
-            maxWidth,
-            width,
-            height,
-            showCaption,
-            caption,
-            captionsEnabled,
-            key,
-        } = props;
-
-        super(key);
-        this.__src = src;
-        this.__altText = altText;
-        this.__maxWidth = maxWidth || 500;
-        this.__width = width || 'inherit';
-        this.__height = height || 'inherit';
-        this.__showCaption = showCaption || false;
-        this.__caption = caption || createEditor();
-        this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
+        super(props.key);
+        this.__src = props.src;
+        this.__altText = props.altText;
+        this.__maxWidth = props.maxWidth || 500;
+        this.__width = props.width || 'inherit';
+        this.__height = props.height || 'inherit';
+        this.__showCaption = props.showCaption || false;
+        this.__caption = props.caption || createEditor();
+        this.__captionsEnabled = props.captionsEnabled || props.captionsEnabled === undefined;
     }
 
     exportJSON() {
