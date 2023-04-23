@@ -1,5 +1,5 @@
 import { blockTypeToBlockName } from '@/components/Editor/settings';
-import { Heading1, Heading2, Heading3, OrderList, Paragraph as ParagraphIcon, UnorderList } from '@/components/Icons/Formatting';
+import { Heading1, Heading2, Heading3, OrderList, Paragraph as ParagraphIcon, UnorderedList } from '@/components/Icons/Formatting';
 import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useCallback, useState } from 'react';
@@ -22,7 +22,7 @@ export const BlockFormatDropDown = () => {
     const [editor] = useLexicalComposerContext();
     const [isEditable, setEditable] = useState(editor.isEditable());
     const [blockType, setBlockType] =
-    useState<keyof typeof blockTypeToBlockName>('paragraph');
+        useState<keyof typeof blockTypeToBlockName>('paragraph');
 
     const $updateBlockStyle = useCallback(() =>
         editor.getEditorState().read(() => {
@@ -30,12 +30,12 @@ export const BlockFormatDropDown = () => {
             if ($isRangeSelection(selection)) {
                 const anchorNode = selection.anchor.getNode();
                 let element =
-          anchorNode.getKey() === 'root'
-              ? anchorNode
-              : $findMatchingParent(anchorNode, (e) => {
-                  const parent = e.getParent();
-                  return parent !== null && $isRootOrShadowRoot(parent);
-              });
+                    anchorNode.getKey() === 'root'
+                        ? anchorNode
+                        : $findMatchingParent(anchorNode, (e) => {
+                            const parent = e.getParent();
+                            return parent !== null && $isRootOrShadowRoot(parent);
+                        });
 
                 if (element === null) {
                     element = anchorNode.getTopLevelElementOrThrow();
@@ -112,7 +112,7 @@ export const BlockFormatDropDown = () => {
                 isActive={blockType === 'bullet'}
                 onClick={() => formatBulletList(editor, blockType)}
             >
-                <UnorderList size={15} />
+                <UnorderedList size={15} />
                 <span className="text whitespace-nowrap">Bullet List</span>
             </DropDownItem>
             <DropDownItem
