@@ -4,6 +4,7 @@ import { Item } from './Item';
 import { useState } from 'react';
 import { Modal } from '@/components/Modal';
 import { InputFile } from '@/components/Input/InputFile';
+import { Image as ImageIcon } from '@/components/Icons/Image';
 
 
 export const Image = () => {
@@ -27,6 +28,7 @@ export const Image = () => {
     return (
         <>
             <Item onClick={() => setModalOpen(true)}>
+                <ImageIcon size={20} />
                 Image
             </Item>
 
