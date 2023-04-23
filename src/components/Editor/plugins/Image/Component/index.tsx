@@ -1,18 +1,15 @@
-import type { LexicalEditor, NodeKey } from 'lexical';
+import type { NodeKey } from 'lexical';
 import { useRef } from 'react';
 
 
 interface Props {
     altText: string;
-    caption: LexicalEditor;
     height: 'inherit' | number;
     maxWidth: number;
     nodeKey: NodeKey;
     resizable: boolean;
-    showCaption: boolean;
     src: string;
     width: 'inherit' | number;
-    captionsEnabled: boolean;
 }
 
 export const ImageComponent = (props: Props): JSX.Element => {
