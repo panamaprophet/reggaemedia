@@ -3,7 +3,7 @@ interface Props {
     color?: string,
 }
 
-export const UnorderList = ({ size = 32, color = '#000' }: Props) => (
+export const UnorderedList = ({ size = 32, color = '#000' }: Props) => (
     <svg width={size} height={size * 0.7} viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M3 2C3 2.82843 2.32843 3.5 1.5 3.5C0.671573 3.5 0 2.82843 0 2C0 1.17157 0.671573 0.5 1.5 0.5C2.32843 0.5 3 1.17157 3 2Z" fill={color} />
         <path d="M4 2C4 1.44772 4.44772 1 5 1H21C21.5523 1 22 1.44772 22 2C22 2.55228 21.5523 3 21 3H5C4.44772 3 4 2.55228 4 2Z" fill={color} />
