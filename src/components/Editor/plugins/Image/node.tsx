@@ -7,6 +7,7 @@ export type Dimension = 'inherit' | number;
 
 export interface ImagePayload {
     altText: string;
+    id: string;
     src: string;
     key?: NodeKey;
     width?: Dimension;
@@ -18,6 +19,7 @@ type SerializedImageNode = Spread<
     {
         version: 1;
         type: 'image';
+        id: string;
         src: string;
         altText: string;
         maxWidth: number;
@@ -30,10 +32,10 @@ type SerializedImageNode = Spread<
 
 const convertImageElement = (domNode: Node) => {
     if (domNode instanceof HTMLImageElement) {
-        const { alt: altText, src } = domNode;
+        const { alt: altText, src, id } = domNode;
 
         return {
-            node: new ImageNode({ altText, src })
+            node: new ImageNode({ altText, src, id })
         };
     }
     return null;
@@ -56,6 +58,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
 
     static importJSON(serializedNode: SerializedImageNode) {
         return new ImageNode({
+            id: serializedNode.id,
             altText: serializedNode.altText,
             height: serializedNode.height,
             maxWidth: serializedNode.maxWidth,

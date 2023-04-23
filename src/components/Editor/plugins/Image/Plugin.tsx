@@ -24,7 +24,7 @@ export const ImagePlugin = (): JSX.Element | null => {
             return true;
         },
         COMMAND_PRIORITY_EDITOR
-    )
+    );
 
     return null;
 }
