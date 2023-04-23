@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Quote = ({ size = 32, color = '#000' }: Props) => (
-    <svg width={color} height={color} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="32" height="32" fill={color} />
         <rect x="6" y="6" width="21" height="21" rx="2" fill={color} stroke={color} stroke-width="2" />
         <circle cx="20" cy="15.1896" r="3" fill={color} />
