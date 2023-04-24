@@ -7,14 +7,16 @@ import {
     EditableListener,
     LexicalCommand,
     LexicalEditor,
+    LexicalNode,
 } from 'lexical';
-import { UpdateListener } from 'lexical/LexicalEditor';
+import { Klass, MutationListener, UpdateListener } from 'lexical/LexicalEditor';
 import { useEffect } from 'react';
 
 
 type Payload =
     | ['onUpdate', UpdateListener]
     | ['onEdit', EditableListener]
+    | ['onMutation', [Klass<LexicalNode>, MutationListener]]
     ;
 
 export const useRegisterListener = (...[event, listener]: Payload) => {
@@ -27,6 +29,10 @@ export const useRegisterListener = (...[event, listener]: Payload) => {
 
         if (event === 'onEdit') {
             return editor.registerEditableListener(listener);
+        }
+
+        if (event === 'onMutation') {
+            return editor.registerMutationListener(listener[0], listener[1]);
         }
 
         return () => {
