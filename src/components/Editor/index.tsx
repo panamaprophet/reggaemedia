@@ -12,7 +12,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
-import { ToolbarPlugin, ImagePlugin, FocusPlugin, TreeViewPlugin } from './plugins';
+import { ToolbarPlugin, ImagePlugin, FocusPlugin } from './plugins';
 
 import { ImageNode } from './plugins/Image/node';
 import theme from './theme';
@@ -44,10 +44,10 @@ export const Editor = ({ onChange }: Props) => {
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <ToolbarPlugin />
-            <div className='w-full'>
+            <div className='w-full h-screen-1/2'>
                 <RichTextPlugin
-                    contentEditable={<ContentEditable />}
-                    placeholder={<div>Enter some text...</div>}
+                    contentEditable={<ContentEditable  className="min-h-full focus:outline-none p-4" />}
+                    placeholder={null}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
                 <OnChangePlugin onChange={onChange} />
@@ -57,7 +57,6 @@ export const Editor = ({ onChange }: Props) => {
                 <ImagePlugin />
                 <CheckListPlugin />
                 <FocusPlugin />
-                <TreeViewPlugin />
             </div>
         </LexicalComposer>
     );
