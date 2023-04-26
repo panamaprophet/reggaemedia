@@ -50,6 +50,8 @@ export const ImagePlugin = (): JSX.Element | null => {
 
                         if (imageInfo) {
                             mockRemove(imageInfo.id);
+
+                            setImages(prev => prev.filter((image) => image.id === imageInfo.id));
                         }
                     }
                 }
