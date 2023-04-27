@@ -37,15 +37,21 @@ export const Page = () => {
     const [id, setArticleId] = useArticleId();
     const [authorId] = useUserId();
     const [isLoading, setLoading] = useState(Boolean(id));
+    // const [metadata, setMetadata] = useState({});
 
     useEffect(() => {
         if (id) {
             fetch(`/api/articles/${id}`)
                 .then(response => response.json())
-                .then(response => {
-                    setArticle(response.article.body);
-                    setTitle(response.article.title);
-                    setTags(response.article.tags);
+                .then(({ article }) => {
+                    setTitle(article.title);
+                    setTags(article.tags);
+                    setArticle(article.body);
+
+                    // setMetadata({
+                    //     createdOn: article.createdOn,
+                    //     updatedOn: article.updatedOn,
+                    // });
                 })
                 .then(() => setLoading(false));
         }
@@ -56,7 +62,7 @@ export const Page = () => {
         const url = id ? `/api/articles/${id}` : '/api/articles';
 
         const result = await fetch(url, {
-            method: 'POST',
+            method: id ? 'PUT' : 'POST',
             body: JSON.stringify({
                 id,
                 title,
