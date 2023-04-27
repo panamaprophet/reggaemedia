@@ -52,20 +52,18 @@ export const Page = () => {
     }, [id]);
 
     const handleSave = async () => {
-        const data = {
-            id,
-            title,
-            tags,
-            authorId,
-            body: article,
-        };
-
         // @todo: abstract
         const url = id ? `/api/articles/${id}` : '/api/articles';
 
         const result = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                id,
+                title,
+                tags,
+                authorId,
+                body: article,
+            }),
         }).then(response => response.json());
 
         setArticleId(result.article.id);
