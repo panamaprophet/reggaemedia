@@ -11,16 +11,26 @@ const tableName = String(process.env.TABLE_ARTICLES);
 export const updateArticleById = async (id: string, changes: Partial<Article>) => {
     const result = await db.send(new PutItemCommand({
         TableName: tableName,
-        Item: marshall({ id, ...changes }),
+        Item: marshall({
+            id,
+            ...changes,
+            updatedOn: Date.now(),
+        }),
     }));
 
-    return result.$metadata.httpStatusCode === 200;
+    return {
+        success: result.$metadata.httpStatusCode === 200,
+        id,
+    };
 };
 
 export const createArticle = async (article: Partial<Article>) => {
     const id = randomUUID();
 
-    return updateArticleById(id, article);
+    return updateArticleById(id, {
+        ...article,
+        createdOn: Date.now(),
+    });
 };
 
 export const getArticleById = async (id: string) => {

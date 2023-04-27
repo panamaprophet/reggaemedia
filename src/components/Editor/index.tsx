@@ -1,4 +1,4 @@
-import { EditorState } from 'lexical';
+import { EditorState, LexicalEditor, SerializedEditorState } from 'lexical';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -22,10 +22,11 @@ export const onError = (error: Error) => {
 }
 
 interface Props {
-    onChange: (ref: EditorState | undefined) => void,
+    initialState?: SerializedEditorState,
+    onChange: (state: EditorState) => void,
 }
 
-export const Editor = ({ onChange }: Props) => {
+export const Editor = ({ initialState, onChange }: Props) => {
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
@@ -38,7 +39,14 @@ export const Editor = ({ onChange }: Props) => {
             AutoLinkNode,
             QuoteNode,
             ImageNode
-        ]
+        ],
+        editorState: (editor: LexicalEditor) => {
+            if (initialState) {
+                editor.setEditorState(
+                    editor.parseEditorState(initialState)
+                );
+            }
+        },
     };
 
     return (
@@ -46,7 +54,7 @@ export const Editor = ({ onChange }: Props) => {
             <ToolbarPlugin />
             <div className='w-full h-screen-1/2'>
                 <RichTextPlugin
-                    contentEditable={<ContentEditable  className="min-h-full focus:outline-none p-4" />}
+                    contentEditable={<ContentEditable className="min-h-full focus:outline-none p-4" />}
                     placeholder={null}
                     ErrorBoundary={LexicalErrorBoundary}
                 />

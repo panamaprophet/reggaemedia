@@ -3,7 +3,7 @@ import { getSetting, removeSetting, setSetting } from '@/resolvers/settings';
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
-    console.log(request.method, request.query, request.body);
+    console.log('/api/settings', request.method);
 
     const { query } = request;
     const id = String(query.id);

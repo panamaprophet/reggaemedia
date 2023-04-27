@@ -3,7 +3,6 @@ import { Construct } from 'constructs';
 import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
 import { AnyPrincipal, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-// import { CfnEmailIdentity } from 'aws-cdk-lib/aws-ses';
 import { /* Mfa, */ UserPool } from 'aws-cdk-lib/aws-cognito';
 
 
@@ -64,10 +63,6 @@ export class ReggaemediaCdkStack extends Stack {
                 name: 'id',
                 type: AttributeType.STRING,
             },
-            sortKey: {
-                name: 'createdOn',
-                type: AttributeType.NUMBER,
-            },
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
@@ -120,6 +115,9 @@ export class ReggaemediaCdkStack extends Stack {
         const userPoolClient = userPool.addClient('client', {
             generateSecret: true,
             accessTokenValidity: Duration.minutes(60),
+            authFlows: {
+                adminUserPassword: true,
+            },
             oAuth: {
                 flows: {
                     authorizationCodeGrant: true,
@@ -138,6 +136,6 @@ export class ReggaemediaCdkStack extends Stack {
         new CfnOutput(this, 'settings', { value: settingsTable.tableName });
         new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
         new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
-        new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret) });
+        new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
     }
 }

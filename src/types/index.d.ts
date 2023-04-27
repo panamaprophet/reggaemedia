@@ -1,3 +1,6 @@
+import { SerializedEditorState } from 'lexical';
+
+
 export interface User {
     id: string,
     role: 'admin' | 'user',
@@ -9,9 +12,7 @@ export interface Article {
     authorId: User['id'],
 
     title: string,
-    body: {
-        [k: string]: unknown,
-    },
+    body: SerializedEditorState,
     tags: string[],
 
     createdOn: number,

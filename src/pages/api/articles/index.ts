@@ -3,7 +3,7 @@ import { createArticle, getArticles, getPublishedArticles } from '@/resolvers/ar
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
-    console.log('/api/articles', request.method, request.query, request.body);
+    console.log('/api/articles', request.method);
 
     const isAdmin = false;
 
