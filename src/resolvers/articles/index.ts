@@ -18,21 +18,19 @@ export const updateArticleById = async (id: string, changes: Partial<Article>) =
         }),
     }));
 
-    return result.$metadata.httpStatusCode === 200;
+    return {
+        success: result.$metadata.httpStatusCode === 200,
+        id,
+    };
 };
 
 export const createArticle = async (article: Partial<Article>) => {
     const id = randomUUID();
 
-    const success = await updateArticleById(id, {
+    return updateArticleById(id, {
         ...article,
         createdOn: Date.now(),
     });
-
-    return {
-        success,
-        id,
-    }
 };
 
 export const getArticleById = async (id: string) => {
