@@ -10,8 +10,8 @@ export interface ImagePayload {
     id: string;
     src: string;
     key?: NodeKey;
-    width?: Dimension;
-    height?: Dimension;
+    width?: number;
+    height?: number;
     maxWidth?: number;
 }
 
@@ -23,8 +23,8 @@ type SerializedImageNode = Spread<
         src: string;
         altText: string;
         maxWidth: number;
-        height?: number;
-        width?: number;
+        height: number;
+        width: number;
     },
     SerializedLexicalNode
 >;
@@ -42,29 +42,18 @@ const convertImageElement = (domNode: Node) => {
 }
 
 export class ImageNode extends DecoratorNode<JSX.Element> {
-    props: ImagePayload;
+    props: Required<Omit<ImagePayload, 'key'>>;
 
     static getType() {
         return 'image';
     }
 
     static clone(node: ImageNode) {
-        return new ImageNode({
-            ...node.props,
-            width: node.props.width || 'inherit',
-            height: node.props.height || 'inherit',
-        });
+        return new ImageNode(node.props);
     }
 
     static importJSON(serializedNode: SerializedImageNode) {
-        return new ImageNode({
-            id: serializedNode.id,
-            altText: serializedNode.altText,
-            height: serializedNode.height,
-            maxWidth: serializedNode.maxWidth,
-            src: serializedNode.src,
-            width: serializedNode.width
-        });
+        return new ImageNode(serializedNode);
     }
 
     exportDOM() {
@@ -85,7 +74,12 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
 
     constructor(props: ImagePayload) {
         super(props.key);
-        this.props = props;
+        this.props = {
+            ...props,
+            width: props.width || 300,
+            height: props.height || 300,
+            maxWidth: props.maxWidth || 500,
+        };
     }
 
     exportJSON() {
@@ -93,12 +87,10 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
             ...this.props,
             version: 1,
             type: 'image',
-            width: this.props.width === 'inherit' ? 0 : this.props.width,
-            height: this.props.height === 'inherit' ? 0 : this.props.height,
         };
     }
 
-    setWidthAndHeight(width: Dimension, height: Dimension) {
+    setWidthAndHeight(width: number, height: number) {
         const writable = this.getWritable();
         writable.props.width = width;
         writable.props.height = height;
@@ -123,9 +115,9 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
             <ImageComponent
                 src={this.props.src}
                 altText={this.props.altText}
-                width={this.props.width || 'inherit'}
-                height={this.props.height || 'inherit'}
-                maxWidth={this.props.maxWidth || 500}
+                width={this.props.width}
+                height={this.props.height}
+                maxWidth={this.props.maxWidth}
                 nodeKey={this.getKey()}
                 resizable={true}
             />
