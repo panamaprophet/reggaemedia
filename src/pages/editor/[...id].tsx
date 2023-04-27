@@ -51,7 +51,7 @@ export const Page = () => {
         }
     }, [id]);
 
-    const handleSave = async () => {
+    const save = async () => {
         // @todo: abstract
         const url = id ? `/api/articles/${id}` : '/api/articles';
 
@@ -72,7 +72,7 @@ export const Page = () => {
     return (
         <div>
             <div className="text-right p-2 pt-4">
-                <Button type="secondary" onClick={handleSave}>
+                <Button type="secondary" onClick={save}>
                     Сохранить
                 </Button>
             </div>
@@ -93,7 +93,7 @@ export const Page = () => {
                 />
 
                 {isLoading && (
-                    <div className="text-center p-4">
+                    <div className="text-center text-normal p-4">
                         загрузка...
                     </div>
                 )}
