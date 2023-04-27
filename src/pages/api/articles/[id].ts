@@ -3,7 +3,7 @@ import { getArticleById, removeArticleById, updateArticleById } from '@/resolver
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
-    console.log('/api/articles', request.method, request.query, request.body);
+    console.log('/api/articles', request.method);
 
     const { query } = request;
     const id = String(query.id);
