@@ -46,7 +46,7 @@ export const Editor = ({ onChange }: Props) => {
             <ToolbarPlugin />
             <div className='w-full h-screen-1/2'>
                 <RichTextPlugin
-                    contentEditable={<ContentEditable  className="min-h-full focus:outline-none p-4" />}
+                    contentEditable={<ContentEditable className="min-h-full focus:outline-none p-4" />}
                     placeholder={null}
                     ErrorBoundary={LexicalErrorBoundary}
                 />

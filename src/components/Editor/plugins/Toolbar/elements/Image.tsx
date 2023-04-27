@@ -23,7 +23,7 @@ export const Image = () => {
 
             <Modal
                 isOpen={isModalOpen}
-                onClose={() => handleModalClose()}
+                onClose={handleModalClose}
             >
                 <div className="w-64 h-64 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-lg">
                     {!inputType && (
