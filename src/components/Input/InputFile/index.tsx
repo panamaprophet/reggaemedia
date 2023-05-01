@@ -46,6 +46,7 @@ export const InputFile = ({ multiple = false, onChange, maxSize = DEFAULT_MAX_SI
     return (
         <label>
             <input
+                className='w-full'
                 type="file"
                 multiple={multiple}
                 onChange={_onChange}
