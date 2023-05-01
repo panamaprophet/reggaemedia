@@ -1,6 +1,9 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { NodeKey } from 'lexical';
 import { useEffect, useState, MouseEvent as SyntheticMouseEvent, useCallback, useRef } from 'react';
+import { CLICK_COMMAND, COMMAND_PRIORITY_LOW, NodeKey } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useRegisterCommand } from '@/components/Editor/hooks/useLexicalHooks';
+import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
+
 import { RESIZE_IMAGE_COMMAND } from '../command';
 
 interface Props {
@@ -16,14 +19,13 @@ interface Props {
 export const ImageComponent = (props: Props): JSX.Element => {
     const [editor] = useLexicalComposerContext();
 
+    const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(props.nodeKey);
     const [{ width, height }, setSize] = useState({ width: 500, height: 300 });
     const [isResizing, setResizing] = useState(false);
     const [dimension, setDimension] = useState<string | null>(null);
     const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
     const key = props.nodeKey;
-
-    const [isSelected, setSelected] = useState(false);
-    const ref = useRef<HTMLPictureElement | null>(null);
+    const ref = useRef<HTMLImageElement | null>(null);
 
     // mouse down
     const onResizeStart = (value: string) => (event: SyntheticMouseEvent) => {
@@ -35,31 +37,42 @@ export const ImageComponent = (props: Props): JSX.Element => {
     // mouse move
     const onResize = useCallback((event: MouseEvent) => {
         const { clientX: x, clientY: y } = event;
+        const currentWidth = width + (x - startPoint.x);
+        const currentHeight = height + (y - startPoint.y);
 
         if (dimension === 'height') {
             setSize({
                 width,
-                height: height + (y - startPoint.y),
+                height: currentHeight,
             });
         }
 
         if (dimension === 'width') {
             setSize({
-                width: width + (x - startPoint.x),
+                width: currentWidth,
                 height,
             });
         }
 
         if (dimension === 'corner') {
-            setSize({
-                width: width + (x - startPoint.x),
-                height: height + (y - startPoint.y),
-            });
+            const ratio = width / height;
+
+            if (currentWidth / ratio < currentHeight) {
+                setSize({
+                    width: currentWidth,
+                    height: currentWidth / ratio,
+                });
+            } else {
+                setSize({
+                    width: currentHeight * ratio,
+                    height: currentHeight,
+                });
+            }
+
         }
 
         setStartPoint({ x, y });
     }, [startPoint, dimension, height, width]);
-
 
     // mouse up
     const onResizeEnd = useCallback(() => {
@@ -67,7 +80,6 @@ export const ImageComponent = (props: Props): JSX.Element => {
 
         editor.dispatchCommand(RESIZE_IMAGE_COMMAND, { width, height, key });
     }, [editor, height, key, width]);
-
 
     useEffect(() => {
         if (!isResizing) {
@@ -83,29 +95,31 @@ export const ImageComponent = (props: Props): JSX.Element => {
         }
     }, [isResizing, onResizeEnd, onResize]);
 
-    useEffect(() => {
-        const handleMouse = (event: MouseEvent) => {
-            if (!ref.current) {
-                return;
-            }
-
-            const isContain = ref.current.contains(event.target as Node);
-
-            setSelected(isContain);
+    const handleMouseClick = (event: MouseEvent) => {
+        if (isResizing) {
+            return true;
         }
 
-        document.addEventListener('mousedown', handleMouse);
+        if (event.target === ref.current) {
+            clearSelection();
+            setSelected(true);
 
-        return () => document.removeEventListener('mousedown', handleMouse)
-    });
+            return true;
+        }
+
+        return false;
+    }
+
+    useRegisterCommand(CLICK_COMMAND, handleMouseClick, COMMAND_PRIORITY_LOW)
 
     return (
-        <picture ref={ref} className='relative block select-none' onClick={() => setSelected(true)}>
+        <picture className='relative block select-none'>
             <img
                 src={props.src}
+                ref={ref}
                 alt={props.altText}
                 className={isSelected ? 'border-2 border-sky-600' : ''}
-                style={{ width, height, maxWidth: props.maxWidth }}
+                style={{ width, height }}
             />
             {isSelected && (
                 <>
