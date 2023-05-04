@@ -25,7 +25,7 @@ export const Image = () => {
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
             >
-                <div className="w-64 h-64">
+                <div className="w-64 h-64 drop-shadow-lg">
                     {!inputType && (
                         <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2'>
                             <div className='w-full text-center bg-gray-200 rounded cursor-pointer p-2' onClick={() => setInputType('url')}>URL</div>
