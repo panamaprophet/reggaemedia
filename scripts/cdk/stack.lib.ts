@@ -1,10 +1,9 @@
 import { Stack, StackProps, CfnOutput, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, BucketAccessControl, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
 import { AnyPrincipal, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { /* Mfa, */ UserPool } from 'aws-cdk-lib/aws-cognito';
-
+import { UserPool } from 'aws-cdk-lib/aws-cognito';
 
 const BUCKET_NAME = 'reggaemedia_storage';
 const ARTICLES_TABLE = 'reggaemedia_articles';
@@ -39,6 +38,8 @@ export class ReggaemediaCdkStack extends Stack {
             ],
             publicReadAccess: true,
             removalPolicy: RemovalPolicy.DESTROY,
+            blockPublicAccess: BlockPublicAccess.BLOCK_ACLS,
+            accessControl: BucketAccessControl.BUCKET_OWNER_FULL_CONTROL
         });
 
         bucket.addToResourcePolicy(
@@ -112,6 +113,12 @@ export class ReggaemediaCdkStack extends Stack {
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
+        if (!process.env.COGNITO_CALLBACK_URL) {
+            console.log('no cognito callback url provided');
+
+            process.exit(1);
+        }
+
         const userPoolClient = userPool.addClient('client', {
             generateSecret: true,
             accessTokenValidity: Duration.minutes(60),
@@ -123,7 +130,7 @@ export class ReggaemediaCdkStack extends Stack {
                     authorizationCodeGrant: true,
                 },
                 callbackUrls: [
-                    String(process.env.COGNITO_CALLBACK_URL),
+                    process.env.COGNITO_CALLBACK_URL,
                 ],
             }
         });
