@@ -1,12 +1,11 @@
-// import { cx } from '@/helpers';
 import { ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 
-// const modalSizes = {
-//     'auto': 'w-auto h-auto',
-//     'screen': 'w-screen h-screen'
-// }
+const modalSizes = {
+    'auto': 'w-auto h-auto',
+    'screen': 'w-screen h-screen'
+}
 
 interface Props {
     children: ReactNode;
@@ -16,7 +15,7 @@ interface Props {
     className?: string;
 }
 
-export const Modal = ({ children, isOpen, onClose = () => { } }: Props) => {
+export const Modal = ({ children, size = 'auto', isOpen, onClose = () => { } }: Props) => {
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'visible';
     }, [isOpen]);
@@ -36,7 +35,9 @@ export const Modal = ({ children, isOpen, onClose = () => { } }: Props) => {
     return createPortal(
         <div className="fixed h-full w-full top-0 left-0 right-0 bottom-0">
             <div className="fixed h-full w-full bg-slate-50/95" onClick={onClose} />
-            {children}
+            <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${modalSizes[size]}`}>
+                {children}
+            </div>
         </div >,
         document.body
     );
