@@ -6,7 +6,7 @@ import { ImageComponent } from './Component';
 export type Dimension = 'inherit' | number;
 
 export interface ImagePayload {
-    altText: string;
+    alt: string;
     id: string;
     src: string;
     key?: NodeKey;
@@ -15,13 +15,13 @@ export interface ImagePayload {
     maxWidth?: number;
 }
 
-type SerializedImageNode = Spread<
+export type SerializedImageNode = Spread<
     {
         version: 1;
         type: 'image';
         id: string;
         src: string;
-        altText: string;
+        alt: string;
         maxWidth: number;
         height: number;
         width: number;
@@ -32,10 +32,10 @@ type SerializedImageNode = Spread<
 
 const convertImageElement = (domNode: Node) => {
     if (domNode instanceof HTMLImageElement) {
-        const { alt: altText, src, id } = domNode;
+        const { alt, src, id } = domNode;
 
         return {
-            node: new ImageNode({ altText, src, id })
+            node: new ImageNode({ alt, src, id })
         };
     }
     return null;
@@ -59,7 +59,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     exportDOM() {
         const element = document.createElement('img');
         element.setAttribute('src', this.props.src);
-        element.setAttribute('alt', this.props.altText);
+        element.setAttribute('alt', this.props.alt);
         return { element };
     }
 
@@ -114,7 +114,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
         return (
             <ImageComponent
                 src={this.props.src}
-                altText={this.props.altText}
+                alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
                 maxWidth={this.props.maxWidth}

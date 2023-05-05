@@ -8,7 +8,7 @@ import { cx } from '@/helpers';
 import { RESIZE_IMAGE_COMMAND } from '../command';
 
 interface Props {
-    altText: string;
+    alt: string;
     height: 'inherit' | number;
     maxWidth: number;
     nodeKey: NodeKey;
@@ -110,7 +110,7 @@ export const ImageComponent = (props: Props): JSX.Element => {
             <img
                 src={props.src}
                 ref={ref}
-                alt={props.altText}
+                alt={props.alt}
                 style={{ width, height }}
             />
             {isSelected && (
