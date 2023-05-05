@@ -1,5 +1,5 @@
 export const theme = {
-    paragraph: 'mb-2',
+    paragraph: 'mb-2 last:mb-0',
     quote: 'p-4 my-4 border-l-4 border-gray-300 bg-gray-50 text-base text-gray-500',
     heading: {
         h1: 'text-3xl',
