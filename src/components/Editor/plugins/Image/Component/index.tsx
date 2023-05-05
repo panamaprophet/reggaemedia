@@ -3,6 +3,7 @@ import { CLICK_COMMAND, COMMAND_PRIORITY_LOW, NodeKey } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useRegisterCommand } from '@/components/Editor/hooks/useLexicalHooks';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
+import { cx } from '@/helpers';
 
 import { RESIZE_IMAGE_COMMAND } from '../command';
 
@@ -40,38 +41,30 @@ export const ImageComponent = (props: Props): JSX.Element => {
         const currentWidth = width + (x - startPoint.x);
         const currentHeight = height + (y - startPoint.y);
 
-        if (dimension === 'height') {
-            setSize({
-                width,
-                height: currentHeight,
-            });
-        }
+        let w = width;
+        let h = height;
 
-        if (dimension === 'width') {
-            setSize({
-                width: currentWidth,
-                height,
-            });
-        }
+        switch (dimension) {
+            case 'height':
+                h = currentHeight;
+                break;
+            case 'width':
+                w = currentWidth;
+                break;
+            default:
+                const ratio = width / height;
 
-        if (dimension === 'corner') {
-            const ratio = width / height;
-
-            if (currentWidth / ratio < currentHeight) {
-                setSize({
-                    width: currentWidth,
-                    height: currentWidth / ratio,
-                });
-            } else {
-                setSize({
-                    width: currentHeight * ratio,
-                    height: currentHeight,
-                });
-            }
-
+                if (currentWidth / ratio < currentHeight) {
+                    w = currentWidth;
+                    h = currentWidth / ratio;
+                } else {
+                    w = currentHeight * ratio;
+                    h = currentHeight;
+                }
         }
 
         setStartPoint({ x, y });
+        setSize({ width: w, height: h });
     }, [startPoint, dimension, height, width]);
 
     // mouse up
@@ -113,12 +106,11 @@ export const ImageComponent = (props: Props): JSX.Element => {
     useRegisterCommand(CLICK_COMMAND, handleMouseClick, COMMAND_PRIORITY_LOW)
 
     return (
-        <picture className='relative block select-none'>
+        <picture className={cx('relative block', isSelected && 'outline outline-sky-600')}>
             <img
                 src={props.src}
                 ref={ref}
                 alt={props.altText}
-                className={isSelected ? 'border-2 border-sky-600' : ''}
                 style={{ width, height }}
             />
             {isSelected && (
