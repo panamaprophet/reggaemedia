@@ -1,4 +1,4 @@
-import type { EditorConfig, LexicalNode, SerializedLexicalNode, Spread, NodeKey } from 'lexical';
+import type { EditorConfig, LexicalNode, NodeKey } from 'lexical';
 
 import { DecoratorNode } from 'lexical';
 import { ImageComponent } from './Component';
@@ -12,22 +12,17 @@ export interface ImagePayload {
     key?: NodeKey;
     width?: number;
     height?: number;
-    maxWidth?: number;
 }
 
-export type SerializedImageNode = Spread<
-    {
-        version: 1;
-        type: 'image';
-        id: string;
-        src: string;
-        alt: string;
-        maxWidth: number;
-        height: number;
-        width: number;
-    },
-    SerializedLexicalNode
->;
+export type SerializedImageNode = {
+    version: 1;
+    type: 'image';
+    id: string;
+    src: string;
+    alt: string;
+    height: number;
+    width: number;
+};
 
 
 const convertImageElement = (domNode: Node) => {
@@ -78,7 +73,6 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
             ...props,
             width: props.width || 300,
             height: props.height || 300,
-            maxWidth: props.maxWidth || 500,
         };
     }
 
@@ -117,7 +111,6 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
-                maxWidth={this.props.maxWidth}
                 nodeKey={this.getKey()}
                 resizable={true}
             />

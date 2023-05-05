@@ -10,7 +10,6 @@ import { RESIZE_IMAGE_COMMAND } from '../command';
 interface Props {
     alt: string;
     height: 'inherit' | number;
-    maxWidth: number;
     nodeKey: NodeKey;
     resizable: boolean;
     src: string;
