@@ -16,11 +16,11 @@ const Page = ({ article }: { article: Article }) => {
             </Head>
 
             <div>
-                <h1 className="text-3xl p-4">
+                <h1 className="text-3xl p-4 pt-8">
                     {article.title}
                 </h1>
 
-                <div className="flex justify-between items-center text-gray-400 p-4">
+                <div className="flex justify-between items-center text-gray-400 text-sm p-4">
                     <div>{new Date(article.updatedOn).toDateString()}</div>
                     {/* <div>{article.tags.join(' ')}</div> */}
                     {/* <div>{article.authorId}</div> */}
