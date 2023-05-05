@@ -1,6 +1,18 @@
 import Image from 'next/image';
 import { EditorThemeClasses, SerializedEditorState, SerializedLexicalNode } from 'lexical';
-import { isHeading, isImage, isLink, isParagraph, isQuote, isRoot, isText } from './helpers';
+import { cx } from '@/helpers';
+import {
+    getAlign,
+    getTextStyle,
+    isHeading,
+    isImage,
+    isLineBreak,
+    isLink,
+    isParagraph,
+    isQuote,
+    isRoot,
+    isText,
+} from './helpers';
 
 
 export const useEditorStateParser = (
@@ -18,8 +30,9 @@ export const useEditorStateParser = (
 
         if (isParagraph(node)) {
             const children = node.children.map(convertToHtml);
+            const align = getAlign(node.format);
 
-            return <p key={++key} className={theme.paragraph}>{children}</p>;
+            return <p key={++key} className={cx(theme.paragraph, align)}>{children}</p>;
         }
 
         if (isQuote(node)) {
@@ -33,7 +46,9 @@ export const useEditorStateParser = (
         }
 
         if (isText(node)) {
-            return node.text;
+            const style = getTextStyle(node.format);
+
+            return style ? <span key={++key} className={style}>{node.text}</span> : node.text;
         }
 
         if (isLink(node)) {
@@ -47,6 +62,10 @@ export const useEditorStateParser = (
             const children = node.children.map(convertToHtml);
 
             return <Tag key={++key} className={theme.heading?.[node.tag]}>{children}</Tag>;
+        }
+
+        if (isLineBreak(node)) {
+            return <br key={++key} />;
         }
 
         console.log('node is not supported:', node.type);

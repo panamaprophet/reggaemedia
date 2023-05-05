@@ -1,8 +1,25 @@
 import { SerializedImageNode } from '@/components/Editor/plugins';
 import { SerializedLinkNode } from '@lexical/link';
 import { SerializedHeadingNode, SerializedQuoteNode } from '@lexical/rich-text';
-import { SerializedLexicalNode, SerializedRootNode, SerializedParagraphNode, SerializedTextNode } from 'lexical';
+import {
+    SerializedLexicalNode,
+    SerializedRootNode,
+    SerializedParagraphNode,
+    SerializedTextNode,
+    ElementFormatType,
+    SerializedLineBreakNode,
+} from 'lexical';
 
+
+const TextStyle: { [k: number]: string } = {
+    1: 'font-bold',
+    2: 'italic',
+    8: 'underline underline-offset-1',
+};
+
+export const getTextStyle = (format: number) => TextStyle[format] || '';
+
+export const getAlign = (formatType: ElementFormatType) => formatType ? `text-${formatType}` : '';
 
 export const isRoot = (node: SerializedLexicalNode): node is SerializedRootNode => node.type === 'root';
 
@@ -14,7 +31,7 @@ export const isText = (node: SerializedLexicalNode): node is SerializedTextNode 
 
 export const isImage = (node: SerializedLexicalNode): node is SerializedImageNode => node.type === 'image';
 
-// export const isLineBreak = (node: SerializedLexicalNode): node is SerializedLineBreakNode => node.type === 'linebreak';
+export const isLineBreak = (node: SerializedLexicalNode): node is SerializedLineBreakNode => node.type === 'linebreak';
 
 export const isHeading = (node: SerializedLexicalNode): node is SerializedHeadingNode => node.type === 'heading';
 
