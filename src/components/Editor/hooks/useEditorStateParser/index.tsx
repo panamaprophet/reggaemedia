@@ -30,7 +30,7 @@ export const useEditorStateParser = (
             return <div key={key} className={theme.root}>{children}</div>;
         }
 
-        if (isParagraph(node)) {
+        if (isParagraph(node) && node.children.length > 0) {
             const children = node.children.map(convertToHtml);
             const align = getAlign(node.format);
 
@@ -62,11 +62,14 @@ export const useEditorStateParser = (
         if (isHeading(node)) {
             const Tag = node.tag;
             const children = node.children.map(convertToHtml);
+            const align = getAlign(node.format);
 
-            return <Tag key={key} className={theme.heading?.[node.tag]}>{children}</Tag>;
+            return <Tag key={key} className={cx(theme.heading?.[node.tag], align)}>{children}</Tag>;
         }
 
-        if (isLineBreak(node)) {
+        // treat empty paragraph as line break
+        // @todo: fix it on article save
+        if (isLineBreak(node) || (isParagraph(node) && !node.children.length)) {
             return <br key={key} />;
         }
 
