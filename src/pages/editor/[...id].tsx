@@ -7,6 +7,7 @@ import { Editor } from '@/components/Editor';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { theme } from '@/theme';
 
 
 // returns the article id from the current location query
@@ -106,6 +107,7 @@ export const Page = () => {
 
                 {!isLoading && (
                     <Editor
+                        theme={theme}
                         initialState={article}
                         onChange={state => setArticle(state?.toJSON())}
                     />

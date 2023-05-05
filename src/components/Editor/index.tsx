@@ -15,18 +15,20 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { ToolbarPlugin, ImagePlugin, FocusPlugin } from './plugins';
 
 import { ImageNode } from './plugins/Image/node';
-import theme from './theme';
 
 export const onError = (error: Error) => {
     console.error(error);
 }
 
 interface Props {
+    theme: {
+        [k: string]: string | Props['theme'],
+    },
     initialState?: SerializedEditorState,
     onChange: (state: EditorState) => void,
 }
 
-export const Editor = ({ initialState, onChange }: Props) => {
+export const Editor = ({ initialState, theme, onChange }: Props) => {
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
