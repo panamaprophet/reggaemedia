@@ -21,6 +21,9 @@ export const getTextStyle = (format: number) => TextStyle[format] || '';
 
 export const getAlign = (formatType: ElementFormatType) => formatType ? `text-${formatType}` : '';
 
+// this exact node type is necessary because of eqaulity of SerializedLineBreakNode and SerializedLexicalNode
+export const isLineBreak = (node: SerializedLexicalNode): node is SerializedLineBreakNode & { type: 'linebreak' } => node.type === 'linebreak';
+
 export const isRoot = (node: SerializedLexicalNode): node is SerializedRootNode => node.type === 'root';
 
 export const isParagraph = (node: SerializedLexicalNode): node is SerializedParagraphNode => node.type === 'paragraph';
@@ -30,8 +33,6 @@ export const isQuote = (node: SerializedLexicalNode): node is SerializedQuoteNod
 export const isText = (node: SerializedLexicalNode): node is SerializedTextNode => node.type === 'text';
 
 export const isImage = (node: SerializedLexicalNode): node is SerializedImageNode => node.type === 'image';
-
-export const isLineBreak = (node: SerializedLexicalNode): node is SerializedLineBreakNode => node.type === 'linebreak';
 
 export const isHeading = (node: SerializedLexicalNode): node is SerializedHeadingNode => node.type === 'heading';
 
