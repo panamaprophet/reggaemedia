@@ -4,7 +4,7 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 import { Item } from '../Item';
 import { useState } from 'react';
 import { Italic as ItalicIcon } from '@/components/Icons/Italic';
-import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 
 
 export const Italic = () => {

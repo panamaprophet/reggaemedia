@@ -5,7 +5,7 @@ import { Link as LinkIcon } from '@/components/Icons/Link';
 import { Item } from '../Item';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $getSelection, $isRangeSelection } from 'lexical';
-import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 
 
 export const Link = () => {

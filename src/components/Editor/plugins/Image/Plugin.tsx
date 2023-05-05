@@ -9,7 +9,8 @@ import {
 
 import { ImageNode, ImagePayload } from './node';
 import { INSERT_IMAGE_COMMAND, RESIZE_IMAGE_COMMAND } from './command';
-import { useRegisterCommand, useRegisterListener } from '../../hooks/useLexicalHooks';
+import { useRegisterCommand } from '../../hooks/useRegisterCommand';
+import { useRegisterListener } from '../../hooks/useRegisterListener';
 import { useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $isImageNode } from './node';

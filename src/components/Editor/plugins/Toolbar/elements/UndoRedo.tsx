@@ -10,7 +10,7 @@ import {
 import { Undo as UndoIcon } from '@/components/Icons/Undo';
 import { Redo as RedoIcon } from '@/components/Icons/Redo';
 import { Item } from './Item';
-import { useRegisterCommandCritical } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterCommandCritical } from '@/components/Editor/hooks/useRegisterCommand';
 
 
 export const UndoRedo = () => {
