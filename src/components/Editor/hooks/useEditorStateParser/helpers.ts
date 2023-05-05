@@ -8,6 +8,7 @@ import {
     SerializedTextNode,
     ElementFormatType,
     SerializedLineBreakNode,
+    SerializedElementNode,
 } from 'lexical';
 
 
@@ -37,3 +38,5 @@ export const isImage = (node: SerializedLexicalNode): node is SerializedImageNod
 export const isHeading = (node: SerializedLexicalNode): node is SerializedHeadingNode => node.type === 'heading';
 
 export const isLink = (node: SerializedLexicalNode): node is SerializedLinkNode => node.type === 'link';
+
+export const isElementNode = (node: SerializedLexicalNode): node is SerializedElementNode => 'children' in node;

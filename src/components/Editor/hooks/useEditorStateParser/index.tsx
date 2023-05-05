@@ -4,6 +4,7 @@ import { cx } from '@/helpers';
 import {
     getAlign,
     getTextStyle,
+    isElementNode,
     isHeading,
     isImage,
     isLineBreak,
@@ -24,22 +25,18 @@ export const useEditorStateParser = (
     const convertToHtml = (node: SerializedLexicalNode) => {
         key++;
 
-        if (isRoot(node)) {
-            const children = node.children.map(convertToHtml);
+        const children = isElementNode(node) ? node.children.map(convertToHtml) : null;
+        const align = isElementNode(node) ? getAlign(node.format) : null;
 
+        if (isRoot(node)) {
             return <div key={key} className={theme.root}>{children}</div>;
         }
 
-        if (isParagraph(node) && node.children.length > 0) {
-            const children = node.children.map(convertToHtml);
-            const align = getAlign(node.format);
-
+        if (isParagraph(node)) {
             return <p key={key} className={cx(theme.paragraph, align)}>{children}</p>;
         }
 
         if (isQuote(node)) {
-            const children = node.children.map(convertToHtml);
-
             return <blockquote key={key} className={theme.quote}>{children}</blockquote>;
         }
 
@@ -54,22 +51,16 @@ export const useEditorStateParser = (
         }
 
         if (isLink(node)) {
-            const children = node.children.map(convertToHtml);
-
             return <a key={key} href={node.url}>{children}</a>;
         }
 
         if (isHeading(node)) {
             const Tag = node.tag;
-            const children = node.children.map(convertToHtml);
-            const align = getAlign(node.format);
 
             return <Tag key={key} className={cx(theme.heading?.[node.tag], align)}>{children}</Tag>;
         }
 
-        // treat empty paragraph as line break
-        // @todo: fix it on article save
-        if (isLineBreak(node) || (isParagraph(node) && !node.children.length)) {
+        if (isLineBreak(node)) {
             return <br key={key} />;
         }
 

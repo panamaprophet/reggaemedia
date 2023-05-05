@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
-import { SerializedEditorState } from 'lexical';
+import { SerializedEditorState, SerializedLexicalNode } from 'lexical';
 import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -28,6 +28,32 @@ const useUserId = () => {
         session.data?.user?.id,
         session.data?.user,
     ];
+};
+
+const filterList = ['direction', 'indent', 'mode', 'detail'];
+
+const normalize = (node: SerializedLexicalNode) => {
+    let result: any = { ...node };
+
+    const hasChildren = 'children' in result && Array.isArray(result.children);
+
+    if (hasChildren) {
+        result.children = result.children.map(normalize);
+    }
+
+    // replace empty paragraphs with br
+    if (result.type === 'paragraph' && result.children.length === 0) {
+        result.children = [{ type: 'linebreak', version: 1 }];
+    }
+
+    // keep minimal required data
+    result = Object.fromEntries(
+        Object
+            .entries(result)
+            .filter(([key]) => !filterList.includes(key))
+    );
+
+    return result;
 };
 
 
@@ -59,6 +85,11 @@ export const Page = () => {
     }, [id]);
 
     const save = async () => {
+        if (!article) {
+            console.log('nothing to save');
+            return;
+        }
+
         // @todo: abstract
         const url = id ? `/api/articles/${id}` : '/api/articles';
 
@@ -69,7 +100,9 @@ export const Page = () => {
                 title,
                 tags,
                 authorId,
-                body: article,
+                body: {
+                    root: normalize(article.root),
+                },
             }),
         }).then(response => response.json());
 
