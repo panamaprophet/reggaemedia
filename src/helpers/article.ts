@@ -12,11 +12,6 @@ export const normalize = (node: SerializedLexicalNode) => {
         result.children = result.children.map(normalize);
     }
 
-    // replace empty paragraphs with br
-    if (result.type === 'paragraph' && result.children.length === 0) {
-        result.children = [{ type: 'linebreak', version: 1 }];
-    }
-
     // keep minimal required data
     result = Object.fromEntries(
         Object

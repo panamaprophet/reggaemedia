@@ -20,7 +20,7 @@ const initialArticle: SerializedEditorState = {
         indent: 0,
         type: 'root',
         version: 1,
-        children: [],
+        children: [{ type: 'paragraph', version: 1 }],
     },
 };
 
@@ -39,33 +39,30 @@ const saveArticle = async (article: Partial<Article>) => {
 
 
 export const Page = () => {
-    const [article, setArticle] = useState<SerializedEditorState>(initialArticle);
-    const [title, setTitle] = useState('');
-    const [tags, setTags] = useState<string[]>([]);
     const [id, setArticleId] = useArticleId();
     const [authorId] = useUserId();
     const [isLoading, setLoading] = useState(Boolean(id));
-    const [metadata, setMetadata] = useState<{ createdOn: number, updatedOn: number }>();
+
+    const [state, setState] = useState({
+        id,
+        authorId,
+        title: '',
+        tags: [] as string[],
+        body: initialArticle,
+        createdOn: Date.now(),
+        updatedOn: Date.now(),
+    });
 
     useEffect(() => {
-        if (id) {
-            getArticle(id)
-                .then(({ article }) => {
-                    setTitle(article.title);
-                    setTags(article.tags);
-                    setArticle(article.body);
-                    setMetadata({
-                        createdOn: article.createdOn,
-                        updatedOn: article.updatedOn,
-                    });
-                    setLoading(false);
-                });
-        }
+        id && getArticle(id).then((result) => {
+            setState(result.article);
+            setLoading(false);
+        });
     }, [id]);
 
     const save = async () => {
-        const body = { root: normalize(article.root) };
-        const articleId = await saveArticle({ id, title, tags, authorId, body, ...metadata });
+        const body = { root: normalize(state.body.root) };
+        const articleId = await saveArticle({ ...state, body });
 
         setArticleId(articleId);
     };
@@ -73,9 +70,9 @@ export const Page = () => {
     return (
         <div>
             <div className="flex justify-between items-center p-2 pt-4">
-                {metadata && (
+                {state && (
                     <div className="text-sm text-gray-600">
-                        обновлено: {formatArticleDate(metadata)}
+                        обновлено: {formatArticleDate(state)}
                     </div>
                 )}
                 <Button type="secondary" onClick={save}>
@@ -85,15 +82,15 @@ export const Page = () => {
 
             <div className="max-w-full mt-4 m-2 p-2 bg-white rounded border">
                 <input
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
+                    value={state.title}
+                    onChange={(event) => setState({ ...state, title: event.target.value })}
                     placeholder="Заголовок"
                     className="max-w-full w-full focus:outline-none text-3xl p-4"
                 />
 
                 <input
-                    value={tags.join(',')}
-                    onChange={(event) => setTags(event.target.value.split(','))}
+                    value={state.tags.join(',')}
+                    onChange={(event) => setState({ ...state, tags: event.target.value.split(',') })}
                     placeholder="Теги"
                     className="max-w-full w-full focus:outline-none text-normal p-4"
                 />
@@ -107,8 +104,8 @@ export const Page = () => {
                 {!isLoading && (
                     <Editor
                         theme={theme}
-                        initialState={article}
-                        onChange={state => setArticle(state?.toJSON())}
+                        initialState={state.body}
+                        onChange={editorState => setState({ ...state, body: editorState.toJSON() })}
                         onUpload={uploadFile}
                     />
                 )}

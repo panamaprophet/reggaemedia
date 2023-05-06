@@ -32,7 +32,9 @@ export const useEditorStateParser = (
         const props = {
             key: key++,
             className: getClassName(node, theme),
-            children: isElementNode(node) ? node.children.map(convertToHtml) : null,
+            children: isElementNode(node)
+                ? node.children.map(convertToHtml)
+                : (isText(node) ? node.text : null),
         };
 
         const Tag = isHeading(node) ? node.tag : getTagByType(node.type);

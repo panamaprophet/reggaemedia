@@ -22,7 +22,7 @@ const Page = ({ article, author }: { article: Article, author: User }) => {
                     {article.title}
                 </h1>
 
-                <div className="flex justify-between items-center text-gray-400 text-sm p-4">
+                <div className="flex flex-col justify-center items-start text-gray-400 text-sm p-4">
                     <div>{formatArticleDate(article)}</div>
                     <div>{author.name || author.id}</div>
                 </div>

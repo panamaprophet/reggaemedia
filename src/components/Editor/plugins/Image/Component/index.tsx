@@ -9,18 +9,18 @@ import { RESIZE_IMAGE_COMMAND } from '../command';
 
 interface Props {
     alt: string;
-    height: 'inherit' | number;
+    width: number;
+    height: number;
     nodeKey: NodeKey;
     resizable: boolean;
     src: string;
-    width: 'inherit' | number;
 }
 
 export const ImageComponent = (props: Props): JSX.Element => {
     const [editor] = useLexicalComposerContext();
 
     const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(props.nodeKey);
-    const [{ width, height }, setSize] = useState({ width: 500, height: 300 });
+    const [{ width, height }, setSize] = useState({ width: props.width, height: props.height });
     const [isResizing, setResizing] = useState(false);
     const [dimension, setDimension] = useState<string | null>(null);
     const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
