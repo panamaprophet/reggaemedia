@@ -26,42 +26,45 @@ export const useEditorStateParser = (
         key++;
 
         const children = isElementNode(node) ? node.children.map(convertToHtml) : null;
+
         const align = isElementNode(node) ? getAlign(node.format) : null;
+        const style = isText(node) ? getTextStyle(node.format) : null;
+        const className = cx(align, style, isHeading(node) ? theme.heading?.[node.tag] : theme[node.type]);
+
+        const props = { key, className, children };
 
         if (isRoot(node)) {
-            return <div key={key} className={theme.root}>{children}</div>;
+            return <div {...props} />;
         }
 
         if (isParagraph(node)) {
-            return <p key={key} className={cx(theme.paragraph, align)}>{children}</p>;
+            return <p {...props} />;
         }
 
         if (isQuote(node)) {
-            return <blockquote key={key} className={theme.quote}>{children}</blockquote>;
+            return <blockquote {...props} />;
         }
 
         if (isImage(node)) {
-            return <Image key={key} {...node} alt={node.alt || ''} className={theme.image} />;
+            return <Image {...props} {...node} alt={node.alt || ''} />;
         }
 
         if (isText(node)) {
-            const style = getTextStyle(node.format);
-
-            return style ? <span key={key} className={style}>{node.text}</span> : node.text;
+            return style ? <span {...props}>{node.text}</span> : node.text;
         }
 
         if (isLink(node)) {
-            return <a key={key} href={node.url}>{children}</a>;
+            return <a {...props} href={node.url} />
         }
 
         if (isHeading(node)) {
             const Tag = node.tag;
 
-            return <Tag key={key} className={cx(theme.heading?.[node.tag], align)}>{children}</Tag>;
+            return <Tag {...props} />;
         }
 
         if (isLineBreak(node)) {
-            return <br key={key} />;
+            return <br {...props} />;
         }
 
         console.log('node is not supported:', node.type);
