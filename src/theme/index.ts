@@ -1,6 +1,6 @@
-const theme = {
-    paragraph: 'mb-1',
-    quote: 'text-slate-300',
+export const theme = {
+    paragraph: 'mb-2 last:mb-0',
+    quote: 'p-4 my-4 border-l-4 border-gray-300 bg-gray-50 text-base text-gray-500',
     heading: {
         h1: 'text-3xl',
         h2: 'text-2xl',
@@ -21,6 +21,4 @@ const theme = {
         underline: 'underline underline-offset-2',
         underlineStrikethrough: 'underline underline-offset-2',
     },
-}
-
-export default theme;
+};

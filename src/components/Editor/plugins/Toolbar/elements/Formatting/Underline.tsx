@@ -4,7 +4,7 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 import { Underline as UnderlineIcon } from '@/components/Icons/Underline';
 import { Item } from '../Item';
 import { useState } from 'react';
-import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 
 
 export const Underline = () => {

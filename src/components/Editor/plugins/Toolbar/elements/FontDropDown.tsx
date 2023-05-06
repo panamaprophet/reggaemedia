@@ -6,7 +6,8 @@ import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from 'lexi
 
 import { FONT_SIZE_OPTIONS } from '@/components/Editor/settings';
 import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
-import { useRegisterCommandCritical, useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterCommandCritical } from '@/components/Editor/hooks/useRegisterCommand';
+import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 
 
 export const FontSizeDropDown = () => {

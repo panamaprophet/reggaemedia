@@ -4,7 +4,7 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 import { Bold as BoldIcon } from '@/components/Icons/Bold';
 import { Item } from '../Item';
 import { useState } from 'react';
-import { useRegisterListener } from '@/components/Editor/hooks/useLexicalHooks';
+import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 
 
 export const Bold = () => {

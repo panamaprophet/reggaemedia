@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { SerializedEditorState } from 'lexical';
 import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { normalizeArticle } from '@/helpers';
+import { theme } from '@/theme';
 
 
 // returns the article id from the current location query
@@ -58,6 +60,11 @@ export const Page = () => {
     }, [id]);
 
     const save = async () => {
+        if (!article) {
+            console.log('nothing to save');
+            return;
+        }
+
         // @todo: abstract
         const url = id ? `/api/articles/${id}` : '/api/articles';
 
@@ -68,7 +75,9 @@ export const Page = () => {
                 title,
                 tags,
                 authorId,
-                body: article,
+                body: {
+                    root: normalizeArticle(article.root),
+                },
             }),
         }).then(response => response.json());
 
@@ -106,6 +115,7 @@ export const Page = () => {
 
                 {!isLoading && (
                     <Editor
+                        theme={theme}
                         initialState={article}
                         onChange={state => setArticle(state?.toJSON())}
                     />

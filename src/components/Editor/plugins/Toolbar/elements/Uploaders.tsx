@@ -19,7 +19,7 @@ export const UploadFile = ({ onSubmit }: Props) => {
         images.forEach((file) => {
             const { src, id } = mockUpload(file);
 
-            editor.dispatchCommand(INSERT_IMAGE_COMMAND, { id, src, altText: '' });
+            editor.dispatchCommand(INSERT_IMAGE_COMMAND, { id, src, alt: '' });
         })
 
         onSubmit();
@@ -40,7 +40,7 @@ export const UploadUrl = ({ onSubmit }: Props) => {
     const handleSumbit = () => {
         const id = String(Math.random());
 
-        editor.dispatchCommand(INSERT_IMAGE_COMMAND, { id, src: url, altText: '' });
+        editor.dispatchCommand(INSERT_IMAGE_COMMAND, { id, src: url, alt: '' });
 
         onSubmit();
     };
