@@ -3,8 +3,8 @@ import { SerializedEditorState } from 'lexical';
 
 export interface User {
     id: string,
-    role: 'admin' | 'user',
     name: string,
+    email: string,
 }
 
 export interface Article {

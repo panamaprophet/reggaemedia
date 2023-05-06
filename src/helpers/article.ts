@@ -26,3 +26,10 @@ export const normalize = (node: SerializedLexicalNode) => {
 
     return result;
 };
+
+export const formatArticleDate = <T extends {
+    updatedOn: number,
+    createdOn: number,
+}>({ updatedOn, createdOn }: T) => {
+    return (new Date(updatedOn || createdOn)).toLocaleString('ru-RU');
+};

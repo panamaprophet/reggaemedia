@@ -5,6 +5,7 @@ import { getArticleById } from '@/resolvers/articles';
 import { theme } from '@/theme';
 import { Article, User } from '@/types';
 import { getUserById } from '@/resolvers/auth';
+import { formatArticleDate } from '@/helpers/article';
 
 
 const Page = ({ article, author }: { article: Article, author: User }) => {
@@ -22,7 +23,7 @@ const Page = ({ article, author }: { article: Article, author: User }) => {
                 </h1>
 
                 <div className="flex justify-between items-center text-gray-400 text-sm p-4">
-                    <div>{new Date(article.updatedOn || article.createdOn).toDateString()}</div>
+                    <div>{formatArticleDate(article)}</div>
                     <div>{author.name || author.id}</div>
                 </div>
 
