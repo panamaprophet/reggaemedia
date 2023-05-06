@@ -1,36 +1,15 @@
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { SerializedEditorState } from 'lexical';
 import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { normalizeArticle } from '@/helpers';
+import { normalize } from '@/helpers/article';
+import { useArticleId } from '@/hooks/useArticleId';
+import { useUserId } from '@/hooks/useUserId';
 import { theme } from '@/theme';
 import { uploadFile } from '@/resolvers/storage';
-
-
-// returns the article id from the current location query
-const useArticleId = () => {
-    const { query } = useRouter();
-    const { id: ids } = query;
-
-    const id = Array.isArray(ids) ? ids[0] : ids;
-
-    return useState<string | undefined>(id !== 'new' ? id : undefined);
-};
-
-// returns the tuple consisting of userId and user object
-const useUserId = () => {
-    const session = useSession();
-
-    return [
-        session.data?.user?.id,
-        session.data?.user,
-    ];
-};
 
 
 export const Page = () => {
@@ -40,7 +19,7 @@ export const Page = () => {
     const [id, setArticleId] = useArticleId();
     const [authorId] = useUserId();
     const [isLoading, setLoading] = useState(Boolean(id));
-    // const [metadata, setMetadata] = useState({});
+    const [metadata, setMetadata] = useState<{ createdOn: number, updatedOn: number }>();
 
     useEffect(() => {
         if (id) {
@@ -51,10 +30,10 @@ export const Page = () => {
                     setTags(article.tags);
                     setArticle(article.body);
 
-                    // setMetadata({
-                    //     createdOn: article.createdOn,
-                    //     updatedOn: article.updatedOn,
-                    // });
+                    setMetadata({
+                        createdOn: article.createdOn,
+                        updatedOn: article.updatedOn,
+                    });
                 })
                 .then(() => setLoading(false));
         }
@@ -77,7 +56,7 @@ export const Page = () => {
                 tags,
                 authorId,
                 body: {
-                    root: normalizeArticle(article.root),
+                    root: normalize(article.root),
                 },
             }),
         }).then(response => response.json());
@@ -87,7 +66,12 @@ export const Page = () => {
 
     return (
         <div>
-            <div className="text-right p-2 pt-4">
+            <div className="flex justify-between items-center p-2 pt-4">
+                {metadata && (
+                    <div className="text-sm text-gray-600">
+                        обновлено: {new Date(metadata.updatedOn || metadata.createdOn).toLocaleString()}
+                    </div>
+                )}
                 <Button type="secondary" onClick={save}>
                     Сохранить
                 </Button>

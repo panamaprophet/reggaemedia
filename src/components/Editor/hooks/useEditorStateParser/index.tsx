@@ -14,8 +14,8 @@ import {
 
 
 const getClassName = (node: SerializedLexicalNode, theme: EditorThemeClasses) => {
-    const align = isElementNode(node) ? getAlign(node.format) : null;
-    const style = isText(node) ? getTextStyle(node.format) : null;
+    const align = isElementNode(node) && getAlign(node.format);
+    const style = isText(node) && getTextStyle(node.format);
     const className = cx(align, style, isHeading(node) ? theme.heading?.[node.tag] : theme[node.type]);
 
     return className;

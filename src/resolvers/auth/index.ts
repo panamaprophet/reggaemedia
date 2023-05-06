@@ -1,10 +1,11 @@
-import { createHmac } from 'crypto';
+import { UUID, createHmac } from 'crypto';
 import {
     AdminGetUserCommand,
     AdminInitiateAuthCommand,
     AttributeType,
     AuthFlowType,
     AuthenticationResultType,
+    ListUsersCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { client } from '@/services/idp';
 
@@ -91,4 +92,24 @@ export const getUserInfo = async (username: string) => {
         id,
         email,
     }
+};
+
+export const getUserById = async (id: UUID) => {
+    const result = await client.send(new ListUsersCommand({
+        Filter: `sub = \"${id}\"`,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+    }));
+
+    const { Users = [] } = result;
+    const [user] = Users;
+
+    if (!user || !user.Attributes) {
+        throw Error('user not found');
+    }
+
+    return {
+        id: getAttributeValueByName('sub', user.Attributes),
+        name: getAttributeValueByName('name', user.Attributes),
+        email: getAttributeValueByName('email', user.Attributes),
+    };
 };
