@@ -47,7 +47,7 @@ const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => {
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (_) => {
     return {
         props: {
             articles: await getArticles(),

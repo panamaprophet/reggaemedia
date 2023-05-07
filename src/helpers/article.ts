@@ -26,5 +26,5 @@ export const formatArticleDate = <T extends {
     updatedOn: number,
     createdOn: number,
 }>({ updatedOn, createdOn }: T) => {
-    return (new Date(updatedOn || createdOn)).toLocaleString('ru-RU');
+    return (new Date(updatedOn || createdOn)).toLocaleDateString('ru-RU');
 };
