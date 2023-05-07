@@ -5,6 +5,7 @@ import {
     getAlign,
     getTagByType,
     getTextStyle,
+    isCutter,
     isElementNode,
     isHeading,
     isImage,
@@ -24,7 +25,7 @@ const getClassName = (node: SerializedLexicalNode, theme: EditorThemeClasses) =>
 
 export const useEditorStateParser = (
     { root }: SerializedEditorState,
-    { theme }: { theme: EditorThemeClasses },
+    { theme, isPreview }: { theme: EditorThemeClasses, isPreview?: boolean },
 ) => {
     let key = 0;
 
@@ -38,7 +39,13 @@ export const useEditorStateParser = (
         };
 
         if (isElementNode(node)) {
-            Object.assign(props, { children: node.children.map(convertToHtml) });
+            const cutterIndex = node.children.findIndex(isCutter);
+
+            const children = (isPreview && cutterIndex !== -1)
+                ? node.children.slice(0, cutterIndex)
+                : node.children;
+
+            Object.assign(props, { children: children.map(convertToHtml) });
         }
 
         if (isText(node)) {

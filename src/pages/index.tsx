@@ -7,6 +7,20 @@ import { GetServerSideProps } from 'next';
 import { Article, User } from '@/types';
 import { getArticles } from '@/resolvers/articles';
 import { Link } from '@/components/Link';
+import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
+import { theme } from '@/theme';
+
+
+const ArticlePreview = ({ article }: { article: Article }) => {
+    const body = useEditorStateParser(article.body, { theme, isPreview: true });
+
+    return (
+        <Link href={`/articles/${article.id}`}>
+            <p className="text-2xl font-normal">{article.title}</p>
+            {body}
+        </Link>
+    );
+};
 
 
 const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => {
@@ -29,12 +43,7 @@ const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => {
                 </Section>
 
                 <Section>
-                    {articles && articles.map((article, index) => (
-                        <Link key={index} href={`/articles/${article.id}`}>
-                            <p className="text-2xl font-normal">{article.title}</p>
-                            <p>preview text</p>
-                        </Link>
-                    ))}
+                    {articles.map((article) => (<ArticlePreview article={article} key={article.id} />))}
                 </Section>
 
                 <Section>

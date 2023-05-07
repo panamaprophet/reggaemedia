@@ -2,6 +2,11 @@ import { DecoratorNode } from 'lexical';
 import { ReactNode } from 'react';
 
 
+export interface SerializedCutterNode {
+    type: 'cutter',
+    version: 1,
+}
+
 export class Node extends DecoratorNode<ReactNode> {
     static getType() {
         return 'cutter';

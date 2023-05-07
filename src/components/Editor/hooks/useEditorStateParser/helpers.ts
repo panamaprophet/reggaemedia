@@ -1,4 +1,5 @@
 import { SerializedImageNode } from '@/components/Editor/plugins';
+import { SerializedCutterNode } from '@/components/Editor/plugins/Cutter';
 import { SerializedLinkNode } from '@lexical/link';
 import { SerializedHeadingNode } from '@lexical/rich-text';
 import {
@@ -38,6 +39,8 @@ export const isHeading = (node: SerializedLexicalNode): node is SerializedHeadin
 export const isLink = (node: SerializedLexicalNode): node is SerializedLinkNode => node.type === 'link';
 
 export const isElementNode = (node: SerializedLexicalNode): node is SerializedElementNode => 'children' in node;
+
+export const isCutter = (node: SerializedLexicalNode): node is SerializedCutterNode => node.type === 'cutter';
 
 export const getTagByType = (nodeType: string) => {
     const tag = tagMap[nodeType];
