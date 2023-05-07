@@ -4,10 +4,10 @@ import { useRegisterCommand } from '../../hooks/useRegisterCommand';
 import { Node } from './node';
 
 
-export const INSERT_HIGHLIGHT_COMMAND: LexicalCommand<void> = createCommand('INSERT_HIGHLIGHT_COMMAND');
+export const INSERT_CUTTER_COMMAND: LexicalCommand<void> = createCommand('INSERT_CUTTER_COMMAND');
 
 export const Plugin = () => {
-    useRegisterCommand<void>(INSERT_HIGHLIGHT_COMMAND, () => {
+    useRegisterCommand<void>(INSERT_CUTTER_COMMAND, () => {
         $insertNodeToNearestRoot(new Node());
         return true;
     }, COMMAND_PRIORITY_EDITOR);

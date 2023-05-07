@@ -1,12 +1,12 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { Scissors } from '@/components/Icons/Scissors';
-import { INSERT_HIGHLIGHT_COMMAND } from '../../../Highlight';
+import { INSERT_CUTTER_COMMAND } from '../../../Cutter';
 
 
-export const Highlight = () => {
+export const Cutter = () => {
     const [editor] = useLexicalComposerContext();
 
-    const onClick = () => editor.dispatchCommand(INSERT_HIGHLIGHT_COMMAND, undefined);
+    const onClick = () => editor.dispatchCommand(INSERT_CUTTER_COMMAND, undefined);
 
     return (
         <div className="cursor-pointer" onClick={onClick}>
