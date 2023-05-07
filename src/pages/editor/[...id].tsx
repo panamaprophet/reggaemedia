@@ -9,6 +9,7 @@ import { Editor } from '@/components/Editor';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { normalizeArticle } from '@/helpers';
 import { theme } from '@/theme';
+import { uploadFile } from '@/resolvers/storage';
 
 
 // returns the article id from the current location query
@@ -118,6 +119,7 @@ export const Page = () => {
                         theme={theme}
                         initialState={article}
                         onChange={state => setArticle(state?.toJSON())}
+                        onUpload={uploadFile}
                     />
                 )}
             </div>
