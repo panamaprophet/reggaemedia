@@ -29,15 +29,21 @@ export const useEditorStateParser = (
     let key = 0;
 
     const convertToHtml = (node: SerializedLexicalNode) => {
+        const Tag = isHeading(node) ? node.tag : getTagByType(node.type);
+
         const props = {
             key: key++,
+            children: null,
             className: getClassName(node, theme),
-            children: isElementNode(node)
-                ? node.children.map(convertToHtml)
-                : (isText(node) ? node.text : null),
         };
 
-        const Tag = isHeading(node) ? node.tag : getTagByType(node.type);
+        if (isElementNode(node)) {
+            Object.assign(props, { children: node.children.map(convertToHtml) });
+        }
+
+        if (isText(node)) {
+            Object.assign(props, { children: node.text });
+        }
 
         if (isLink(node)) {
             Object.assign(props, { href: node.url });
