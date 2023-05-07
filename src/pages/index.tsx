@@ -3,9 +3,13 @@ import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
+import { GetServerSideProps } from 'next';
+import { Article, User } from '@/types';
+import { getArticles } from '@/resolvers/articles';
+import { Link } from '@/components/Link';
 
 
-export default function Home() {
+const Page = ({ articles = [], users = [] }: { articles: Article[], users: User[] }) => {
     return (
         <>
             <Head>
@@ -23,10 +27,31 @@ export default function Home() {
                         <Logo size="medium" />
                     </div>
                 </Section>
+
+                <Section>
+                    {articles && articles.map((article, index) => (
+                        <Link key={index} href={`/articles/${article.id}`}>
+                            <p className="text-2xl font-normal">{article.title}</p>
+                            <p>preview text</p>
+                        </Link>
+                    ))}
+                </Section>
+
                 <Section>
                     <Footer />
                 </Section>
             </main>
         </>
     )
-}
+};
+
+export default Page;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    return {
+        props: {
+            articles: await getArticles(),
+            users: [], // @todo
+        },
+    };
+};

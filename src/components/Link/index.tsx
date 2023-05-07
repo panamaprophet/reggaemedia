@@ -1,3 +1,4 @@
+import { cx } from '@/helpers';
 import { ReactNode } from 'react';
 
 
@@ -15,7 +16,7 @@ export const Link = ({
     target = '_self',
     className
 }: Props) => (
-    <a className={className} target={target} href={href} >
+    <a className={cx('text-gray-600 hover:underline underline-offset-2 transition', className)} target={target} href={href} >
         {children}
     </a>
 );

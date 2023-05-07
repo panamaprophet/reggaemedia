@@ -22,7 +22,7 @@ const tagMap: { [k: string]: string } = {
     image: 'img',
     text: 'span',
     link: 'a',
-    linebreak: 'br',
+    linebreak: 'span',
 };
 
 export const getTextStyle = (format: number) => textStyle[format] || '';
