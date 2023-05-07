@@ -9,7 +9,7 @@ import { getArticles } from '@/resolvers/articles';
 import { Link } from '@/components/Link';
 
 
-const Page = ({ articles = [], users = [] }: { articles: Article[], users: User[] }) => {
+const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => {
     return (
         <>
             <Head>
