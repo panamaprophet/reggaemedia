@@ -26,9 +26,10 @@ interface Props {
     },
     initialState?: SerializedEditorState,
     onChange: (state: EditorState) => void,
+    onUpload: (file: File) => Promise<string | null>,
 }
 
-export const Editor = ({ initialState, theme, onChange }: Props) => {
+export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
@@ -51,6 +52,16 @@ export const Editor = ({ initialState, theme, onChange }: Props) => {
         },
     };
 
+    const handleUpload = async (file: File) => {
+        const url = await onUpload(file);
+
+        if (!url) {
+            throw Error('Error occured on processing file upload');
+        }
+
+        return url;
+    }
+
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <ToolbarPlugin />
@@ -64,7 +75,7 @@ export const Editor = ({ initialState, theme, onChange }: Props) => {
                 <HistoryPlugin />
                 <ListPlugin />
                 <LinkPlugin />
-                <ImagePlugin />
+                <ImagePlugin onUpload={handleUpload} />
                 <CheckListPlugin />
                 <FocusPlugin />
             </div>

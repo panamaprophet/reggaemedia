@@ -5,34 +5,63 @@ import {
     $createParagraphNode,
     COMMAND_PRIORITY_EDITOR,
     $getNodeByKey,
+    NodeKey,
 } from 'lexical';
-
-import { ImageNode, ImagePayload } from './node';
-import { INSERT_IMAGE_COMMAND, RESIZE_IMAGE_COMMAND } from './command';
-import { useRegisterCommand } from '../../hooks/useRegisterCommand';
-import { useRegisterListener } from '../../hooks/useRegisterListener';
-import { useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+
+import { ImageNode } from './node';
+import { INSERT_IMAGE_FILE_COMMAND, INSERT_IMAGE_URL_COMMAND, RESIZE_IMAGE_COMMAND } from './command';
+import { useRegisterCommand } from '../../hooks/useRegisterCommand';
 import { $isImageNode } from './node';
 
-const mockRemove = (id: string) => console.log('Node with id:', id, 'successfully removed');
 
-type ImageInfo = {
-    id: string;
-    key: string;
+interface Props {
+    onUpload: (file: File) => Promise<string>,
 }
 
-export const ImagePlugin = (): JSX.Element | null => {
+export const ImagePlugin = ({ onUpload }: Props): JSX.Element | null => {
     const [editor] = useLexicalComposerContext();
-    const [images, setImages] = useState<ImageInfo[]>([]);
+
+    const handlePlaceholder = async (key: NodeKey, file: File) => {
+        const url = await onUpload(file);
+
+        editor.update(() => {
+            const image = $getNodeByKey(key);
+
+            if ($isImageNode(image)) {
+                image.setSrc(url);
+            }
+        })
+    };
 
     useRegisterCommand(
-        INSERT_IMAGE_COMMAND,
-        (payload: ImagePayload) => {
-            const imageNode = new ImageNode(payload);
-            const imageInfo = { key: imageNode.__key, id: payload.id };
+        INSERT_IMAGE_FILE_COMMAND,
+        (file: File) => {
+            const image = {
+                id: String(Math.random()),
+                src: URL.createObjectURL(file),
+                alt: '',
+            };
+            const imageNode = new ImageNode(image);
 
-            setImages((prev) => [...prev, imageInfo]);
+            handlePlaceholder(imageNode.__key, file);
+
+            $insertNodes([imageNode]);
+
+            if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
+                $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
+            }
+
+            return true;
+        },
+        COMMAND_PRIORITY_EDITOR
+    );
+
+    useRegisterCommand(
+        INSERT_IMAGE_URL_COMMAND,
+        (src: string) => {
+            const imageNode = new ImageNode({ src, alt: '' });
+
             $insertNodes([imageNode]);
 
             if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
@@ -60,26 +89,6 @@ export const ImagePlugin = (): JSX.Element | null => {
         },
         COMMAND_PRIORITY_EDITOR
     );
-
-    useRegisterListener(
-        'onMutation',
-        [
-            ImageNode,
-            (mutatedNodes) => {
-                for (let [nodeKey, mutation] of mutatedNodes) {
-                    if (mutation === 'destroyed') {
-                        const imageInfo = images.find((item) => item.key === nodeKey);
-
-                        if (imageInfo) {
-                            mockRemove(imageInfo.id);
-
-                            setImages(prev => prev.filter((image) => image.id === imageInfo.id));
-                        }
-                    }
-                }
-            }
-        ]
-    )
 
     return null;
 }
