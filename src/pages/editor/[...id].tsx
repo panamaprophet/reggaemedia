@@ -1,93 +1,80 @@
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { SerializedEditorState } from 'lexical';
 import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { normalizeArticle } from '@/helpers';
+import { formatArticleDate, normalize } from '@/helpers/article';
+import { useArticleId } from '@/hooks/useArticleId';
+import { useUserId } from '@/hooks/useUserId';
 import { theme } from '@/theme';
 import { uploadFile } from '@/resolvers/storage';
+import { Article } from '@/types';
 
 
-// returns the article id from the current location query
-const useArticleId = () => {
-    const { query } = useRouter();
-    const { id: ids } = query;
-
-    const id = Array.isArray(ids) ? ids[0] : ids;
-
-    return useState<string | undefined>(id !== 'new' ? id : undefined);
+const initialArticle: SerializedEditorState = {
+    root: {
+        direction: null,
+        format: '',
+        indent: 0,
+        type: 'root',
+        version: 1,
+        children: [{ type: 'paragraph', version: 1 }],
+    },
 };
 
-// returns the tuple consisting of userId and user object
-const useUserId = () => {
-    const session = useSession();
+const getArticle = async (id: string) => fetch(`/api/articles/${id}`).then(response => response.json());
 
-    return [
-        session.data?.user?.id,
-        session.data?.user,
-    ];
+const saveArticle = async (article: Partial<Article>) => {
+    const hasId = 'id' in article;
+    const method = hasId ? 'PUT' : 'POST';
+    const url = hasId ? `/api/articles/${article.id}` : '/api/articles';
+    const body = JSON.stringify(article);
+
+    const result = await fetch(url, { method, body }).then(response => response.json());
+
+    return result.article.id;
 };
 
 
 export const Page = () => {
-    const [article, setArticle] = useState<SerializedEditorState>();
-    const [title, setTitle] = useState('');
-    const [tags, setTags] = useState<string[]>([]);
     const [id, setArticleId] = useArticleId();
     const [authorId] = useUserId();
     const [isLoading, setLoading] = useState(Boolean(id));
-    // const [metadata, setMetadata] = useState({});
+
+    const [state, setState] = useState({
+        id,
+        authorId,
+        title: '',
+        tags: [] as string[],
+        body: initialArticle,
+        createdOn: Date.now(),
+        updatedOn: Date.now(),
+    });
 
     useEffect(() => {
-        if (id) {
-            fetch(`/api/articles/${id}`)
-                .then(response => response.json())
-                .then(({ article }) => {
-                    setTitle(article.title);
-                    setTags(article.tags);
-                    setArticle(article.body);
-
-                    // setMetadata({
-                    //     createdOn: article.createdOn,
-                    //     updatedOn: article.updatedOn,
-                    // });
-                })
-                .then(() => setLoading(false));
-        }
+        id && getArticle(id).then((result) => {
+            setState(result.article);
+            setLoading(false);
+        });
     }, [id]);
 
     const save = async () => {
-        if (!article) {
-            console.log('nothing to save');
-            return;
-        }
+        const body = { root: normalize(state.body.root) };
+        const articleId = await saveArticle({ ...state, body });
 
-        // @todo: abstract
-        const url = id ? `/api/articles/${id}` : '/api/articles';
-
-        const result = await fetch(url, {
-            method: id ? 'PUT' : 'POST',
-            body: JSON.stringify({
-                id,
-                title,
-                tags,
-                authorId,
-                body: {
-                    root: normalizeArticle(article.root),
-                },
-            }),
-        }).then(response => response.json());
-
-        setArticleId(result.article.id);
+        setArticleId(articleId);
     };
 
     return (
         <div>
-            <div className="text-right p-2 pt-4">
+            <div className="flex justify-between items-center p-2 pt-4">
+                {state && (
+                    <div className="text-sm text-gray-600">
+                        обновлено: {formatArticleDate(state)}
+                    </div>
+                )}
                 <Button type="secondary" onClick={save}>
                     Сохранить
                 </Button>
@@ -95,15 +82,15 @@ export const Page = () => {
 
             <div className="max-w-full mt-4 m-2 p-2 bg-white rounded border">
                 <input
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
+                    value={state.title}
+                    onChange={(event) => setState({ ...state, title: event.target.value })}
                     placeholder="Заголовок"
                     className="max-w-full w-full focus:outline-none text-3xl p-4"
                 />
 
                 <input
-                    value={tags.join(',')}
-                    onChange={(event) => setTags(event.target.value.split(','))}
+                    value={state.tags.join(',')}
+                    onChange={(event) => setState({ ...state, tags: event.target.value.split(',') })}
                     placeholder="Теги"
                     className="max-w-full w-full focus:outline-none text-normal p-4"
                 />
@@ -117,8 +104,8 @@ export const Page = () => {
                 {!isLoading && (
                     <Editor
                         theme={theme}
-                        initialState={article}
-                        onChange={state => setArticle(state?.toJSON())}
+                        initialState={state.body}
+                        onChange={editorState => setState({ ...state, body: editorState.toJSON() })}
                         onUpload={uploadFile}
                     />
                 )}
@@ -131,8 +118,6 @@ export default Page;
 
 export const getServerSideProps: GetServerSideProps<{}> = async (ctx) => {
     const session = await getServerSession(ctx.req, ctx.res, authOptions);
-
-    // @todo: consider the server side article fetching
 
     if (!session) {
         return {

@@ -1,5 +1,5 @@
 export const theme = {
-    paragraph: 'mb-2 last:mb-0',
+    paragraph: 'mb-2 last:mb-0 empty:h-5 empty:mb-0',
     quote: 'p-4 my-4 border-l-4 border-gray-300 bg-gray-50 text-base text-gray-500',
     heading: {
         h1: 'text-3xl',
@@ -17,6 +17,7 @@ export const theme = {
     },
     image: 'inline-block',
     link: 'text-blue-500',
+    linebreak: 'block w-full h-5',
     text: {
         underline: 'underline underline-offset-2',
         underlineStrikethrough: 'underline underline-offset-2',

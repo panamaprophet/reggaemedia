@@ -3,9 +3,27 @@ import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
+import { GetServerSideProps } from 'next';
+import { Article, User } from '@/types';
+import { getArticles } from '@/resolvers/articles';
+import { Link } from '@/components/Link';
+import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
+import { theme } from '@/theme';
 
 
-export default function Home() {
+const ArticlePreview = ({ article }: { article: Article }) => {
+    const body = useEditorStateParser(article.body, { theme, isPreview: true });
+
+    return (
+        <Link href={`/articles/${article.id}`}>
+            <p className="text-2xl font-normal">{article.title}</p>
+            {body}
+        </Link>
+    );
+};
+
+
+const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => {
     return (
         <>
             <Head>
@@ -23,10 +41,26 @@ export default function Home() {
                         <Logo size="medium" />
                     </div>
                 </Section>
+
+                <Section>
+                    {articles.map((article) => (<ArticlePreview article={article} key={article.id} />))}
+                </Section>
+
                 <Section>
                     <Footer />
                 </Section>
             </main>
         </>
     )
-}
+};
+
+export default Page;
+
+export const getServerSideProps: GetServerSideProps = async (_) => {
+    return {
+        props: {
+            articles: await getArticles(),
+            users: [], // @todo
+        },
+    };
+};

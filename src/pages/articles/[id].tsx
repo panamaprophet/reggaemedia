@@ -3,10 +3,12 @@ import Head from 'next/head';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
 import { getArticleById } from '@/resolvers/articles';
 import { theme } from '@/theme';
-import { Article } from '@/types';
+import { Article, User } from '@/types';
+import { getUserById } from '@/resolvers/auth';
+import { formatArticleDate } from '@/helpers/article';
 
 
-const Page = ({ article }: { article: Article }) => {
+const Page = ({ article, author }: { article: Article, author: User }) => {
     const body = useEditorStateParser(article.body, { theme });
 
     return (
@@ -20,10 +22,9 @@ const Page = ({ article }: { article: Article }) => {
                     {article.title}
                 </h1>
 
-                <div className="flex justify-between items-center text-gray-400 text-sm p-4">
-                    <div>{new Date(article.updatedOn).toDateString()}</div>
-                    {/* <div>{article.tags.join(' ')}</div> */}
-                    {/* <div>{article.authorId}</div> */}
+                <div className="flex flex-col justify-center items-start text-gray-400 text-sm p-4">
+                    <div>{formatArticleDate(article)}</div>
+                    <div>{author.name || author.id}</div>
                 </div>
 
                 <div className="p-4">
@@ -41,11 +42,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
     const { id } = query;
 
     const article = await getArticleById(id);
+    const author = article && await getUserById(article.authorId);
 
     return {
         notFound: !article,
         props: {
             article,
+            author,
         },
     };
 };
