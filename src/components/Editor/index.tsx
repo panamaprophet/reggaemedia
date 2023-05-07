@@ -11,10 +11,9 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-
 import { ToolbarPlugin, ImagePlugin, FocusPlugin } from './plugins';
-
 import { ImageNode } from './plugins/Image/node';
+import * as CutPlugin from './plugins/Cut';
 
 export const onError = (error: Error) => {
     console.error(error);
@@ -41,7 +40,8 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
             LinkNode,
             AutoLinkNode,
             QuoteNode,
-            ImageNode
+            ImageNode,
+            CutPlugin.Node,
         ],
         editorState: (editor: LexicalEditor) => {
             if (initialState) {
@@ -78,6 +78,7 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
                 <ImagePlugin onUpload={handleUpload} />
                 <CheckListPlugin />
                 <FocusPlugin />
+                <CutPlugin.Plugin />
             </div>
         </LexicalComposer>
     );
