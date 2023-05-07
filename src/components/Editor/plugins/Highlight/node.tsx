@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 export class Node extends DecoratorNode<ReactNode> {
     static getType() {
-        return 'cut';
+        return 'highlight';
     }
 
     static clone(node: Node) {

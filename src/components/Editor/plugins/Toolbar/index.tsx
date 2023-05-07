@@ -4,7 +4,7 @@ import { UndoRedo } from './elements/UndoRedo';
 import { FontSizeDropDown } from './elements/FontDropDown';
 import { BlockFormatDropDown } from './elements/BlockFormat';
 import { Bold, Italic, Link, Underline } from './elements/Formatting';
-import { Cut } from './elements/Cut';
+import { Highlight } from './elements/Highlight';
 
 
 export const ToolbarPlugin = () => {
@@ -20,7 +20,7 @@ export const ToolbarPlugin = () => {
             <Align />
             {/* eslint-disable-next-line */}
             <Image />
-            <Cut />
+            <Highlight />
         </div>
     );
 };
