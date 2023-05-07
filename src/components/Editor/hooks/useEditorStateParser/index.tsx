@@ -1,10 +1,8 @@
 import { EditorThemeClasses, SerializedEditorState, SerializedLexicalNode } from 'lexical';
 import Image from 'next/image';
-import { cx } from '@/helpers';
 import {
-    getAlign,
+    getClassName,
     getTagByType,
-    getTextStyle,
     isCutter,
     isElementNode,
     isHeading,
@@ -12,15 +10,6 @@ import {
     isLink,
     isText,
 } from './helpers';
-
-
-const getClassName = (node: SerializedLexicalNode, theme: EditorThemeClasses) => {
-    const align = isElementNode(node) && getAlign(node.format);
-    const style = isText(node) && getTextStyle(node.format);
-    const className = cx(align, style, isHeading(node) ? theme.heading?.[node.tag] : theme[node.type]);
-
-    return className;
-};
 
 
 export const useEditorStateParser = (
@@ -32,7 +21,7 @@ export const useEditorStateParser = (
     const convertToHtml = (node: SerializedLexicalNode) => {
         const Tag = isHeading(node) ? node.tag : getTagByType(node.type);
 
-        const props = {
+        const props ={
             key: key++,
             children: null,
             className: getClassName(node, theme),
@@ -40,7 +29,6 @@ export const useEditorStateParser = (
 
         if (isElementNode(node)) {
             const cutterIndex = node.children.findIndex(isCutter);
-
             const children = (isPreview && cutterIndex !== -1)
                 ? node.children.slice(0, cutterIndex)
                 : node.children;

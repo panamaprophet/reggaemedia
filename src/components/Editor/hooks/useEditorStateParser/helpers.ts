@@ -1,5 +1,3 @@
-import { SerializedImageNode } from '@/components/Editor/plugins';
-import { SerializedCutterNode } from '@/components/Editor/plugins/Cutter';
 import { SerializedLinkNode } from '@lexical/link';
 import { SerializedHeadingNode } from '@lexical/rich-text';
 import {
@@ -7,7 +5,11 @@ import {
     SerializedTextNode,
     ElementFormatType,
     SerializedElementNode,
+    EditorThemeClasses,
 } from 'lexical';
+import { SerializedImageNode } from '@/components/Editor/plugins';
+import { SerializedCutterNode } from '@/components/Editor/plugins/Cutter';
+import { cx } from '@/helpers';
 
 
 const textStyle: { [k: number]: string } = {
@@ -52,4 +54,12 @@ export const getTagByType = (nodeType: string) => {
     }
 
     return tag;
+};
+
+export const getClassName = (node: SerializedLexicalNode, theme: EditorThemeClasses) => {
+    const align = isElementNode(node) && getAlign(node.format);
+    const style = isText(node) && getTextStyle(node.format);
+    const className = cx(align, style, isHeading(node) ? theme.heading?.[node.tag] : theme[node.type]);
+
+    return className;
 };
