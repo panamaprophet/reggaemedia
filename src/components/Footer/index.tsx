@@ -1,7 +1,10 @@
 import { getCurrentYear } from '@/helpers';
+import { Section } from '../Section';
 
 export const Footer = () => (
-    <div className="flex items-center justify-center m-5">
-        <div className="text-xs uppercase text-gray-600">{getCurrentYear()} © Reggae.Media. Crafted with love. </div>
-    </div>
+    <Section>
+        <div className="w-full p-4 border-t boder-t-slate-200 text-center text-gray-600 text-xs uppercase">
+            {getCurrentYear()} © Reggaemedia. Crafted with love.
+        </div>
+    </Section>
 )

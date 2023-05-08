@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { DeleteItemCommand, GetItemCommand, PutItemCommand, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { client as db } from '@/services/db';
+import { sortByDate } from '@/helpers';
 import type { Article } from '@/types';
 
 
@@ -57,9 +58,14 @@ export const getArticles = async () => {
         Limit: 100,
     }));
 
+    if (!result.Items) {
+        return null;
+    }
+
     return result.Items
-        ? result.Items.map(item => unmarshall(item))
-        : null;
+        .map(item => unmarshall(item))
+        .map(item => item as Article) // @todo: add transform step
+        .sort(sortByDate);
 };
 
 export const getPublishedArticles = async () => {
