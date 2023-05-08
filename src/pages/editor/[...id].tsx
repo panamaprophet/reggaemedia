@@ -11,6 +11,7 @@ import { useUserId } from '@/hooks/useUserId';
 import { theme } from '@/theme';
 import { uploadFile } from '@/resolvers/storage';
 import { Article } from '@/types';
+import { useRouter } from 'next/router';
 
 
 const initialArticle: SerializedEditorState = {
@@ -42,6 +43,7 @@ export const Page = () => {
     const [id, setArticleId] = useArticleId();
     const [authorId] = useUserId();
     const [isLoading, setLoading] = useState(Boolean(id));
+    const router = useRouter();
 
     const [state, setState] = useState({
         id,
@@ -54,15 +56,21 @@ export const Page = () => {
     });
 
     useEffect(() => {
-        id && getArticle(id).then((result) => {
-            setState(result.article);
-            setLoading(false);
-        });
+        if (id) {
+            getArticle(id).then((result) => {
+                setState(result.article);
+                setLoading(false);
+            });
+        }
     }, [id]);
 
     const save = async () => {
         const body = { root: normalize(state.body.root) };
         const articleId = await saveArticle({ ...state, body });
+
+        if (!id) {
+            router.replace(`/editor/${articleId}`, undefined, { shallow: true });
+        }
 
         setArticleId(articleId);
     };
