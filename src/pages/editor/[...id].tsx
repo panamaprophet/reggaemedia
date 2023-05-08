@@ -68,7 +68,7 @@ export const Page = () => {
     };
 
     return (
-        <div>
+        <div className="max-w-4xl mx-auto mb-4">
             <div className="flex justify-between items-center p-2 pt-4">
                 {state && (
                     <div className="text-sm text-gray-600">
@@ -80,7 +80,7 @@ export const Page = () => {
                 </Button>
             </div>
 
-            <div className="max-w-full mt-4 m-2 p-2 bg-white rounded border">
+            <div className="mt-4 m-2 p-2 bg-white rounded border">
                 <input
                     value={state.title}
                     onChange={(event) => setState({ ...state, title: event.target.value })}
