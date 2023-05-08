@@ -27,7 +27,7 @@ const initialArticle: SerializedEditorState = {
 const getArticle = async (id: string) => fetch(`/api/articles/${id}`).then(response => response.json());
 
 const saveArticle = async (article: Partial<Article>) => {
-    const hasId = 'id' in article;
+    const hasId = Boolean(article.id);
     const method = hasId ? 'PUT' : 'POST';
     const url = hasId ? `/api/articles/${article.id}` : '/api/articles';
     const body = JSON.stringify(article);
