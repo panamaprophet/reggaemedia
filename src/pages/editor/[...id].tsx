@@ -9,9 +9,9 @@ import { formatArticleDate, normalize } from '@/helpers/article';
 import { useArticleId } from '@/hooks/useArticleId';
 import { useUserId } from '@/hooks/useUserId';
 import { theme } from '@/theme';
-import { uploadFile } from '@/resolvers/storage';
-import { Article } from '@/types';
+import { uploadFile } from '@/actions/storage';
 import { useRouter } from 'next/router';
+import { getArticle, saveArticle } from '@/actions/articles';
 
 
 const initialArticle: SerializedEditorState = {
@@ -23,19 +23,6 @@ const initialArticle: SerializedEditorState = {
         version: 1,
         children: [{ type: 'paragraph', version: 1 }],
     },
-};
-
-const getArticle = async (id: string) => fetch(`/api/articles/${id}`).then(response => response.json());
-
-const saveArticle = async (article: Partial<Article>) => {
-    const hasId = Boolean(article.id);
-    const method = hasId ? 'PUT' : 'POST';
-    const url = hasId ? `/api/articles/${article.id}` : '/api/articles';
-    const body = JSON.stringify(article);
-
-    const result = await fetch(url, { method, body }).then(response => response.json());
-
-    return result.article.id;
 };
 
 

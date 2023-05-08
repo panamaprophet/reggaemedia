@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUploadUrl } from '@/services/s3';
+import { getUploadUrl } from '@/services/storage';
 
 
 const BUCKET_NAME = String(process.env.BUCKET_NAME);

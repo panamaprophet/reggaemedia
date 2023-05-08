@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
-import { getArticleById } from '@/resolvers/articles';
+import { getArticleById } from '@/services/articles';
 import { theme } from '@/theme';
 import { Article, User } from '@/types';
-import { getUserById } from '@/resolvers/auth';
+import { getUserById } from '@/services/auth';
 import { formatArticleDate } from '@/helpers/article';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';

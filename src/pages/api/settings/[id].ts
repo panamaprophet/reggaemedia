@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getSetting, removeSetting, setSetting } from '@/resolvers/settings';
+import { getSetting, removeSetting, setSetting } from '@/services/settings';
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {

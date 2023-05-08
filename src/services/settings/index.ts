@@ -1,6 +1,6 @@
 import { PutItemCommand, DeleteItemCommand, ScanCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { client as db } from '@/services/db';
+import { client as db } from '@/providers/db';
 
 
 const tableName = String(process.env.TABLE_SETTINGS);
