@@ -5,7 +5,7 @@ import { createArticle, getArticles, getPublishedArticles } from '@/resolvers/ar
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     console.log('/api/articles', request.method);
 
-    const isAdmin = false;
+    const isAdmin = true;
 
     if (request.method === 'POST') {
         const payload = JSON.parse(request.body);
