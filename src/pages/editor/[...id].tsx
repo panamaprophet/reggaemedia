@@ -64,6 +64,9 @@ export const Page = () => {
         }
     }, [id]);
 
+
+    useEffect(() => setState(prev => ({ ...prev, authorId })), [authorId]);
+
     const save = async () => {
         const body = { root: normalize(state.body.root) };
         const articleId = await saveArticle({ ...state, body });
