@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { DeleteItemCommand, GetItemCommand, PutItemCommand, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { client as db } from '@/services/db';
+import { client as db } from '@/providers/db';
 import { sortByDate } from '@/helpers';
 import type { Article } from '@/types';
 

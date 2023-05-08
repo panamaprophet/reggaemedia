@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getArticleById, removeArticleById, updateArticleById } from '@/resolvers/articles';
+import { getArticleById, removeArticleById, updateArticleById } from '@/services/articles';
 
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {

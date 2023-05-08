@@ -7,7 +7,7 @@ import {
     AuthenticationResultType,
     ListUsersCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { client } from '@/services/idp';
+import { client } from '@/providers/idp';
 
 
 const getAccessTokenFromAuthenticationResult = (result: AuthenticationResultType) => ({

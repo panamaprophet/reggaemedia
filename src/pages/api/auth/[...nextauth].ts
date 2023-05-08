@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getAccessToken, getUserInfo, refreshAccessToken } from '@/resolvers/auth';
+import { getAccessToken, getUserInfo, refreshAccessToken } from '@/services/auth';
 
 
 const fieldsConfiguration = {
