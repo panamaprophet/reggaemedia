@@ -11,7 +11,7 @@ const Page = () => (
         <div className="relative h-screen w-screen">
             <div className="absolute top-0 w-full">
                 <Section>
-                    <Header onSearch={(text) => console.log(text)} />
+                    <Header />
                 </Section>
             </div>
             <div className="flex items-center justify-center w-full h-full">
