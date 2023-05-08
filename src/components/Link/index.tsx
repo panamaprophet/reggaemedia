@@ -2,21 +2,23 @@ import { cx } from '@/helpers';
 import { ReactNode } from 'react';
 
 
-interface Props {
-    children: ReactNode,
+interface PropsWithHref {
     href: string,
-    className?: string,
     target?: '_self' | '_blank',
 }
 
+interface PropsWithClick {
+    onClick: () => void,
+}
 
-export const Link = ({
-    children,
-    href,
-    target = '_self',
-    className
-}: Props) => (
-    <a className={cx('text-gray-600 hover:underline underline-offset-2 transition', className)} target={target} href={href} >
+type Props = {
+    children: ReactNode,
+    className?: string,
+} & (PropsWithHref | PropsWithClick);
+
+
+export const Link = ({ className, children, ...props }: Props) => (
+    <a className={cx('hover:underline underline-offset-2 transition cursor-pointer', className)} {...props}>
         {children}
     </a>
 );
