@@ -3,14 +3,26 @@ import { Link } from '@/components/Link';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
 import { theme } from '@/theme';
 import { formatArticleDate } from '@/helpers/article';
+import { Ellipsis } from '../Icons/Ellipsis';
 
 
 export const ArticlePreview = ({ article }: { article: Article }) => {
     const body = useEditorStateParser(article.body, { theme, isPreview: true });
 
     return (
-        <div className="p-4">
-            <Link href={`/articles/${article.id}`} className="text-2xl font-normal mb-4 block">
+        <div
+            className="
+                max-w-4xl
+                px-4
+                pt-6
+                pb-0
+                last:pb-6
+                mx-auto
+                hyphens-auto
+                group
+            "
+        >
+            <Link href={`/articles/${article.id}`} className="text-2xl font-normal mb-2 block">
                 {article.title}
             </Link>
 
@@ -20,9 +32,11 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
 
             {body}
 
-            <br />
+            <Link href={`/articles/${article.id}`} className="inline-block mt-2">Читать далее</Link>
 
-            <Link href={`/articles/${article.id}`}>Читать далее</Link>
+            <div className="w-full flex items-center justify-center pt-6 pb-0 group-last:hidden">
+                <Ellipsis />
+            </div>
         </div>
     );
 };

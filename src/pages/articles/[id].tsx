@@ -6,6 +6,8 @@ import { theme } from '@/theme';
 import { Article, User } from '@/types';
 import { getUserById } from '@/resolvers/auth';
 import { formatArticleDate } from '@/helpers/article';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 
 
 const Page = ({ article, author }: { article: Article, author: User }) => {
@@ -14,10 +16,12 @@ const Page = ({ article, author }: { article: Article, author: User }) => {
     return (
         <>
             <Head>
-                <title>{article.title}</title>
+                <title>Reggaemedia | {article.title}</title>
             </Head>
 
-            <div>
+            <Header />
+
+            <div className="max-w-4xl mx-auto my-0">
                 <h1 className="text-3xl p-4 pt-8">
                     {article.title}
                 </h1>
@@ -31,6 +35,8 @@ const Page = ({ article, author }: { article: Article, author: User }) => {
                     {body}
                 </div>
             </div>
+
+            <Footer />
         </>
     )
 };

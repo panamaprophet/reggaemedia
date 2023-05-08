@@ -6,7 +6,7 @@ interface Props {
 }
 
 const sizes = {
-    small: 'w-16 h-16',
+    small: 'w-8 h-8',
     medium: 'w-32 h-32',
     large: 'w-48 h-48',
 }
