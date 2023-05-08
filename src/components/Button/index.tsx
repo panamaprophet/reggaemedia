@@ -1,10 +1,5 @@
 import { ReactNode } from 'react';
 
-interface Props {
-    children: ReactNode,
-    onClick?: () => void,
-    type?: 'default' | 'secondary',
-}
 
 const ButtonTypes = {
     'default': `
@@ -31,7 +26,33 @@ const ButtonTypes = {
         dark:text-slate-200
         dark:ring-offset-slate-900
         dark:border-transparent
+    `,
+    'delete': `
+        px-4
+        py-2
+        font-semibold
+        text-sm
+        bg-red-500
+        text-slate-100
+        border
+        border-red-200
+        rounded-md
+        shadow-sm
+        focus:ring-4
+        focus:ring-offset-2
+        focus:ring-offset-slate-50
+        focus:ring-blue-300
+        dark:bg-slate-700
+        dark:text-slate-200
+        dark:ring-offset-slate-900
+        dark:border-transparent
     `
+};
+
+interface Props {
+    children: ReactNode,
+    onClick?: () => void,
+    type?: keyof typeof ButtonTypes,
 }
 
 export const Button = ({ type = 'default', children, onClick }: Props) => (
