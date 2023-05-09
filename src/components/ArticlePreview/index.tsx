@@ -22,7 +22,7 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
                 group
             "
         >
-            <Link href={`/articles/${article.id}`} className="text-2xl font-normal mb-2 block">
+            <Link to={`/articles/${article.id}`} className="text-2xl font-normal mb-2 block">
                 {article.title}
             </Link>
 
@@ -32,7 +32,7 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
 
             {body}
 
-            <Link href={`/articles/${article.id}`} className="inline-block mt-2">Читать далее</Link>
+            <Link to={`/articles/${article.id}`} className="inline-block mt-2">Читать далее</Link>
 
             <div className="w-full flex items-center justify-center pt-6 pb-0 group-last:hidden">
                 <Ellipsis />

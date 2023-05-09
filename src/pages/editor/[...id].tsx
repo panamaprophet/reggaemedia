@@ -66,7 +66,7 @@ export const Page = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto mb-4">
+        <div className="max-w-4xl w-full mx-auto mb-4">
             <div className="flex justify-between items-center p-2 pt-4">
                 {state && (
                     <div className="text-sm text-gray-600">

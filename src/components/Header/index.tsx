@@ -13,8 +13,8 @@ interface Props {
     onSearch?: (text: string) => void,
 }
 
-const LinkButtonWithIcon = ({ href, children, color = 'bg-black-500' }: { children: ReactNode, color: string, href: string }) => (
-    <Link className={cx('w-8 h-8 flex items-center justify-center rounded', color)} href={href}>
+const LinkButtonWithIcon = ({ to, children, color = 'bg-black-500' }: { children: ReactNode, color: string, to: string }) => (
+    <Link className={cx('w-8 h-8 flex items-center justify-center rounded', color)} to={to}>
         {children}
     </Link>
 );
@@ -30,20 +30,20 @@ export const Header = ({ onSearch = () => { } }: Props) => {
         <Section>
             <Row className="w-full px-4 py-2 uppercase text-gray-600 flex justify-between items-center">
                 <div className="flex gap-4">
-                    <Link className="text-xs uppercase" href="/">Статьи</Link>
-                    <Link className="text-xs uppercase" href="/">Связаться c нами</Link>
+                    <Link className="text-xs uppercase" to="/">Статьи</Link>
+                    <Link className="text-xs uppercase" to="/">Связаться c нами</Link>
                 </div>
 
                 <div className="flex gap-4">
-                    <LinkButtonWithIcon href={links.vk} color="bg-blue-500">
+                    <LinkButtonWithIcon to={links.vk} color="bg-blue-500">
                         <VK size={14} />
                     </LinkButtonWithIcon>
 
-                    <LinkButtonWithIcon href={links.youtube} color="bg-red-500">
+                    <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
                         <YouTube size={14} />
                     </LinkButtonWithIcon>
 
-                    <LinkButtonWithIcon href={links.instagram} color="bg-blue-500">
+                    <LinkButtonWithIcon to={links.instagram} color="bg-blue-500">
                         <Instagram size={14} />
                     </LinkButtonWithIcon>
 
