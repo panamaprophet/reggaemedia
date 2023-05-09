@@ -68,6 +68,32 @@ export const getArticles = async () => {
         .sort(sortByDate);
 };
 
+export const getRelatedArticles = async (id: string) => {
+    const result = await db.send(new ScanCommand({
+        TableName: tableName,
+        Limit: 100,
+        ProjectionExpression: 'id, title',
+    }));
+
+    if (!result.Items || result.Items.length === 1) {
+        return null;
+    }
+
+    const items = result.Items
+        .map(item => unmarshall(item))
+        .map(item => item as Pick<Article, 'id' | 'title'>);
+
+    const currentArticleIndex = items.findIndex(item => item.id === id);
+
+    const previous = items[currentArticleIndex - 1] || null;
+    const next = items[currentArticleIndex + 1] || null;
+
+    return {
+        previous,
+        next,
+    }
+};
+
 export const getPublishedArticles = async () => {
     const result = await db.send(new QueryCommand({
         TableName: tableName,
