@@ -53,10 +53,15 @@ interface Props {
     children: ReactNode,
     onClick?: () => void,
     type?: keyof typeof ButtonTypes,
+    to?: string,
 }
 
-export const Button = ({ type = 'default', children, onClick }: Props) => (
-    <button className={`${ButtonTypes[type]}`} onClick={onClick}>
-        {children}
-    </button>
-)
+export const Button = ({ type = 'default', children, to, onClick }: Props) => {
+    const Tag = to ? 'a' : 'button';
+
+    return (
+        <Tag className={`${ButtonTypes[type]}`} href={to} onClick={onClick}>
+            {children}
+        </Tag>
+    );
+};

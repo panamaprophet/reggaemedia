@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 
 interface PropsWithHref {
-    href: string,
+    to: string,
     target?: '_self' | '_blank',
 }
 

@@ -6,6 +6,7 @@ import { EditorArticlePreview } from '@/components/EditorArticlePreview';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { Article } from '@/types';
+import { Button } from '@/components/Button';
 
 
 const Page = () => {
@@ -54,6 +55,12 @@ const Page = () => {
             </ConfirmationModal>
 
             <div className="flex flex-col max-w-4xl w-full mx-auto p-4">
+                <div className="flex justify-end items-center pb-4">
+                    <Button type="secondary" to="/editor/new">
+                        Новая статья
+                    </Button>
+                </div>
+
                 {articles.map((article) => (
                     <EditorArticlePreview
                         key={article.id}
