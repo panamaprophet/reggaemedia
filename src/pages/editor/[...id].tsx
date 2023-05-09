@@ -44,8 +44,8 @@ export const Page = () => {
 
     useEffect(() => {
         if (id) {
-            getArticle(id).then((result) => {
-                setState(result.article);
+            getArticle(id).then((article) => {
+                setState(article);
                 setLoading(false);
             });
         }
