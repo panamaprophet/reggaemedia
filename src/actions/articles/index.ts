@@ -1,8 +1,5 @@
 import { Article } from '@/types';
 
-
-export const getArticle = async (id: string) => fetch(`/api/articles/${id}`).then(response => response.json());
-
 export const saveArticle = async (article: Partial<Article>) => {
     const hasId = Boolean(article.id);
     const method = hasId ? 'PUT' : 'POST';
@@ -13,3 +10,14 @@ export const saveArticle = async (article: Partial<Article>) => {
 
     return result.article.id;
 };
+
+export const getArticles = () => fetch('/api/articles')
+    .then(response => response.json())
+    .then<Article[]>(response => response.articles);
+
+export const getArticle = async (id: string) => fetch(`/api/articles/${id}`)
+    .then(response => response.json())
+    .then<Article>(response => response.article);
+
+export const removeArticle = (id: string) => fetch('/api/articles/' + id, { method: 'DELETE' })
+    .then(response => response.json());

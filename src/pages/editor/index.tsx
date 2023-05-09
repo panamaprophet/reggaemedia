@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { EditorArticlePreview } from '@/components/EditorArticlePreview';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { getArticles, removeArticle } from '@/actions/articles';
 import { Article } from '@/types';
 
 
@@ -12,29 +13,20 @@ const Page = () => {
     const [articles, setArticles] = useState<Article[]>([]);
     const [selectedArticle, setSelectedArticle] = useState<Article>();
 
-    const fetchArticles = () =>
-        fetch('/api/articles')
-            .then(response => response.json())
-            .then(response => setArticles(response.articles));
-
-    const removeArticle = (id: string) =>
-        fetch('/api/articles/' + id, { method: 'DELETE' })
-            .then(response => response.json());
-
     const onConfirm = async () => {
         if (!selectedArticle) {
             return;
         }
 
         await removeArticle(selectedArticle.id);
-        await fetchArticles();
+        await getArticles().then(setArticles);
 
         setSelectedArticle(undefined);
     };
 
     const onDecline = () => setSelectedArticle(undefined);
 
-    useEffect(() => { fetchArticles() }, []);
+    useEffect(() => { getArticles().then(setArticles) }, []);
 
     return (
         <>
