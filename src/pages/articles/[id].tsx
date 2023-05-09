@@ -27,7 +27,7 @@ const Page = ({ article, author, relatedArticles }: Props) => {
     return (
         <>
             <Head>
-                <title>Reggaemedia | {article.title}</title>
+                <title>{`Reggaemedia | ${article.title}`}</title>
             </Head>
 
             <Header />
