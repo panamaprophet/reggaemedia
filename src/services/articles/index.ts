@@ -76,7 +76,7 @@ export const getRelatedArticles = async (id: string) => {
     }));
 
     if (!result.Items || result.Items.length === 1) {
-        return [];
+        return null;
     }
 
     const items = result.Items
@@ -85,10 +85,13 @@ export const getRelatedArticles = async (id: string) => {
 
     const currentArticleIndex = items.findIndex(item => item.id === id);
 
-    const previousItem = items[currentArticleIndex - 1] || null;
-    const nextItem = items[currentArticleIndex + 1] || null;
+    const previous = items[currentArticleIndex - 1] || null;
+    const next = items[currentArticleIndex + 1] || null;
 
-    return [previousItem, nextItem];
+    return {
+        previous,
+        next,
+    }
 };
 
 export const getPublishedArticles = async () => {

@@ -3,28 +3,38 @@ import { ArrowLeft } from '@/components/Icons/ArrowLeft';
 import { ArrowRight } from '@/components/Icons/ArrowRight';
 
 
-export const NavigationButton = ({ id, title, direction = 'next' }: { id: string, title: string, direction?: 'next' | 'prev' }) => (
-    <Button type="secondary" to={`/articles/${id}`}>
-        <div className="flex items-center gap-4" title={title}>
-            {direction === 'prev' && (
-                <div className="flex-shrink-0">
-                    <ArrowLeft size={16} />
-                </div>
-            )}
+export const NavigationButton = (props: {
+    id: string,
+    title: string,
+    direction?: 'next' | 'previous',
+}) => {
+    const isNext = props.direction === 'next';
+    const isPrevious = props.direction === 'previous';
 
-            <div className="whitespace-nowrap text-ellipsis overflow-hidden text-left">
-                <div className="text-sx text-gray-400">
-                    {direction === 'prev' && 'Предыдущая статья'}
-                    {direction === 'next' && 'Следующая статья'}
+    return (
+        <Button type="secondary" to={`/articles/${props.id}`}>
+            <div className="flex items-center gap-4" title={props.title}>
+                {isPrevious && (
+                    <div className="flex-shrink-0">
+                        <ArrowLeft size={16} />
+                    </div>
+                )}
+
+                <div className="whitespace-nowrap text-ellipsis overflow-hidden text-left">
+                    <div className="text-sx text-gray-400">
+                        {isPrevious && 'Предыдущая статья'}
+                        {isNext && 'Следующая статья'}
+                    </div>
+
+                    {props.title}
                 </div>
-                {title}
+
+                {isNext && (
+                    <div className="flex-shrink-0">
+                        <ArrowRight size={16} />
+                    </div>
+                )}
             </div>
-
-            {direction === 'next' && (
-                <div className="flex-shrink-0">
-                    <ArrowRight size={16} />
-                </div>
-            )}
-        </div>
-    </Button >
-);
+        </Button>
+    );
+};

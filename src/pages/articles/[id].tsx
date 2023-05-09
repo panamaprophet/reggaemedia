@@ -11,13 +11,12 @@ import { Footer } from '@/components/Footer';
 import { RelatedArticles } from '@/components/RelatedArticles';
 
 
-interface Props {
+type Props = {
     article: Article,
     author: User,
-    relatedArticles: [
-        previous?: Pick<Article, 'id' | 'title'>,
-        next?: Pick<Article, 'id' | 'title'>,
-    ],
+    relatedArticles?: {
+        [key in 'previous' | 'next']: Pick<Article, 'id' | 'title'> | null
+    },
 }
 
 
@@ -46,12 +45,7 @@ const Page = ({ article, author, relatedArticles }: Props) => {
                     {body}
                 </div>
 
-                {relatedArticles && (
-                    <RelatedArticles
-                        prev={relatedArticles[0]}
-                        next={relatedArticles[1]}
-                    />
-                )}
+                {relatedArticles && (<RelatedArticles {...relatedArticles} />)}
             </div>
 
             <Footer />
