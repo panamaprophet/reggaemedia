@@ -8,10 +8,6 @@ import { getUserById } from '@/services/auth';
 import { formatArticleDate } from '@/helpers/article';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Link } from '@/components/Link';
-import { ArrowLeft } from '@/components/Icons/ArrowLeft';
-import { ArrowRight } from '@/components/Icons/ArrowRight';
-import { Button } from '@/components/Button';
 import { RelatedArticles } from '@/components/RelatedArticles';
 
 
@@ -19,9 +15,9 @@ interface Props {
     article: Article,
     author: User,
     relatedArticles: [
-        previous: Pick<Article, 'id' | 'title'>,
-        next: Pick<Article, 'id' | 'title'>
-    ] | null,
+        previous?: Pick<Article, 'id' | 'title'>,
+        next?: Pick<Article, 'id' | 'title'>,
+    ],
 }
 
 

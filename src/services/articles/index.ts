@@ -75,8 +75,8 @@ export const getRelatedArticles = async (id: string) => {
         ProjectionExpression: 'id, title',
     }));
 
-    if (!result.Items) {
-        return null;
+    if (!result.Items || result.Items.length === 1) {
+        return [];
     }
 
     const items = result.Items
@@ -85,14 +85,10 @@ export const getRelatedArticles = async (id: string) => {
 
     const currentArticleIndex = items.findIndex(item => item.id === id);
 
-    if (currentArticleIndex !== -1) {
-        const previousItem = items.at(currentArticleIndex - 1);
-        const nextItem = items.at(currentArticleIndex < items.length - 1 ? currentArticleIndex + 1 : 0);
+    const previousItem = items[currentArticleIndex - 1] || null;
+    const nextItem = items[currentArticleIndex + 1] || null;
 
-        return [previousItem, nextItem];
-    }
-
-    return null;
+    return [previousItem, nextItem];
 };
 
 export const getPublishedArticles = async () => {

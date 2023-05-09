@@ -10,44 +10,38 @@ interface Props {
 }
 
 
-export const RelatedArticles = (props: Props) => {
-    const { prev, next } = props;
-
-    if (!prev && !next) {
-        return null;
-    }
-
-    return (
-        <div className="flex justify-between items-center p-4">
-            {prev && (
-                <Button type="secondary" to={`/articles/${prev.id}`}>
-                    <div className="flex items-center gap-4">
+export const RelatedArticles = ({ prev, next }: Props) => (
+    <div className="grid grid-cols-2 p-4 gap-64">
+        {prev && (
+            <Button type="secondary" to={`/articles/${prev.id}`}>
+                <div className="flex items-center gap-4" title={prev.title}>
+                    <div className="flex-shrink-0">
                         <ArrowLeft size={16} />
-                        <div>
-                            <span className="block text-sx text-gray-400 flex items-center justify-start">
-                                Предыдущая статья
-                            </span>
-
-                            {prev.title}
-                        </div>
                     </div>
-                </Button>
-            )}
 
-            {next && (
-                <Button type="secondary" to={`/articles/${next.id}`}>
-                    <div className="flex items-center gap-4">
-                        <div>
-                            <span className="block text-sx text-gray-400 flex items-center justify-end">
-                                Следующая статья
-                            </span>
+                    <div className="whitespace-nowrap text-ellipsis overflow-hidden text-left">
+                        <div className="text-sx text-gray-400">Предыдущая статья</div>
+                        {prev.title}
+                    </div>
+                </div>
+            </Button>
+        )}
 
-                            {next.title}
-                        </div>
+        {!prev && <div data-name="spacer" />}
+
+        {next && (
+            <Button type="secondary" to={`/articles/${next.id}`}>
+                <div className="flex items-center gap-4" title={next.title}>
+                    <div className="whitespace-nowrap text-ellipsis overflow-hidden text-right">
+                        <div className="text-sx text-gray-400">Следующая статья</div>
+                        {next.title}
+                    </div>
+
+                    <div className="flex-shrink-0">
                         <ArrowRight size={16} />
                     </div>
-                </Button>
-            )}
-        </div>
-    );
-}
+                </div>
+            </Button>
+        )}
+    </div>
+);
