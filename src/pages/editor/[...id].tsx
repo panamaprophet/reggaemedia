@@ -12,6 +12,7 @@ import { theme } from '@/theme';
 import { uploadFile } from '@/actions/storage';
 import { useRouter } from 'next/router';
 import { getArticle, saveArticle } from '@/actions/articles';
+import { Tags } from '@/components/Tags';
 
 
 const initialArticle: SerializedEditorState = {
@@ -89,12 +90,7 @@ export const Page = () => {
                     className="max-w-full w-full focus:outline-none text-3xl p-4"
                 />
 
-                <input
-                    value={state.tags.join(',')}
-                    onChange={(event) => setState({ ...state, tags: event.target.value.split(',') })}
-                    placeholder="Теги"
-                    className="max-w-full w-full focus:outline-none text-normal p-4"
-                />
+                <Tags onChange={(tags) => setState({ ...state, tags })} />
 
                 {isLoading && (
                     <div className="text-center text-normal p-4">
