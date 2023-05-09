@@ -10,6 +10,7 @@ export const NavigationButton = (props: {
 }) => {
     const isNext = props.direction === 'next';
     const isPrevious = props.direction === 'previous';
+    const text = isPrevious ? 'Предыдущая статья' : 'Следующая статья'
 
     return (
         <Button type="secondary" to={`/articles/${props.id}`}>
@@ -22,8 +23,7 @@ export const NavigationButton = (props: {
 
                 <div className="whitespace-nowrap text-ellipsis overflow-hidden text-left">
                     <div className="text-sx text-gray-400">
-                        {isPrevious && 'Предыдущая статья'}
-                        {isNext && 'Следующая статья'}
+                        {text}
                     </div>
 
                     {props.title}
