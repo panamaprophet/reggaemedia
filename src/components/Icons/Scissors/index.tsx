@@ -1,14 +1,12 @@
-export const Scissors = ({ size = 16 }: { size?: number }) => (
+import { IconProps, getIconSize } from '../helpers';
+
+export const Scissors = ({ size = 'xs' }: IconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="1 1 22 22"
-        width={size}
-        height={size}
+        className={getIconSize(size)}
     >
-        <path
-            fill="none"
-            d="M0 0h24v24H0z"
-        />
+        <path fill="none" d="M0 0h24v24H0z" />
 
         <path
             d="

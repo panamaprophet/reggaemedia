@@ -46,7 +46,7 @@ export const Search = ({ onSubmit }: Props) => {
                                 placeholder="Type and hit enter to search"
                                 onChange={text => setQuery(text)}
                             />
-                            <Button onClick={() => onSubmit(query)}><SearchIcon size={32} /></Button>
+                            <Button onClick={() => onSubmit(query)}><SearchIcon size="xl" /></Button>
                         </Row>
                     </Column >
                 </Modal>
