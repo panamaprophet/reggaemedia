@@ -36,15 +36,15 @@ export const Header = ({ onSearch = () => { } }: Props) => {
 
                 <div className="flex gap-4">
                     <LinkButtonWithIcon to={links.vk} color="bg-blue-500">
-                        <VK size={14} />
+                        <VK />
                     </LinkButtonWithIcon>
 
                     <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
-                        <YouTube size={14} />
+                        <YouTube />
                     </LinkButtonWithIcon>
 
                     <LinkButtonWithIcon to={links.instagram} color="bg-blue-500">
-                        <Instagram size={14} />
+                        <Instagram />
                     </LinkButtonWithIcon>
 
                     <Search onSubmit={(query: string) => onSearch(query)} />

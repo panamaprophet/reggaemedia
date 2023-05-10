@@ -10,7 +10,7 @@ export const Cutter = () => {
 
     return (
         <div className="cursor-pointer" onClick={onClick}>
-            <Scissors size={24} />
+            <Scissors />
         </div>
     );
 };

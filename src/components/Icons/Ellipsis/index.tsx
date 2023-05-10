@@ -1,5 +1,7 @@
-export const Ellipsis = ({ size = 32 }: { size?: number }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} width={size} height={size} stroke="currentColor" className="w-6 h-6">
+import { IconProps, getIconSize } from '../helpers';
+
+export const Ellipsis = ({ size = 'xs' }: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} className={getIconSize(size)} stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"

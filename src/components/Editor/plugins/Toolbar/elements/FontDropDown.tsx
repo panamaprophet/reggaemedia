@@ -59,7 +59,7 @@ export const FontSizeDropDown = () => {
                         isActive={'font-size' === option}
                         onClick={() => handleClick(option)}
                         key={option}>
-                        <span className="text">{text}</span>
+                        {text}
                     </DropDownItem>
                 ),
             )}

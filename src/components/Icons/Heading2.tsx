@@ -1,10 +1,7 @@
-interface Props {
-    size?: number,
-    color?: string,
-}
+import { IconProps, getIconSize } from './helpers';
 
-export const Heading2 = ({ size = 32, color = '#000' }: Props) => (
-    <svg width={size * 1.2} height={size} viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const Heading2 = ({ size = 'xs', color = '#000' }: IconProps) => (
+    <svg className={getIconSize(size)} viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 1C0 0.447716 0.447715 4.56704e-07 1 4.56704e-07C1.55228 4.56704e-07 2 0.447716 2 1V19C2 19.5523 1.55228 20 1 20C0.447715 20 0 19.5523 0 19V1Z" fill={color} />
         <path d="M8 1C8 0.447716 8.44772 4.56704e-07 9 4.56704e-07C9.55228 4.56704e-07 10 0.447716 10 1V19C10 19.5523 9.55228 20 9 20C8.44772 20 8 19.5523 8 19V1Z" fill={color} />
         <path d="M0 9H8V11H0V9Z" fill={color} />

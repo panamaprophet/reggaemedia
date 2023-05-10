@@ -18,7 +18,7 @@ export const Image = () => {
     return (
         <>
             <Item onClick={() => setModalOpen(true)}>
-                <ImageIcon size={20} />
+                <ImageIcon />
             </Item>
 
             <Modal

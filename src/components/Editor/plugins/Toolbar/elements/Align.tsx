@@ -14,51 +14,24 @@ export const Align = () => {
     return (
         <DropDown
             disabled={!isEditable}
-            ButtonIconComponent={<AlignLeft size={15} />}
+            ButtonIconComponent={<AlignLeft />}
             buttonAriaLabel="Formatting options for text alignment"
         >
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'left',
-                    );
-                }}
-            >
-                <AlignLeft size={15} />
-                <span>Left Align</span>
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}>
+                <AlignLeft />
+                Left Align
             </DropDownItem>
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'center',
-                    );
-                }}>
-                <AlignCenter size={15} />
-                <span>Center Align</span>
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}>
+                <AlignCenter />
+                Center Align
             </DropDownItem>
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'right',
-                    );
-                }}
-            >
-                <AlignRight size={15} />
-                <span>Right Align</span>
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}>
+                <AlignRight />
+                Right Align
             </DropDownItem>
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'justify',
-                    );
-                }}
-            >
-                <AlignJustify size={15} />
-                <span>Justify Align</span>
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')}>
+                <AlignJustify />
+                Justify Align
             </DropDownItem>
         </DropDown>
     )

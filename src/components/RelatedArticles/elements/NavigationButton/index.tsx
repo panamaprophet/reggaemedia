@@ -17,7 +17,7 @@ export const NavigationButton = (props: {
             <div className="flex items-center gap-4" title={props.title}>
                 {isPrevious && (
                     <div className="flex-shrink-0">
-                        <ArrowLeft size={16} />
+                        <ArrowLeft />
                     </div>
                 )}
 
@@ -31,7 +31,7 @@ export const NavigationButton = (props: {
 
                 {isNext && (
                     <div className="flex-shrink-0">
-                        <ArrowRight size={16} />
+                        <ArrowRight />
                     </div>
                 )}
             </div>

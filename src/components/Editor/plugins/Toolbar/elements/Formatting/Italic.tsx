@@ -11,7 +11,6 @@ export const Italic = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
     const [isEditable, setEditable] = useState(editor.isEditable());
-    const color = isActive ? 'black' : 'gray';
 
     const $updateActive = () => {
         editor.getEditorState().read(() => {
@@ -35,7 +34,7 @@ export const Italic = () => {
             title="Italic"
             aria-label="Format text as italic."
         >
-            <ItalicIcon size={20} color={color} />
+            <ItalicIcon />
         </Item>
     )
 }

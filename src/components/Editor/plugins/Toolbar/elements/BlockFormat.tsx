@@ -1,5 +1,10 @@
 import { blockTypeToBlockName } from '@/components/Editor/settings';
-import { Heading1, Heading2, Heading3, OrderList, Paragraph as ParagraphIcon, UnorderedList } from '@/components/Icons/Formatting';
+import { Heading1 } from '@/components/Icons/Heading1';
+import { Heading2 } from '@/components/Icons/Heading2';
+import { Heading3 } from '@/components/Icons/Heading3';
+import { OrderList } from '@/components/Icons/OrderList';
+import { UnorderedList } from '@/components/Icons/UnorderedList';
+import { Paragraph as ParagraphIcon } from '@/components/Icons/Paragraph';
 import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useCallback, useState } from 'react';
@@ -85,55 +90,55 @@ export const BlockFormatDropDown = () => {
             <DropDownItem
                 isActive={blockType === 'paragraph'}
                 onClick={() => formatParagraph(editor)}>
-                <ParagraphIcon size={15} />
-                <span className="text whitespace-nowrap">Paragraph</span>
+                <ParagraphIcon />
+                Paragraph
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h1'}
                 onClick={() => formatHeading(editor, 'h1', blockType)}
             >
-                <Heading1 size={15} />
-                <span className="text whitespace-nowrap">Heading 1</span>
+                <Heading1 />
+                Heading 1
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h2'}
                 onClick={() => formatHeading(editor, 'h2', blockType)}
             >
-                <Heading2 size={15} />
-                <span className="text whitespace-nowrap">Heading 2</span>
+                <Heading2 />
+                Heading 2
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h3'}
                 onClick={() => formatHeading(editor, 'h3', blockType)}
             >
-                <Heading3 size={15} />
-                <span className="text whitespace-nowrap">Heading 3</span>
+                <Heading3 />
+                Heading 3
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'bullet'}
                 onClick={() => formatBulletList(editor, blockType)}
             >
-                <UnorderedList size={15} />
-                <span className="text whitespace-nowrap">Bullet List</span>
+                <UnorderedList />
+                Bullet List
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'number'}
                 onClick={() => formatNumberedList(editor, blockType)}
             >
-                <OrderList size={15} />
-                <span className="text whitespace-nowrap">Numbered List</span>
+                <OrderList />
+                Numbered List
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'check'}
                 onClick={() => formatCheckList(editor, blockType)}
             >
-                <span className="text whitespace-nowrap">Check List</span>
+                Check List
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'quote'}
                 onClick={() => formatQuote(editor, blockType)}
             >
-                <span className="text whitespace-nowrap">Quote</span>
+                Quote
             </DropDownItem>
         </DropDown>
     );

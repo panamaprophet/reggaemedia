@@ -1,12 +1,7 @@
+import { IconProps, getIconSize } from './helpers';
 
-
-interface Props {
-    size?: number,
-    color?: string,
-}
-
-export const Link = ({ size = 32, color = '#000' }: Props) => (
-    <svg width={size} height={size * 0.4} viewBox="0 0 20 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const Link = ({ size = 'xs', color = '#000' }: IconProps) => (
+    <svg className={getIconSize(size)} viewBox="0 0 20 8" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16.7881 0.000170261C17.6399 0.000170308 18.4569 0.421588 19.0593 1.17172C19.6616 1.92185 20 2.93924 20 4.00008C20 5.06093 19.6616 6.07832 19.0593 6.82845C18.4569 7.57858 17.6399 8 16.7881 8V6.6667C17.3506 6.6667 17.8901 6.36322 18.2879 5.86786C18.6857 5.37249 18.9091 4.70064 18.9091 4.00008C18.9091 3.29953 18.6857 2.62768 18.2879 2.13231C17.8901 1.63695 17.3506 1.33348 16.7881 1.33348V0.000170261Z" fill={color} />
         <path d="M17.0864 8H12.3572C12.2533 8 12.2013 7.8692 12.275 7.79291L13.1745 6.861C13.2947 6.73654 13.4573 6.66667 13.6269 6.66667H17.0864V8Z" fill={color} />
         <path d="M16.7881 1.33348L11.4349 1.33347V0.000164713L16.7881 0.000170261V1.33348Z" fill={color} />

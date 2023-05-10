@@ -42,7 +42,7 @@ export const UndoRedo = () => {
                 }}
                 title="Undo"
             >
-                <UndoIcon size={12} />
+                <UndoIcon />
             </Item>
             <Item
                 disabled={!canRedo || !editor.isEditable()}
@@ -51,7 +51,7 @@ export const UndoRedo = () => {
                 }}
                 title="Redo"
             >
-                <RedoIcon size={12} />
+                <RedoIcon />
             </Item>
         </>
     )

@@ -12,7 +12,6 @@ export const Link = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
     const [isEditable, setEditable] = useState(editor.isEditable());
-    const color = isActive ? 'black' : 'gray';
 
     const insertLink = () =>
         !isActive
@@ -47,7 +46,7 @@ export const Link = () => {
             title="Link"
             aria-label="Format text as Link."
         >
-            <LinkIcon size={20} color={color} />
+            <LinkIcon />
         </Item>
     )
 }
