@@ -85,42 +85,42 @@ export const BlockFormatDropDown = () => {
             <DropDownItem
                 isActive={blockType === 'paragraph'}
                 onClick={() => formatParagraph(editor)}>
-                <ParagraphIcon size={15} />
+                <ParagraphIcon />
                 <span className="text whitespace-nowrap">Paragraph</span>
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h1'}
                 onClick={() => formatHeading(editor, 'h1', blockType)}
             >
-                <Heading1 size={15} />
+                <Heading1 />
                 <span className="text whitespace-nowrap">Heading 1</span>
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h2'}
                 onClick={() => formatHeading(editor, 'h2', blockType)}
             >
-                <Heading2 size={15} />
+                <Heading2 />
                 <span className="text whitespace-nowrap">Heading 2</span>
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h3'}
                 onClick={() => formatHeading(editor, 'h3', blockType)}
             >
-                <Heading3 size={15} />
+                <Heading3 />
                 <span className="text whitespace-nowrap">Heading 3</span>
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'bullet'}
                 onClick={() => formatBulletList(editor, blockType)}
             >
-                <UnorderedList size={15} />
+                <UnorderedList />
                 <span className="text whitespace-nowrap">Bullet List</span>
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'number'}
                 onClick={() => formatNumberedList(editor, blockType)}
             >
-                <OrderList size={15} />
+                <OrderList />
                 <span className="text whitespace-nowrap">Numbered List</span>
             </DropDownItem>
             <DropDownItem

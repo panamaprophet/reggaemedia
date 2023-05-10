@@ -3,7 +3,7 @@ interface Props {
     color?: string,
 }
 
-export const Heading1 = ({ size = 32, color = '#000' }: Props) => (
+export const Heading1 = ({ size = 16, color = '#000' }: Props) => (
     <svg width={size} height={size} viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect y="1" width="2" height="20" rx="1" fill={color} />
         <rect x="8" y="1" width="2" height="20" rx="1" fill={color} />

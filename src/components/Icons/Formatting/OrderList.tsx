@@ -3,7 +3,7 @@ interface Props {
     color?: string,
 }
 
-export const OrderList = ({ size = 32, color = '#000' }: Props) => (
+export const OrderList = ({ size = 16, color = '#000' }: Props) => (
     <svg width={size} height={size - 1} viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5 3C5 2.44772 5.44772 2 6 2H22C22.5523 2 23 2.44772 23 3C23 3.55228 22.5523 4 22 4H6C5.44772 4 5 3.55228 5 3Z" fill={color} />
         <path d="M5 19C5 18.4477 5.44772 18 6 18H22C22.5523 18 23 18.4477 23 19C23 19.5523 22.5523 20 22 20H6C5.44772 20 5 19.5523 5 19Z" fill={color} />

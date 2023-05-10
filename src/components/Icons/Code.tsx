@@ -5,7 +5,7 @@ interface Props {
     color?: string,
 }
 
-export const Code = ({ size = 32, color = '#000' }: Props) => (
+export const Code = ({ size = 16, color = '#000' }: Props) => (
     <svg width={size} height={size * 0.6} viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M13.681 11.736C13.2932 12.088 12.6645 12.088 12.2767 11.736C11.889 11.384 11.889 10.8133 12.2767 10.4613L18.5958 4.72533L20 5.99999L13.681 11.736Z" fill={color} />
         <path d="M12.2767 1.53866C11.889 1.18667 11.889 0.615982 12.2767 0.263992C12.6645 -0.0879974 13.2932 -0.0879974 13.681 0.263992L20 5.99999L18.5958 7.27466L12.2767 1.53866Z" fill={color} />

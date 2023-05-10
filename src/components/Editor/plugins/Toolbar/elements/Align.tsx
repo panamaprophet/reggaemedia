@@ -14,7 +14,7 @@ export const Align = () => {
     return (
         <DropDown
             disabled={!isEditable}
-            ButtonIconComponent={<AlignLeft size={15} />}
+            ButtonIconComponent={<AlignLeft />}
             buttonAriaLabel="Formatting options for text alignment"
         >
             <DropDownItem
@@ -25,7 +25,7 @@ export const Align = () => {
                     );
                 }}
             >
-                <AlignLeft size={15} />
+                <AlignLeft />
                 <span>Left Align</span>
             </DropDownItem>
             <DropDownItem
@@ -35,7 +35,7 @@ export const Align = () => {
                         'center',
                     );
                 }}>
-                <AlignCenter size={15} />
+                <AlignCenter />
                 <span>Center Align</span>
             </DropDownItem>
             <DropDownItem
@@ -46,7 +46,7 @@ export const Align = () => {
                     );
                 }}
             >
-                <AlignRight size={15} />
+                <AlignRight />
                 <span>Right Align</span>
             </DropDownItem>
             <DropDownItem
@@ -57,7 +57,7 @@ export const Align = () => {
                     );
                 }}
             >
-                <AlignJustify size={15} />
+                <AlignJustify />
                 <span>Justify Align</span>
             </DropDownItem>
         </DropDown>

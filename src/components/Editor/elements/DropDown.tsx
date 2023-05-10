@@ -73,7 +73,7 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
             >
                 {ButtonIconComponent}
                 {buttonLabel && <span className="text dropdown-button-text">{buttonLabel}</span>}
-                <Chevron size={16} />
+                <Chevron />
             </button>
 
             {showDropDown && (

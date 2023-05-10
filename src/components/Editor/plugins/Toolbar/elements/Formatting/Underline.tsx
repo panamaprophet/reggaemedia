@@ -11,7 +11,6 @@ export const Underline = () => {
     const [editor] = useLexicalComposerContext();
     const [isActive, setActive] = useState(false);
     const [isEditable, setEditable] = useState(editor.isEditable());
-    const color = isActive ? 'black' : 'gray';
 
     const $updateActive = () => {
         editor.getEditorState().read(() => {
@@ -35,7 +34,7 @@ export const Underline = () => {
             title="Underline"
             aria-label="Format text as underline."
         >
-            <UnderlineIcon size={20} color={color} />
+            <UnderlineIcon />
         </Item>
     )
 }

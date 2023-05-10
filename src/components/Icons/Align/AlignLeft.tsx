@@ -4,7 +4,7 @@ interface Props {
     color?: string,
 }
 
-export const AlignLeft = ({ size = 32, color = '#000' }: Props) => (
+export const AlignLeft = ({ size = 16, color = '#000' }: Props) => (
     <svg width={size * 1.2} height={size} viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 1C0 0.447715 0.447715 0 1 0H17C17.5523 0 18 0.447715 18 1C18 1.55228 17.5523 2 17 2H1C0.447716 2 0 1.55228 0 1Z" fill={color} />
         <path d="M0 19C0 18.4477 0.447715 18 1 18H20C20.5523 18 21 18.4477 21 19C21 19.5523 20.5523 20 20 20H1C0.447715 20 0 19.5523 0 19Z" fill={color} />

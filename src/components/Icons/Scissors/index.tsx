@@ -1,7 +1,7 @@
-export const Scissors = ({ size = 32 }: { size: number }) => (
+export const Scissors = ({ size = 16 }: { size?: number }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 30 30"
+        viewBox="1 1 22 22"
         width={size}
         height={size}
     >

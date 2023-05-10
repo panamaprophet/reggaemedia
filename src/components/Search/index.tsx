@@ -29,7 +29,7 @@ export const Search = ({ onSubmit }: Props) => {
     return (
         <>
             <Button onClick={() => setSearch(!isSearch)}>
-                <Icon size={16} />
+                <Icon />
             </Button>
 
             {isSearch && (
