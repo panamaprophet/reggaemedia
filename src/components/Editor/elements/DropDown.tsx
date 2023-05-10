@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Chevron } from '@/components/Icons/Chevron';
+import { cx } from '@/helpers';
 
 
 interface ItemProps {
@@ -11,18 +12,10 @@ interface ItemProps {
 export const DropDownItem = ({ isActive = false, onClick, children }: ItemProps) => {
     return (
         <div
-            className={`
-                flex
-                flex-row
-                gap-1
-                items-center
-                p-1
-                w-full
-                rounded
-                hover:bg-sky-100
-                cursor-pointer
-                ${isActive && 'bg-slate-200'}
-            `}
+            className={cx(
+                'flex flex-row gap-3 items-center px-2 py-1 w-full hover:bg-sky-100 [&>svg]:flex-shrink-0 flex-nowrap whitespace-nowrap',
+                isActive && 'bg-slate-200'
+            )}
             onClick={onClick}
         >
             {children}
@@ -64,11 +57,11 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
     })
 
     return (
-        <div className='relative' ref={ref}>
+        <div className="relative cursor-pointer" ref={ref}>
             <button
                 disabled={disabled}
                 aria-label={buttonAriaLabel || buttonLabel}
-                className={'flex items-center justify-center gap-1 p-1'}
+                className="flex items-center justify-center gap-2 p-2"
                 onClick={() => setShowDropDown(!showDropDown)}
             >
                 {ButtonIconComponent}
@@ -77,7 +70,7 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
             </button>
 
             {showDropDown && (
-                <div className='absolute border rounded bg-white p-3' onClick={() => setShowDropDown(false)}>
+                <div className='absolute border rounded bg-white p-3f' onClick={() => setShowDropDown(false)}>
                     {children}
                 </div>
             )}

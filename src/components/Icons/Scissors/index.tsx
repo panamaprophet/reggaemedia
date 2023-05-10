@@ -17,5 +17,6 @@ export const Scissors = ({ size = 'xs' }: IconProps) => (
             "
             fill="#000"
         />
+        
     </svg>
 );

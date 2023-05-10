@@ -17,48 +17,21 @@ export const Align = () => {
             ButtonIconComponent={<AlignLeft />}
             buttonAriaLabel="Formatting options for text alignment"
         >
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'left',
-                    );
-                }}
-            >
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}>
                 <AlignLeft />
-                <span>Left Align</span>
+                Left Align
             </DropDownItem>
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'center',
-                    );
-                }}>
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}>
                 <AlignCenter />
-                <span>Center Align</span>
+                Center Align
             </DropDownItem>
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'right',
-                    );
-                }}
-            >
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}>
                 <AlignRight />
-                <span>Right Align</span>
+                Right Align
             </DropDownItem>
-            <DropDownItem
-                onClick={() => {
-                    editor.dispatchCommand(
-                        FORMAT_ELEMENT_COMMAND,
-                        'justify',
-                    );
-                }}
-            >
+            <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')}>
                 <AlignJustify />
-                <span>Justify Align</span>
+                Justify Align
             </DropDownItem>
         </DropDown>
     )

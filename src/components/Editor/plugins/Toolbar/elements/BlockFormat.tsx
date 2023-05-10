@@ -91,54 +91,54 @@ export const BlockFormatDropDown = () => {
                 isActive={blockType === 'paragraph'}
                 onClick={() => formatParagraph(editor)}>
                 <ParagraphIcon />
-                <span className="text whitespace-nowrap">Paragraph</span>
+                Paragraph
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h1'}
                 onClick={() => formatHeading(editor, 'h1', blockType)}
             >
                 <Heading1 />
-                <span className="text whitespace-nowrap">Heading 1</span>
+                Heading 1
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h2'}
                 onClick={() => formatHeading(editor, 'h2', blockType)}
             >
                 <Heading2 />
-                <span className="text whitespace-nowrap">Heading 2</span>
+                Heading 2
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'h3'}
                 onClick={() => formatHeading(editor, 'h3', blockType)}
             >
                 <Heading3 />
-                <span className="text whitespace-nowrap">Heading 3</span>
+                Heading 3
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'bullet'}
                 onClick={() => formatBulletList(editor, blockType)}
             >
                 <UnorderedList />
-                <span className="text whitespace-nowrap">Bullet List</span>
+                Bullet List
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'number'}
                 onClick={() => formatNumberedList(editor, blockType)}
             >
                 <OrderList />
-                <span className="text whitespace-nowrap">Numbered List</span>
+                Numbered List
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'check'}
                 onClick={() => formatCheckList(editor, blockType)}
             >
-                <span className="text whitespace-nowrap">Check List</span>
+                Check List
             </DropDownItem>
             <DropDownItem
                 isActive={blockType === 'quote'}
                 onClick={() => formatQuote(editor, blockType)}
             >
-                <span className="text whitespace-nowrap">Quote</span>
+                Quote
             </DropDownItem>
         </DropDown>
     );

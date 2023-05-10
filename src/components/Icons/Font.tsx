@@ -1,8 +1,7 @@
 import { IconProps, getIconSize } from './helpers';
 
 export const Font = ({ size = 'xs', color = '#000' }: IconProps) => (
-    // width * 0.8
-    <svg className={getIconSize(size)} viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={getIconSize(size)} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7 2H9V20H7V2Z" fill={color} />
         <path d="M2 0H14V2H2V0Z" fill={color} />
         <path d="M4 19C4 18.4477 4.44772 18 5 18H11C11.5523 18 12 18.4477 12 19C12 19.5523 11.5523 20 11 20H5C4.44772 20 4 19.5523 4 19Z" fill={color} />
