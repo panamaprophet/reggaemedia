@@ -14,6 +14,10 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { ToolbarPlugin, ImagePlugin, FocusPlugin } from './plugins';
 import { ImageNode } from './plugins/Image/node';
 import * as CutterPlugin from './plugins/Cutter';
+import { YouTubePlugin } from './plugins/YouTube/Plugin';
+import { YouTubeNode } from './plugins/YouTube/node';
+
+
 
 export const onError = (error: Error) => {
     console.error(error);
@@ -42,6 +46,7 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
             QuoteNode,
             ImageNode,
             CutterPlugin.Node,
+            YouTubeNode,
         ],
         editorState: (editor: LexicalEditor) => {
             if (initialState) {
@@ -79,6 +84,7 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
                 <CheckListPlugin />
                 <FocusPlugin />
                 <CutterPlugin.Plugin />
+                <YouTubePlugin />
             </div>
         </LexicalComposer>
     );
