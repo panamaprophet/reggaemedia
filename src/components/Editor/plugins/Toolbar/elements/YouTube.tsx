@@ -52,14 +52,12 @@ export const YouTube = () => {
                 <YouTubeIcon size="sm" />
             </Item>
 
-            {isOpen && (
-                <Modal isOpen={isOpen} onClose={() => setOpen(false)}>
-                    <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2 z-50'>
-                        <InputText placeholder='Insert URL' className='w-full border rounded p-2' value={url} onChange={(data) => setUrl(data)} />
-                        <button disabled={!url} className='w-full cursor-pointer border p-2' onClick={handleSumbit}>Вставить</button>
-                    </div>
-                </Modal>
-            )}
+            <Modal isOpen={isOpen} onClose={() => setOpen(false)}>
+                <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2 z-50'>
+                    <InputText placeholder='Insert URL' className='w-full border rounded p-2' value={url} onChange={(data) => setUrl(data)} />
+                    <button disabled={!url} className='w-full cursor-pointer border p-2' onClick={handleSumbit}>Вставить</button>
+                </div>
+            </Modal>
         </>
     )
 }
