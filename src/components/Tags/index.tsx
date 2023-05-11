@@ -17,7 +17,7 @@ const Input = ({
     return (
         <input
             value={state}
-            size={value.length - 1}
+            size={value.length + 1}
             onKeyDown={event => {
                 if (event.code === 'Enter') {
                     onChange(state.trim());
