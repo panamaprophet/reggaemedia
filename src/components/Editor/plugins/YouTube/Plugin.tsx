@@ -11,10 +11,6 @@ import { INSERT_YOUTUBE_COMMAND } from './command';
 import { RESIZE_IMAGE_COMMAND } from '../Image';
 
 
-interface YouTubeSearchParams extends URLSearchParams {
-    v: string,
-}
-
 export const YouTubePlugin = (): JSX.Element | null => {
     const [editor] = useLexicalComposerContext();
 
@@ -22,7 +18,7 @@ export const YouTubePlugin = (): JSX.Element | null => {
         INSERT_YOUTUBE_COMMAND,
         (link: string) => {
             const url = new URL(link)
-            const queryParams = new URLSearchParams(url.search) as YouTubeSearchParams;
+            const queryParams = new URLSearchParams(url.search);
             const youTubeNode = new YouTubeNode({ videoID: queryParams.get('v') });
 
             $insertNodeToNearestRoot(youTubeNode);

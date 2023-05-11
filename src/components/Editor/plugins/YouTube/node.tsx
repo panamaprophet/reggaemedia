@@ -3,8 +3,6 @@ import type { ElementFormatType, LexicalEditor, NodeKey, Spread } from 'lexical'
 import { YouTubeComponent } from './Component';
 import { DecoratorBlockNode, SerializedDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 
-export type Dimension = 'inherit' | number;
-
 export interface YouTubePayload {
     width?: number,
     height?: number,
@@ -59,7 +57,6 @@ export class YouTubeNode extends DecoratorBlockNode {
             'src',
             `https://www.youtube-nocookie.com/embed/${this.props.videoID}`,
         );
-        element.setAttribute('frameborder', '0');
         element.setAttribute(
             'allow',
             'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
@@ -102,7 +99,6 @@ export class YouTubeNode extends DecoratorBlockNode {
     }
 
 }
-
 
 export function $isYouTubeNode(
     node: any
