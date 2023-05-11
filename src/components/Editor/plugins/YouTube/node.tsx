@@ -2,6 +2,7 @@ import type { ElementFormatType, LexicalEditor, NodeKey, Spread } from 'lexical'
 
 import { YouTubeComponent } from './Component';
 import { DecoratorBlockNode, SerializedDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
+import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
 
 export interface YouTubePayload {
     width?: number,
@@ -88,13 +89,22 @@ export class YouTubeNode extends DecoratorBlockNode {
 
     decorate(_editor: LexicalEditor): JSX.Element {
         return (
-            <YouTubeComponent
-                videoID={this.props.videoID}
-                width={this.props.width}
-                format={this.__format}
-                height={this.props.height}
+            <BlockWithAlignableContents
                 nodeKey={this.getKey()}
-            />
+                format={this.__format}
+                className={{
+                    base: 'select-none',
+                    focus: 'outline-sky-500'
+                }}
+            >
+                <YouTubeComponent
+                    videoID={this.props.videoID}
+                    width={this.props.width}
+                    format={this.__format}
+                    height={this.props.height}
+                    nodeKey={this.getKey()}
+                />
+            </BlockWithAlignableContents>
         );
     }
 
