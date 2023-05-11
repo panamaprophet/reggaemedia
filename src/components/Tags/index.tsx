@@ -1,60 +1,65 @@
-import { useEffect, useId, useState } from 'react';
+import { useState } from 'react';
 import { Close } from '../Icons/Close'
-import { InputText } from '../Input/InputText';
+import { Button } from '../Button';
 
 
-interface Props {
-    onChange: (tags: string[]) => void,
-}
-
-export const Tags = ({ onChange }: Props) => {
-    const [tags, setTags] = useState<string[]>([]);
-    const [value, setValue] = useState('');
-    const id = useId();
-
-    useEffect(() => {
-        if (value.at(-1) === ' ') {
-            setTags(prev => [...prev, value.trim()])
-            setValue('');
-        }
-
-        onChange(tags);
-    }, [value, tags]);
+const Input = ({
+    value = '',
+    onChange,
+    onKeyDown,
+}: {
+    value?: string,
+    onChange: (value: string) => void,
+    onKeyDown?: (code: string, value: string) => void,
+}) => {
+    const [state, setState] = useState(value);
 
     return (
-        <div className="flex gap-1">
-            {tags.length !== 0 && ( // Without this check block with padding remains in dom
-                <div className="flex gap-1 pl-4">
-                    {tags.map((tag, index) => (
-                        <div
-                            key={`${id}-${tag}-${index}`}
-                            className="
-                                flex
-                                items-center
-                                justify-center
-                                my-2
-                                px-2
-                                gap-2
-                                border
-                                rounded
-                            ">
-                            <p className=" text-sm whitespace-nowrap font-bold">{tag}</p>
-                            <div
-                                className="cursor-pointer"
-                                onClick={() => setTags(tags.filter((_, i) => i !== index))}
-                            >
-                                <Close size={10} />
-                            </div>
+        <input
+            value={state}
+            size={value.length - 1}
+            onKeyDown={event => {
+                if (event.code === 'Enter') {
+                    onChange(state.trim());
+                    setState('');
+                }
+
+                if (onKeyDown) {
+                    onKeyDown(event.code, state);
+                }
+            }}
+            onChange={event => setState(event.target.value)}
+            placeholder="Теги"
+            className="focus:outline-none text-normal p-4"
+        />
+    );
+}
+
+
+export const Tags = ({ value = [], onChange }: { value: string[], onChange: (value: string[]) => void }) => {
+    const onKeyDown = (code: string, currentValue: string) => {
+        if (code === 'Backspace' && !currentValue) {
+            onChange([...value].slice(0, -1));
+        }
+    }
+
+    return (
+        <div className="flex gap-4">
+            {value.map((tag) => (
+                <Button key={tag}>
+                    <div className="flex items-center">
+                        <Input
+                            value={tag}
+                            onChange={(changedTag) => onChange(value.map(item => item === tag ? changedTag : item))}
+                        />
+
+                        <div onClick={() => onChange(value.filter(item => tag !== item))}>
+                            <Close size="xs" />
                         </div>
-                    ))}
-                </div>
-            )}
-            <InputText
-                value={value}
-                onChange={(text) => setValue(text)}
-                placeholder="Теги"
-                className="max-w-full w-full focus:outline-none text-normal p-4"
-            />
+                    </div>
+                </Button>
+            ))}
+            <Input onChange={(newTag) => onChange([...value, newTag])} onKeyDown={onKeyDown} />
         </div>
     )
-}
+};
