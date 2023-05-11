@@ -90,7 +90,7 @@ export const Page = () => {
                     className="max-w-full w-full focus:outline-none text-3xl p-4"
                 />
 
-                <Tags onChange={(tags) => setState({ ...state, tags })} />
+                <Tags value={state.tags} onChange={(tags) => setState({ ...state, tags })} />
 
                 {isLoading && (
                     <div className="text-center text-normal p-4">
