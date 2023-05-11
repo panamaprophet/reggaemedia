@@ -1,20 +1,56 @@
+import { useState } from 'react';
+import { $getSelection, $isElementNode, ElementFormatType, FORMAT_ELEMENT_COMMAND, LexicalNode } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
+import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import { AlignCenter } from '@/components/Icons/Align/AlignCenter';
 import { AlignJustify } from '@/components/Icons/Align/AlignJustify';
 import { AlignLeft } from '@/components/Icons/Align/AlignLeft';
 import { AlignRight } from '@/components/Icons/Align/AlignRight';
-import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
-import { FORMAT_ELEMENT_COMMAND } from 'lexical';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+
+
+const formatTypeToIconMap = {
+    'left': AlignLeft,
+    'center': AlignCenter,
+    'right': AlignRight,
+    'justify': AlignJustify,
+    'start': AlignLeft,
+    'end': AlignRight,
+    '': AlignLeft,
+};
+
+const $getFormatType = (node?: LexicalNode) => {
+    let format: ElementFormatType;
+
+    if ($isElementNode(node)) {
+        format = node.getFormatType();
+    } else {
+        format = node?.getCommonAncestor(node)?.getFormatType() || 'left';
+    }
+
+    return format;
+};
 
 
 export const Align = () => {
     const [editor] = useLexicalComposerContext();
-    const isEditable = editor.isEditable();
+    const [CurrentIcon, setCurrentIcon] = useState(() => AlignLeft);
+
+    const updateCurrentIcon = () => {
+        editor.getEditorState().read(() => {
+            const selection = $getSelection();
+            const node = selection?.getNodes()[0];
+
+            setCurrentIcon(() => formatTypeToIconMap[$getFormatType(node)]);
+        });
+    };
+
+    useRegisterListener('onUpdate', updateCurrentIcon);
 
     return (
         <DropDown
-            disabled={!isEditable}
-            ButtonIconComponent={<AlignLeft />}
+            disabled={!editor.isEditable()}
+            ButtonIconComponent={<CurrentIcon />}
             buttonAriaLabel="Formatting options for text alignment"
         >
             <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}>
