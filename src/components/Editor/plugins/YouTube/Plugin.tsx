@@ -7,8 +7,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 
 import { $isYouTubeNode, YouTubeNode } from './node'
 import { useRegisterCommand } from '../../hooks/useRegisterCommand';
-import { INSERT_YOUTUBE_COMMAND } from './command';
-import { RESIZE_IMAGE_COMMAND } from '../Image';
+import { INSERT_YOUTUBE_COMMAND, RESIZE_YOUTUBE_COMMAND } from './command';
 
 
 export const YouTubePlugin = (): JSX.Element | null => {
@@ -29,7 +28,7 @@ export const YouTubePlugin = (): JSX.Element | null => {
     );
 
     useRegisterCommand(
-        RESIZE_IMAGE_COMMAND,
+        RESIZE_YOUTUBE_COMMAND,
         (payload: { width: number, height: number, key: string }) => {
             editor.update(() => {
                 const { width, height, key } = payload;
