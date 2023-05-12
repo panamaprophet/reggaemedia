@@ -21,11 +21,8 @@ export const YouTube = () => {
     const $updateActive = () => {
         editor.getEditorState().read(() => {
             const selection = $getSelection();
-            if ($isYouTubeNode(selection)) {
-                setActive(true);
-            } else {
-                setActive(false);
-            }
+
+            setActive($isYouTubeNode(selection));
         })
 
         return false;
@@ -46,8 +43,8 @@ export const YouTube = () => {
                 disabled={!isEditable}
                 onClick={() => setOpen(true)}
                 className={isActive ? 'border rounded bg-slate-100' : ''}
-                title="Italic"
-                aria-label="Format text as italic."
+                title="YouTube"
+                aria-label="Insert YouTube video."
             >
                 <YouTubeIcon size="sm" />
             </Item>
