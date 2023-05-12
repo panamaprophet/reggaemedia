@@ -20,7 +20,7 @@ const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => (
             <Logo size="medium" />
         </div>
 
-        <main>
+        <main className="flex-grow">
             {articles.map((article) => (
                 <ArticlePreview article={article} key={article.id} />
             ))}

@@ -31,7 +31,7 @@ const Page = ({ article, author, relatedArticles }: Props) => {
 
             <Header />
 
-            <div className="max-w-4xl mx-auto my-0 pb-4">
+            <div className="max-w-4xl mx-auto my-0 pb-4 flex-grow">
                 <h1 className="text-3xl p-4 pt-8">
                     {article.title}
                 </h1>
@@ -44,7 +44,9 @@ const Page = ({ article, author, relatedArticles }: Props) => {
                 <div className="p-4">
                     {body}
                 </div>
+            </div>
 
+            <div className="max-w-4xl mx-auto empty:hidden">
                 {relatedArticles && (<RelatedArticles {...relatedArticles} />)}
             </div>
 
