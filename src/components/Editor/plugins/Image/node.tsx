@@ -8,9 +8,11 @@ export type Dimension = 'inherit' | number;
 export interface ImagePayload {
     alt: string;
     src: string;
+    embedUrl?: string;
     key?: NodeKey;
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
+    content: 'instagram' | 'soundcloud' | 'youtube' | 'image',
 }
 
 export type SerializedImageNode = {
@@ -18,6 +20,7 @@ export type SerializedImageNode = {
     type: 'image';
     src: string;
     alt: string;
+    content: 'instagram' | 'soundcloud' | 'youtube' | 'image',
     height: number;
     width: number;
 };
@@ -25,10 +28,10 @@ export type SerializedImageNode = {
 
 const convertImageElement = (domNode: Node) => {
     if (domNode instanceof HTMLImageElement) {
-        const { alt, src } = domNode;
+        const { alt, src, width, height } = domNode;
 
         return {
-            node: new ImageNode({ alt, src })
+            node: new ImageNode({ alt, src, width, height, content: 'image' })
         };
     }
     return null;
@@ -66,11 +69,12 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     }
 
     constructor(props: ImagePayload) {
-        super(props.key);
+        const { key, ...rest } = props;
+
+        super(key);
         this.props = {
-            ...props,
-            width: props.width || 300,
-            height: props.height || 300,
+            ...rest,
+            embedUrl: rest.embedUrl || '',
         };
     }
 
@@ -91,6 +95,11 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     setSrc(src: string) {
         const writable = this.getWritable();
         writable.props.src = src;
+    }
+
+    setEmbedUrl(url: string) {
+        const writable = this.getWritable();
+        writable.props.embedUrl = url;
     }
 
     createDOM(config: EditorConfig) {
@@ -114,6 +123,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
+                content={this.props.content}
                 nodeKey={this.getKey()}
                 resizable={true}
             />
