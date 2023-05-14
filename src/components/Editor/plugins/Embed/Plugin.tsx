@@ -35,10 +35,10 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     };
 
     const handleSoundcloud = async (_key: NodeKey, trackUrl: string) => {
-        const url = `https://soundcloud.com/oembed -d format=json -d url=${trackUrl}`;
-        const response = await fetch(url, { method: 'GET' });
+        const url = `https://soundcloud.com/oembed?format=json&url=${trackUrl}`;
+        const response = await fetch(url, { method: 'GET' }).then(response => response.json());
 
-        console.log(response.json());
+        console.log(response);
     };
 
     useRegisterCommand(
