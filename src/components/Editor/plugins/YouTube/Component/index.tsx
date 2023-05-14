@@ -4,7 +4,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { cx } from '@/helpers';
-import { RESIZE_IMAGE_COMMAND } from '../../Image';
+import { RESIZE_IMAGE_COMMAND } from '../../Embed';
 
 interface Props {
     width: number,

@@ -9,7 +9,7 @@ import {
 } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
-import { ImageNode, ImagePayload } from './node';
+import { EmbedNode, ImagePayload } from './node';
 import { INSERT_IMAGE_FILE_COMMAND, INSERT_IMAGE_URL_COMMAND, INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND, RESIZE_IMAGE_COMMAND } from './command';
 import { useRegisterCommand } from '../../hooks/useRegisterCommand';
 import { $isImageNode } from './node';
@@ -19,7 +19,7 @@ interface Props {
     onUpload: (file: File) => Promise<string>,
 }
 
-export const ImagePlugin = ({ onUpload }: Props): JSX.Element | null => {
+export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     const [editor] = useLexicalComposerContext();
 
     const handlePlaceholder = async (key: NodeKey, file: File) => {
@@ -47,11 +47,11 @@ export const ImagePlugin = ({ onUpload }: Props): JSX.Element | null => {
             const image: ImagePayload = {
                 src: URL.createObjectURL(file),
                 alt: '',
-                content: 'image',
+                contentType: 'image',
                 width: 300,
                 height: 300,
             };
-            const imageNode = new ImageNode(image);
+            const imageNode = new EmbedNode(image);
 
             handlePlaceholder(imageNode.__key, file);
 
@@ -69,11 +69,11 @@ export const ImagePlugin = ({ onUpload }: Props): JSX.Element | null => {
     useRegisterCommand(
         INSERT_IMAGE_URL_COMMAND,
         (src: string) => {
-            const imageNode = new ImageNode({
+            const imageNode = new EmbedNode({
                 src,
                 width: 300,
                 height: 300,
-                content: 'image',
+                contentType: 'image',
                 alt: '',
             });
 
@@ -118,11 +118,11 @@ export const ImagePlugin = ({ onUpload }: Props): JSX.Element | null => {
                 embedUrl += queryParams.get('v')
             }
 
-            const imageNode = new ImageNode({
+            const imageNode = new EmbedNode({
                 src: `https://img.youtube.com/vi/${queryParams.get('v')}/hqdefault.jpg`,
                 width: 560,
                 height: 315,
-                content: 'youtube',
+                contentType: 'youtube',
                 alt: '',
                 embedUrl,
             });
@@ -141,11 +141,11 @@ export const ImagePlugin = ({ onUpload }: Props): JSX.Element | null => {
     useRegisterCommand(
         INSERT_SOUNDCLOUD_COMMAND,
         (link: string) => {
-            const imageNode = new ImageNode({
+            const imageNode = new EmbedNode({
                 src: '/SoundcloudSkeleton.png',
                 width: 200,
                 height: 66,
-                content: 'soundcloud',
+                contentType: 'soundcloud',
                 alt: '',
                 embedUrl: '',
             });

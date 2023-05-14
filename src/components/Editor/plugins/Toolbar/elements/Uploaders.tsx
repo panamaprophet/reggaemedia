@@ -4,7 +4,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import {
     INSERT_IMAGE_URL_COMMAND,
     INSERT_IMAGE_FILE_COMMAND,
-} from '../../Image';
+} from '../../Embed';
 import { InputText } from '@/components/Input/InputText';
 
 

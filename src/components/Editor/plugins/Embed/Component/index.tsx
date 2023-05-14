@@ -18,7 +18,7 @@ interface Props {
     contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
 }
 
-export const ImageComponent = (props: Props): JSX.Element => {
+export const EmbedComponent = (props: Props): JSX.Element => {
     const [editor] = useLexicalComposerContext();
     const ref = useRef<HTMLImageElement | null>(null);
 

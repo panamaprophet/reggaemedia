@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { Modal } from '@/components/Modal';
 import { InputText } from '@/components/Input/InputText';
-import { INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND } from '../../../Image';
+import { INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND } from '../../../Embed';
 
 type UrlType = 'instagram' | 'soundcloud' | 'youtube' | '';
 

@@ -1,7 +1,7 @@
 import type { EditorConfig, LexicalNode, NodeKey } from 'lexical';
 
 import { DecoratorNode } from 'lexical';
-import { ImageComponent } from './Component';
+import { EmbedComponent } from './Component';
 
 export type Dimension = 'inherit' | number;
 
@@ -31,25 +31,25 @@ const convertImageElement = (domNode: Node) => {
         const { alt, src, width, height } = domNode;
 
         return {
-            node: new ImageNode({ alt, src, width, height, contentType: 'image' })
+            node: new EmbedNode({ alt, src, width, height, contentType: 'image' })
         };
     }
     return null;
 }
 
-export class ImageNode extends DecoratorNode<JSX.Element> {
+export class EmbedNode extends DecoratorNode<JSX.Element> {
     props: Required<Omit<ImagePayload, 'key'>>;
 
     static getType() {
         return 'image';
     }
 
-    static clone(node: ImageNode) {
-        return new ImageNode(node.props);
+    static clone(node: EmbedNode) {
+        return new EmbedNode(node.props);
     }
 
     static importJSON(serializedNode: SerializedImageNode) {
-        return new ImageNode(serializedNode);
+        return new EmbedNode(serializedNode);
     }
 
     exportDOM() {
@@ -118,7 +118,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
 
     decorate() {
         return (
-            <ImageComponent
+            <EmbedComponent
                 src={this.props.src}
                 alt={this.props.alt}
                 width={this.props.width}
@@ -131,4 +131,4 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     }
 }
 
-export const $isImageNode = (node: LexicalNode | null | undefined): node is ImageNode => node instanceof ImageNode;
+export const $isImageNode = (node: LexicalNode | null | undefined): node is EmbedNode => node instanceof EmbedNode;
