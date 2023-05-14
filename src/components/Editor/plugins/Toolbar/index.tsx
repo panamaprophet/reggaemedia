@@ -1,11 +1,11 @@
 import { Align } from './elements/Align';
-import { Image } from './elements/Image';
 import { UndoRedo } from './elements/UndoRedo';
 import { FontSizeDropDown } from './elements/FontDropDown';
 import { BlockFormatDropDown } from './elements/BlockFormat';
 import { Bold, Italic, Link, Underline } from './elements/Formatting';
 import { Cutter } from './elements/Cutter';
-import { YouTube } from './elements/YouTube';
+import { Embed } from './elements/Embed';
+import { Image } from './elements/Image';
 
 
 export const ToolbarPlugin = () => {
@@ -22,7 +22,7 @@ export const ToolbarPlugin = () => {
             {/* eslint-disable-next-line */}
             <Image />
             <Cutter />
-            <YouTube />
+            <Embed />
         </div>
     );
 };
