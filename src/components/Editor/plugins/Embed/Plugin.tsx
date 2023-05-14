@@ -45,7 +45,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
         INSERT_IMAGE_FILE_COMMAND,
         (file: File) => {
             const image: ImagePayload = {
-                src: URL.createObjectURL(file),
+                thumbnail: URL.createObjectURL(file),
                 alt: '',
                 contentType: 'image',
                 width: 300,
@@ -70,7 +70,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
         INSERT_IMAGE_URL_COMMAND,
         (src: string) => {
             const imageNode = new EmbedNode({
-                src,
+                thumbnail: src,
                 width: 300,
                 height: 300,
                 contentType: 'image',
@@ -119,7 +119,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
             }
 
             const imageNode = new EmbedNode({
-                src: `https://img.youtube.com/vi/${queryParams.get('v')}/hqdefault.jpg`,
+                thumbnail: `https://img.youtube.com/vi/${queryParams.get('v')}/hqdefault.jpg`,
                 width: 560,
                 height: 315,
                 contentType: 'youtube',
@@ -142,7 +142,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
         INSERT_SOUNDCLOUD_COMMAND,
         (link: string) => {
             const imageNode = new EmbedNode({
-                src: '/SoundcloudSkeleton.png',
+                thumbnail: '/SoundcloudSkeleton.png',
                 width: 200,
                 height: 66,
                 contentType: 'soundcloud',

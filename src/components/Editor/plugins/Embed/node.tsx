@@ -7,7 +7,7 @@ export type Dimension = 'inherit' | number;
 
 export interface ImagePayload {
     alt: string;
-    src: string;
+    thumbnail: string;
     embedUrl?: string;
     key?: NodeKey;
     width: number;
@@ -18,7 +18,7 @@ export interface ImagePayload {
 export type SerializedImageNode = {
     version: 1;
     type: 'image';
-    src: string;
+    thumbnail: string;
     alt: string;
     contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
     height: number;
@@ -31,7 +31,7 @@ const convertImageElement = (domNode: Node) => {
         const { alt, src, width, height } = domNode;
 
         return {
-            node: new EmbedNode({ alt, src, width, height, contentType: 'image' })
+            node: new EmbedNode({ alt, thumbnail: src, width, height, contentType: 'image' })
         };
     }
     return null;
@@ -54,7 +54,7 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
 
     exportDOM() {
         const element = document.createElement('img');
-        element.setAttribute('src', this.props.src);
+        element.setAttribute('src', this.props.thumbnail);
         element.setAttribute('alt', this.props.alt);
         return { element };
     }
@@ -94,7 +94,7 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
 
     setSrc(src: string) {
         const writable = this.getWritable();
-        writable.props.src = src;
+        writable.props.thumbnail = src;
     }
 
     setEmbedUrl(url: string) {
@@ -119,7 +119,7 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
     decorate() {
         return (
             <EmbedComponent
-                src={this.props.src}
+                src={this.props.thumbnail}
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
