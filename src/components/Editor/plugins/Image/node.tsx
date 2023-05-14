@@ -12,7 +12,7 @@ export interface ImagePayload {
     key?: NodeKey;
     width: number;
     height: number;
-    content: 'instagram' | 'soundcloud' | 'youtube' | 'image',
+    contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
 }
 
 export type SerializedImageNode = {
@@ -20,7 +20,7 @@ export type SerializedImageNode = {
     type: 'image';
     src: string;
     alt: string;
-    content: 'instagram' | 'soundcloud' | 'youtube' | 'image',
+    contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
     height: number;
     width: number;
 };
@@ -31,7 +31,7 @@ const convertImageElement = (domNode: Node) => {
         const { alt, src, width, height } = domNode;
 
         return {
-            node: new ImageNode({ alt, src, width, height, content: 'image' })
+            node: new ImageNode({ alt, src, width, height, contentType: 'image' })
         };
     }
     return null;
@@ -123,7 +123,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
-                content={this.props.content}
+                contentType={this.props.contentType}
                 nodeKey={this.getKey()}
                 resizable={true}
             />

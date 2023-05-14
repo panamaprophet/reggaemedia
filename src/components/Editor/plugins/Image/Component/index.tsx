@@ -15,7 +15,7 @@ interface Props {
     nodeKey: NodeKey;
     resizable: boolean;
     src: string;
-    content: 'instagram' | 'soundcloud' | 'youtube' | 'image',
+    contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
 }
 
 export const ImageComponent = (props: Props): JSX.Element => {
@@ -25,7 +25,7 @@ export const ImageComponent = (props: Props): JSX.Element => {
     const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(props.nodeKey);
     const [isResizing, Markers, { width, height }] = useResize({
         allowCorners: true,
-        allowWidthAndHeight: props.content === 'image',
+        allowWidthAndHeight: props.contentType === 'image',
         isSelected,
         width: props.width,
         height: props.height,
