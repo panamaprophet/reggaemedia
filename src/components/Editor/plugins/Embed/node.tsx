@@ -1,6 +1,6 @@
-import type { EditorConfig, LexicalNode, NodeKey } from 'lexical';
+import type { ElementFormatType, LexicalNode, NodeKey } from 'lexical';
 
-import { DecoratorNode } from 'lexical';
+import { DecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 import { EmbedComponent } from './Component';
 
 export type Dimension = 'inherit' | number;
@@ -17,7 +17,8 @@ export interface ImagePayload {
 
 export type SerializedImageNode = {
     version: 1;
-    type: 'image';
+    type: 'embed';
+    format: ElementFormatType,
     thumbnail: string;
     alt: string;
     contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
@@ -37,11 +38,11 @@ const convertImageElement = (domNode: Node) => {
     return null;
 }
 
-export class EmbedNode extends DecoratorNode<JSX.Element> {
+export class EmbedNode extends DecoratorBlockNode {
     props: Required<Omit<ImagePayload, 'key'>>;
 
     static getType() {
-        return 'image';
+        return 'embed';
     }
 
     static clone(node: EmbedNode) {
@@ -68,13 +69,11 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
         };
     }
 
-    constructor(props: ImagePayload) {
-        const { key, ...rest } = props;
-
-        super(key);
+    constructor(props: ImagePayload, format?: ElementFormatType, key?: NodeKey) {
+        super(format, key);
         this.props = {
-            ...rest,
-            embedUrl: rest.embedUrl || '',
+            ...props,
+            embedUrl: props.embedUrl || '',
         };
     }
 
@@ -82,7 +81,8 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
         return {
             ...this.props,
             version: 1,
-            type: 'image',
+            type: 'embed',
+            format: this.__format
         };
     }
 
@@ -102,17 +102,7 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
         writable.props.embedUrl = url;
     }
 
-    createDOM(config: EditorConfig) {
-        const span = document.createElement('span');
-        const theme = config.theme;
-        const className = theme.image;
-        if (className !== undefined) {
-            span.className = className;
-        }
-        return span;
-    }
-
-    updateDOM() {
+    updateDOM(): false {
         return false;
     }
 
@@ -123,6 +113,7 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
+                format={this.__format}
                 contentType={this.props.contentType}
                 nodeKey={this.getKey()}
                 resizable={true}
