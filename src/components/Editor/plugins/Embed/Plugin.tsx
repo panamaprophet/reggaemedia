@@ -1,4 +1,4 @@
-import { $wrapNodeInElement } from '@lexical/utils';
+import { $insertNodeToNearestRoot, $wrapNodeInElement } from '@lexical/utils';
 import {
     $insertNodes,
     $isRootOrShadowRoot,
@@ -149,11 +149,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 embedUrl,
             });
 
-            $insertNodes([embedNode]);
-
-            if ($isRootOrShadowRoot(embedNode.getParentOrThrow())) {
-                $wrapNodeInElement(embedNode, $createParagraphNode).selectEnd();
-            }
+            $insertNodeToNearestRoot(embedNode);
 
             return true;
         },
@@ -174,11 +170,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
 
             handleSoundcloud(embedNode.__key, link);
 
-            $insertNodes([embedNode]);
-
-            if ($isRootOrShadowRoot(embedNode.getParentOrThrow())) {
-                $wrapNodeInElement(embedNode, $createParagraphNode).selectEnd();
-            }
+            $insertNodeToNearestRoot(embedNode);
 
             return true;
         },
@@ -188,7 +180,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     useRegisterCommand(
         INSERT_INSTAGRAM_COMMAND,
         (link: string) => {
-            const imageNode = new EmbedNode({
+            const embedNode = new EmbedNode({
                 thumbnail: '/InstagramSkeleton.png',
                 width: 470,
                 height: 760,
@@ -197,13 +189,9 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 embedUrl: '',
             });
 
-            handleInstagram(imageNode.__key, link);
+            handleInstagram(embedNode.__key, link);
 
-            $insertNodes([imageNode]);
-
-            if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-                $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
-            }
+            $insertNodeToNearestRoot(embedNode);
 
             return true;
         },
