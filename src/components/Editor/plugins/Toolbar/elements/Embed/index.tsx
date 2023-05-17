@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { Modal } from '@/components/Modal';
 import { InputText } from '@/components/Input/InputText';
-import { INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND } from '../../../Embed';
+import { INSERT_INSTAGRAM_COMMAND, INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND } from '../../../Embed';
 
 type UrlType = 'instagram' | 'soundcloud' | 'youtube' | '';
 
@@ -41,16 +41,21 @@ export const Embed = () => {
                 editor.dispatchCommand(INSERT_SOUNDCLOUD_COMMAND, url);
                 break;
             case 'instagram':
-                editor.dispatchCommand(INSERT_YOUTUBE_COMMAND, url);
+                editor.dispatchCommand(INSERT_INSTAGRAM_COMMAND, url);
                 break;
         }
 
-        setOpen(false);
+        handleClose();
     }
 
     const handleModal = (type: UrlType) => {
         setUrlType(type);
         setOpen(true);
+    }
+
+    const handleClose = () => {
+        setUrlType('');
+        setOpen(false);
     }
 
     useRegisterListener('onEdit', setEditable);
@@ -65,15 +70,15 @@ export const Embed = () => {
                 <DropDownItem onClick={() => handleModal('youtube')}>
                     YouTube
                 </DropDownItem>
-                <DropDownItem onClick={() => handleModal('youtube')}>
-                    Instagram
-                </DropDownItem>
                 <DropDownItem onClick={() => handleModal('soundcloud')}>
                     Soundcloud
                 </DropDownItem>
+                <DropDownItem onClick={() => handleModal('instagram')}>
+                    Instagram
+                </DropDownItem>
             </DropDown>
 
-            <Modal isOpen={isOpen} onClose={() => setOpen(false)}>
+            <Modal isOpen={isOpen} onClose={handleClose}>
                 <div className="w-64 h-64 drop-shadow-lg">
                     <UploadUrl type={urlType} onSubmit={handleSumbit} />
                 </div>
