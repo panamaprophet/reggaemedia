@@ -19,18 +19,6 @@ interface Props {
     onUpload: (file: File) => Promise<string>,
 }
 
-const getiFrame = (iframeString: string) => {
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = iframeString;
-
-    const iframeElement = tempElement.firstChild as Node;
-
-    tempElement.removeChild(iframeElement);
-    tempElement.innerHTML = '';
-
-    return iframeElement;
-}
-
 export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     const [editor] = useLexicalComposerContext();
 
@@ -49,14 +37,16 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     const handleSoundcloud = async (key: NodeKey, trackUrl: string) => {
         const url = `https://soundcloud.com/oembed?format=json&url=${trackUrl}`;
         const response = await fetch(url, { method: 'GET' }).then(response => response.json());
-        const iframeData = getiFrame(response.html) as HTMLIFrameElement;
+        const html = new DOMParser().parseFromString(response.html, 'text/html');
+        const iframe = html.querySelector('iframe') as HTMLIFrameElement;
+        const src = iframe.getAttribute('src') as string;
 
         editor.update(() => {
             const node = $getNodeByKey(key);
 
             if ($isEmbedNode(node)) {
                 node.setWidthAndHeight(600, response.height);
-                node.setEmbedUrl(encodeURIComponent(iframeData.src));
+                node.setEmbedUrl(encodeURIComponent(src));
             }
         })
     };
