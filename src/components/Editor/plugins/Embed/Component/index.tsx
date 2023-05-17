@@ -1,18 +1,20 @@
 import { useRef } from 'react';
-import { CLICK_COMMAND, COMMAND_PRIORITY_LOW, NodeKey } from 'lexical';
+import { CLICK_COMMAND, COMMAND_PRIORITY_LOW, ElementFormatType, NodeKey } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
-import { cx } from '@/helpers';
 
 import { useResize } from '@/components/Editor/hooks/useResize';
 import { RESIZE_IMAGE_COMMAND } from '../command';
+import Image from 'next/image';
+import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
 
 interface Props {
     alt: string;
     width: number;
     height: number;
     nodeKey: NodeKey;
+    format: ElementFormatType,
     resizable: boolean;
     src: string;
     contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
@@ -52,14 +54,23 @@ export const EmbedComponent = (props: Props): JSX.Element => {
     useRegisterCommand(CLICK_COMMAND, handleMouseClick, COMMAND_PRIORITY_LOW)
 
     return (
-        <picture className={cx('relative block', isSelected && 'outline outline-sky-600')}>
-            <img
-                src={props.src}
-                ref={ref}
-                alt={props.alt}
-                style={{ width, height }}
-            />
-            {Markers}
-        </picture>
+        <BlockWithAlignableContents
+            format={props.format}
+            nodeKey={props.nodeKey}
+            className={{
+                base: '',
+                focus: '',
+            }}
+        >
+            <div className="relative" style={{ width, height }}>
+                <Image
+                    fill
+                    src={props.src}
+                    ref={ref}
+                    alt={props.alt}
+                />
+                {Markers}
+            </div>
+        </BlockWithAlignableContents>
     );
 }
