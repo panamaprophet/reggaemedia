@@ -21,3 +21,7 @@ export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = createCommand(
 export const INSERT_SOUNDCLOUD_COMMAND: LexicalCommand<string> = createCommand(
     'INSERT_SOUNDCLOUD_COMMAND'
 );
+
+export const INSERT_INSTAGRAM_COMMAND: LexicalCommand<string> = createCommand(
+    'INSERT_INSTAGRAM_COMMAND'
+);

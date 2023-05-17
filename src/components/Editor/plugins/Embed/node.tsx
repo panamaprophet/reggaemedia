@@ -131,4 +131,4 @@ export class EmbedNode extends DecoratorNode<JSX.Element> {
     }
 }
 
-export const $isImageNode = (node: LexicalNode | null | undefined): node is EmbedNode => node instanceof EmbedNode;
+export const $isEmbedNode = (node: LexicalNode | null | undefined): node is EmbedNode => node instanceof EmbedNode;

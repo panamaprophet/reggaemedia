@@ -10,13 +10,25 @@ import {
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import { EmbedNode, ImagePayload } from './node';
-import { INSERT_IMAGE_FILE_COMMAND, INSERT_IMAGE_URL_COMMAND, INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND, RESIZE_IMAGE_COMMAND } from './command';
+import { INSERT_IMAGE_FILE_COMMAND, INSERT_IMAGE_URL_COMMAND, INSERT_INSTAGRAM_COMMAND, INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND, RESIZE_IMAGE_COMMAND } from './command';
 import { useRegisterCommand } from '../../hooks/useRegisterCommand';
-import { $isImageNode } from './node';
+import { $isEmbedNode } from './node';
 
 
 interface Props {
     onUpload: (file: File) => Promise<string>,
+}
+
+const getiFrame = (iframeString: string) => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = iframeString;
+
+    const iframeElement = tempElement.firstChild as Node;
+
+    tempElement.removeChild(iframeElement);
+    tempElement.innerHTML = '';
+
+    return iframeElement;
 }
 
 export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
@@ -28,17 +40,37 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
         editor.update(() => {
             const image = $getNodeByKey(key);
 
-            if ($isImageNode(image)) {
+            if ($isEmbedNode(image)) {
                 image.setSrc(url);
             }
         })
     };
 
-    const handleSoundcloud = async (_key: NodeKey, trackUrl: string) => {
+    const handleSoundcloud = async (key: NodeKey, trackUrl: string) => {
         const url = `https://soundcloud.com/oembed?format=json&url=${trackUrl}`;
         const response = await fetch(url, { method: 'GET' }).then(response => response.json());
+        const iframeData = getiFrame(response.html) as HTMLIFrameElement;
 
-        console.log(response);
+        editor.update(() => {
+            const node = $getNodeByKey(key);
+
+            if ($isEmbedNode(node)) {
+                node.setWidthAndHeight(600, response.height);
+                node.setEmbedUrl(encodeURIComponent(iframeData.src));
+            }
+        })
+    };
+
+    const handleInstagram = async (key: NodeKey, instagramUrl: string) => {
+        const url = instagramUrl.split('?')[0];
+
+        editor.update(() => {
+            const node = $getNodeByKey(key);
+
+            if ($isEmbedNode(node)) {
+                node.setEmbedUrl(encodeURIComponent(`${url}embed`));
+            }
+        });
     };
 
     useRegisterCommand(
@@ -51,14 +83,14 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 width: 300,
                 height: 300,
             };
-            const imageNode = new EmbedNode(image);
+            const embedNode = new EmbedNode(image);
 
-            handlePlaceholder(imageNode.__key, file);
+            handlePlaceholder(embedNode.__key, file);
 
-            $insertNodes([imageNode]);
+            $insertNodes([embedNode]);
 
-            if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-                $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
+            if ($isRootOrShadowRoot(embedNode.getParentOrThrow())) {
+                $wrapNodeInElement(embedNode, $createParagraphNode).selectEnd();
             }
 
             return true;
@@ -69,18 +101,18 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     useRegisterCommand(
         INSERT_IMAGE_URL_COMMAND,
         (src: string) => {
-            const imageNode = new EmbedNode({
-                thumbnail: src,
+            const embedNode = new EmbedNode({
+                thumbnail: encodeURIComponent(src),
                 width: 300,
                 height: 300,
                 contentType: 'image',
                 alt: '',
             });
 
-            $insertNodes([imageNode]);
+            $insertNodes([embedNode]);
 
-            if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-                $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
+            if ($isRootOrShadowRoot(embedNode.getParentOrThrow())) {
+                $wrapNodeInElement(embedNode, $createParagraphNode).selectEnd();
             }
 
             return true;
@@ -95,7 +127,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 const { width, height, key } = payload;
                 const node = $getNodeByKey(key);
 
-                if ($isImageNode(node)) {
+                if ($isEmbedNode(node)) {
                     node.setWidthAndHeight(width, height);
                 }
             })
@@ -113,12 +145,12 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
             let embedUrl = 'https://www.youtube.com/embed/';
 
             if (queryParams.get('list')) {
-                embedUrl += `videoseries?list=${queryParams.get('list')}`
+                embedUrl += `videoseries?list=${queryParams.get('list')}`;
             } else if (queryParams.get('v')) {
-                embedUrl += queryParams.get('v')
+                embedUrl += queryParams.get('v');
             }
 
-            const imageNode = new EmbedNode({
+            const embedNode = new EmbedNode({
                 thumbnail: `https://img.youtube.com/vi/${queryParams.get('v')}/hqdefault.jpg`,
                 width: 560,
                 height: 315,
@@ -127,10 +159,10 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 embedUrl,
             });
 
-            $insertNodes([imageNode]);
+            $insertNodes([embedNode]);
 
-            if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-                $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
+            if ($isRootOrShadowRoot(embedNode.getParentOrThrow())) {
+                $wrapNodeInElement(embedNode, $createParagraphNode).selectEnd();
             }
 
             return true;
@@ -141,16 +173,41 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
     useRegisterCommand(
         INSERT_SOUNDCLOUD_COMMAND,
         (link: string) => {
-            const imageNode = new EmbedNode({
+            const embedNode = new EmbedNode({
                 thumbnail: '/SoundcloudSkeleton.png',
-                width: 200,
-                height: 66,
+                width: 500,
+                height: 165,
                 contentType: 'soundcloud',
                 alt: '',
                 embedUrl: '',
             });
 
-            handleSoundcloud(imageNode.__key, link);
+            handleSoundcloud(embedNode.__key, link);
+
+            $insertNodes([embedNode]);
+
+            if ($isRootOrShadowRoot(embedNode.getParentOrThrow())) {
+                $wrapNodeInElement(embedNode, $createParagraphNode).selectEnd();
+            }
+
+            return true;
+        },
+        COMMAND_PRIORITY_EDITOR
+    );
+
+    useRegisterCommand(
+        INSERT_INSTAGRAM_COMMAND,
+        (link: string) => {
+            const imageNode = new EmbedNode({
+                thumbnail: '/InstagramSkeleton.png',
+                width: 470,
+                height: 760,
+                contentType: 'instagram',
+                alt: '',
+                embedUrl: '',
+            });
+
+            handleInstagram(imageNode.__key, link);
 
             $insertNodes([imageNode]);
 
