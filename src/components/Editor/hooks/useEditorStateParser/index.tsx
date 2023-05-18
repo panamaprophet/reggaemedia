@@ -51,7 +51,7 @@ export const useEditorStateParser = (
         if (isImage(node)) {
             const { alt, ...rest } = node;
 
-            return <Image alt={alt} src={rest.thumbnail} {...props} {...rest} />;
+            return <Image alt={alt} {...props} {...rest} />;
         }
 
         return <Tag {...props} />;
