@@ -3,29 +3,20 @@ import type { ElementFormatType, LexicalNode, NodeKey } from 'lexical';
 import { DecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 import { EmbedComponent } from './Component';
 
-export type Dimension = 'inherit' | number;
 
-export interface ImagePayload {
+export type EmbedContentType = 'instagram' | 'soundcloud' | 'youtube' | 'image';
+
+export interface EmbedProps {
     alt: string;
     thumbnail: string;
     src?: string;
     key?: NodeKey;
     width: number;
     height: number;
-    contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
+    contentType: EmbedContentType,
 }
 
-export type SerializedImageNode = {
-    version: 1;
-    type: 'embed';
-    format: ElementFormatType,
-    thumbnail: string;
-    src: string;
-    alt: string;
-    contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
-    height: number;
-    width: number;
-};
+type SerializedImageNode = EmbedProps & { version: 1, type: 'embed', format: ElementFormatType }
 
 
 const convertImageElement = (domNode: Node) => {
@@ -40,7 +31,7 @@ const convertImageElement = (domNode: Node) => {
 }
 
 export class EmbedNode extends DecoratorBlockNode {
-    props: Required<Omit<ImagePayload, 'key'>>;
+    props: Required<Omit<EmbedProps, 'key'>>;
 
     static getType() {
         return 'embed';
@@ -70,7 +61,7 @@ export class EmbedNode extends DecoratorBlockNode {
         };
     }
 
-    constructor(props: ImagePayload, format: ElementFormatType = '', key?: NodeKey) {
+    constructor(props: EmbedProps, format: ElementFormatType = '', key?: NodeKey) {
         super(format, key);
 
         this.props = {
