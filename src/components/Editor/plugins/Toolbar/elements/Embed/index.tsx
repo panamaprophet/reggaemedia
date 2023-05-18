@@ -1,75 +1,57 @@
+import { useState } from 'react';
 import { DropDown, DropDownItem } from '@/components/Editor/elements/DropDown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useState } from 'react';
-import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { Modal } from '@/components/Modal';
 import { InputText } from '@/components/Input/InputText';
 import { EmbedContentType, INSERT_EMBED_COMMAND } from '../../../Embed';
 
 interface URLProps {
-    type: EmbedContentType | '',
-    onSubmit: (type: EmbedContentType | '', url: string) => void,
+    onSubmit: (url: string) => void,
 }
 
-const UploadUrl = ({ type, onSubmit }: URLProps) => {
-    const [url, setUrl] = useState<string>('');
+const UploadUrl = ({ onSubmit }: URLProps) => {
+    const [url, setUrl] = useState('');
 
     return (
         <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2'>
             <InputText placeholder='Insert URL' className='w-full border rounded p-2' value={url} onChange={(data) => setUrl(data)} />
-            <button disabled={!url} className='w-full cursor-pointer rounded border p-2' onClick={() => onSubmit(type, url)}>Submit</button>
+            <button disabled={!url} className='w-full cursor-pointer rounded border p-2' onClick={() => onSubmit(url)}>Submit</button>
         </div>
     )
 }
 
 export const Embed = () => {
     const [editor] = useLexicalComposerContext();
-    const [isOpen, setOpen] = useState(false);
-    const [urlType, setUrlType] = useState<EmbedContentType | ''>('');
-    const [isEditable, setEditable] = useState(editor.isEditable());
+    const [type, setEmbedType] = useState<EmbedContentType>();
 
-    useRegisterListener('onEdit', setEditable);
+    const handleSumbit = (source: string) => {
+        if (!type) {
+            return;
+        }
 
-    const handleSumbit = (type: EmbedContentType | '', source: string) => {
         editor.dispatchCommand(INSERT_EMBED_COMMAND, { type, source });
-
-        handleClose();
+        setEmbedType(undefined);
     }
-
-    const handleModal = (type: EmbedContentType) => {
-        setUrlType(type);
-        setOpen(true);
-    }
-
-    const handleClose = () => {
-        setUrlType('');
-        setOpen(false);
-    }
-
-    useRegisterListener('onEdit', setEditable);
 
     return (
         <>
             <DropDown
-                disabled={!isEditable}
                 buttonLabel={'Медиа'}
                 buttonAriaLabel="Formatting options for text style"
             >
-                <DropDownItem onClick={() => handleModal('youtube')}>
+                <DropDownItem onClick={() => setEmbedType('youtube')}>
                     YouTube
                 </DropDownItem>
-                <DropDownItem onClick={() => handleModal('soundcloud')}>
+                <DropDownItem onClick={() => setEmbedType('soundcloud')}>
                     Soundcloud
                 </DropDownItem>
-                <DropDownItem onClick={() => handleModal('instagram')}>
+                <DropDownItem onClick={() => setEmbedType('instagram')}>
                     Instagram
                 </DropDownItem>
             </DropDown>
 
-            <Modal isOpen={isOpen} onClose={handleClose}>
-                <div className="w-64 h-64 drop-shadow-lg">
-                    <UploadUrl type={urlType} onSubmit={handleSumbit} />
-                </div>
+            <Modal isOpen={Boolean(type)} onClose={() => setEmbedType(undefined)}>
+                <UploadUrl onSubmit={handleSumbit} />
             </Modal>
         </>
     );
