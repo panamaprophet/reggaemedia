@@ -10,8 +10,4 @@ export const RESIZE_IMAGE_COMMAND: LexicalCommand<{ width: number, height: numbe
     'RESIZE_IMAGE_COMMAND'
 );
 
-export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = createCommand('INSERT_YOUTUBE_COMMAND');
-
-export const INSERT_SOUNDCLOUD_COMMAND: LexicalCommand<string> = createCommand('INSERT_SOUNDCLOUD_COMMAND');
-
-export const INSERT_INSTAGRAM_COMMAND: LexicalCommand<string> = createCommand('INSERT_INSTAGRAM_COMMAND');
+export const INSERT_EMBED_COMMAND: LexicalCommand<{ type: string, source: string } | { type: 'image', source: File | string }> = createCommand('INSERT_EMBED_COMMAND');
