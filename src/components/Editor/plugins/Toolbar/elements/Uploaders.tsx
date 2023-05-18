@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { InputFile } from '@/components/Input/InputFile';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import {
-    INSERT_IMAGE_URL_COMMAND,
-    INSERT_IMAGE_FILE_COMMAND,
-} from '../../Image';
+import { INSERT_EMBED_COMMAND } from '../../Embed';
 import { InputText } from '@/components/Input/InputText';
 
 
@@ -17,7 +14,7 @@ export const UploadFile = ({ onSubmit }: Props) => {
     const [images, setImages] = useState<File[]>([]);
 
     const handleSumbit = () => {
-        images.forEach((file) => editor.dispatchCommand(INSERT_IMAGE_FILE_COMMAND, file));
+        images.forEach((file) => editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'image', source: file }));
 
         onSubmit();
     };
@@ -35,7 +32,7 @@ export const UploadUrl = ({ onSubmit }: Props) => {
     const [url, setUrl] = useState<string>('');
 
     const handleSumbit = () => {
-        editor.dispatchCommand(INSERT_IMAGE_URL_COMMAND, url);
+        editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'image', source: url });
 
         onSubmit();
     };

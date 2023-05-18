@@ -7,7 +7,7 @@ import {
     SerializedElementNode,
     EditorThemeClasses,
 } from 'lexical';
-import { SerializedImageNode } from '@/components/Editor/plugins';
+import { SerializedEmbedNode } from '@/components/Editor/plugins';
 import { SerializedCutterNode } from '@/components/Editor/plugins/Cutter';
 import { cx } from '@/helpers';
 
@@ -34,7 +34,7 @@ export const getAlign = (formatType: ElementFormatType) => formatType ? `text-${
 
 export const isText = (node: SerializedLexicalNode): node is SerializedTextNode => node.type === 'text';
 
-export const isImage = (node: SerializedLexicalNode): node is SerializedImageNode => node.type === 'image';
+export const isImage = (node: SerializedLexicalNode): node is SerializedEmbedNode => node.type === 'image';
 
 export const isHeading = (node: SerializedLexicalNode): node is SerializedHeadingNode => node.type === 'heading';
 

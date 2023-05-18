@@ -21,7 +21,7 @@ export const useEditorStateParser = (
     const convertToHtml = (node: SerializedLexicalNode) => {
         const Tag = isHeading(node) ? node.tag : getTagByType(node.type);
 
-        const props ={
+        const props = {
             key: key++,
             children: null,
             className: getClassName(node, theme),
