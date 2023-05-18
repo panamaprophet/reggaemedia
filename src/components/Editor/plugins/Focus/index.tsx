@@ -6,7 +6,7 @@ export const FocusPlugin = () => {
     const [editor] = useLexicalComposerContext();
 
     useEffect(() => {
-        editor.focus();
+        editor.focus(undefined, { defaultSelection: 'rootStart' });
     }, [editor]);
 
     return null;
