@@ -51,7 +51,7 @@ export const EmbedComponent = (props: Props): JSX.Element => {
         return false;
     }
 
-    useRegisterCommand(CLICK_COMMAND, handleMouseClick, COMMAND_PRIORITY_LOW)
+    useRegisterCommand(CLICK_COMMAND, handleMouseClick, COMMAND_PRIORITY_LOW);
 
     return (
         <BlockWithAlignableContents
@@ -59,10 +59,10 @@ export const EmbedComponent = (props: Props): JSX.Element => {
             nodeKey={props.nodeKey}
             className={{
                 base: '',
-                focus: '',
+                focus: 'outline-sky-600',
             }}
         >
-            <div className="relative" style={{ width, height }}>
+            <div className="relative inline-block" style={{ width, height }}>
                 <Image
                     fill
                     src={props.src}
