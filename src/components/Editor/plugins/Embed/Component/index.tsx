@@ -8,18 +8,9 @@ import { useResize } from '@/components/Editor/hooks/useResize';
 import { RESIZE_EMBED_COMMAND } from '../command';
 import Image from 'next/image';
 import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
-import { EmbedContentType } from '../node';
+import { EmbedProps } from '../node';
 
-interface Props {
-    alt: string;
-    width: number;
-    height: number;
-    nodeKey: NodeKey;
-    format: ElementFormatType,
-    resizable: boolean;
-    src: string;
-    contentType: EmbedContentType,
-}
+type Props = Omit<EmbedProps, 'thumbnail'> & { resizable: boolean, nodeKey: NodeKey, format: ElementFormatType }
 
 export const EmbedComponent = (props: Props): JSX.Element => {
     const [editor] = useLexicalComposerContext();
