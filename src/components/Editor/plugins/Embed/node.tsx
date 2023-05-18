@@ -8,7 +8,7 @@ export type Dimension = 'inherit' | number;
 export interface ImagePayload {
     alt: string;
     thumbnail: string;
-    embedUrl?: string;
+    src?: string;
     key?: NodeKey;
     width: number;
     height: number;
@@ -46,7 +46,7 @@ export class EmbedNode extends DecoratorBlockNode {
     }
 
     static clone(node: EmbedNode) {
-        return new EmbedNode(node.props);
+        return new EmbedNode(node.props, node.__format, node.__key);
     }
 
     static importJSON(serializedNode: SerializedImageNode) {
@@ -71,9 +71,10 @@ export class EmbedNode extends DecoratorBlockNode {
 
     constructor(props: ImagePayload, format?: ElementFormatType, key?: NodeKey) {
         super(format, key);
+
         this.props = {
             ...props,
-            embedUrl: props.embedUrl || '',
+            src: props.src || '',
         };
     }
 
@@ -86,20 +87,24 @@ export class EmbedNode extends DecoratorBlockNode {
         };
     }
 
+    getFormatType() {
+        return this.__format;
+    }
+
     setWidthAndHeight(width: number, height: number) {
         const writable = this.getWritable();
         writable.props.width = width;
         writable.props.height = height;
     }
 
-    setSrc(src: string) {
+    setThumbnail(src: string) {
         const writable = this.getWritable();
         writable.props.thumbnail = src;
     }
 
-    setEmbedUrl(url: string) {
+    setSrc(url: string) {
         const writable = this.getWritable();
-        writable.props.embedUrl = url;
+        writable.props.src = url;
     }
 
     updateDOM(): false {
