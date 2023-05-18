@@ -94,6 +94,7 @@ export const embedInstagram = ({ source }: Props) => {
 export const embedImageFile = (editor: LexicalEditor, source: File, onUpload: (source: File) => Promise<string>) => {
     const embedNode = new EmbedNode({
         thumbnail: URL.createObjectURL(source),
+        src: URL.createObjectURL(source),
         alt: '',
         contentType: 'image',
         width: 300,
