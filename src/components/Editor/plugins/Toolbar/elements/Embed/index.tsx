@@ -4,13 +4,11 @@ import { useState } from 'react';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { Modal } from '@/components/Modal';
 import { InputText } from '@/components/Input/InputText';
-import { INSERT_EMBED_COMMAND } from '../../../Embed';
-
-type UrlType = 'instagram' | 'soundcloud' | 'youtube' | '';
+import { EmbedContentType, INSERT_EMBED_COMMAND } from '../../../Embed';
 
 interface URLProps {
-    type: UrlType,
-    onSubmit: (type: UrlType, url: string) => void,
+    type: EmbedContentType | '',
+    onSubmit: (type: EmbedContentType | '', url: string) => void,
 }
 
 const UploadUrl = ({ type, onSubmit }: URLProps) => {
@@ -27,28 +25,18 @@ const UploadUrl = ({ type, onSubmit }: URLProps) => {
 export const Embed = () => {
     const [editor] = useLexicalComposerContext();
     const [isOpen, setOpen] = useState(false);
-    const [urlType, setUrlType] = useState<UrlType>('');
+    const [urlType, setUrlType] = useState<EmbedContentType | ''>('');
     const [isEditable, setEditable] = useState(editor.isEditable());
 
     useRegisterListener('onEdit', setEditable);
 
-    const handleSumbit = (type: UrlType, source: string) => {
-        switch (type) {
-            case 'youtube':
-                editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'youtube', source });
-                break;
-            case 'soundcloud':
-                editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'soundcloud', source });
-                break;
-            case 'instagram':
-                editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'instagram', source });
-                break;
-        }
+    const handleSumbit = (type: EmbedContentType | '', source: string) => {
+        editor.dispatchCommand(INSERT_EMBED_COMMAND, { type, source });
 
         handleClose();
     }
 
-    const handleModal = (type: UrlType) => {
+    const handleModal = (type: EmbedContentType) => {
         setUrlType(type);
         setOpen(true);
     }

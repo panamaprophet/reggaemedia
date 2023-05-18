@@ -8,6 +8,7 @@ import { useResize } from '@/components/Editor/hooks/useResize';
 import { RESIZE_EMBED_COMMAND } from '../command';
 import Image from 'next/image';
 import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
+import { EmbedContentType } from '../node';
 
 interface Props {
     alt: string;
@@ -17,7 +18,7 @@ interface Props {
     format: ElementFormatType,
     resizable: boolean;
     src: string;
-    contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
+    contentType: EmbedContentType,
 }
 
 export const EmbedComponent = (props: Props): JSX.Element => {
