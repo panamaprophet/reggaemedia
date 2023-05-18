@@ -9,14 +9,14 @@ export type EmbedContentType = 'instagram' | 'soundcloud' | 'youtube' | 'image';
 export interface EmbedProps {
     alt: string;
     thumbnail: string;
-    src?: string;
+    src: string;
     key?: NodeKey;
     width: number;
     height: number;
     contentType: EmbedContentType,
 }
 
-type SerializedImageNode = EmbedProps & { version: 1, type: 'embed', format: ElementFormatType }
+export type SerializedEmbedNode = EmbedProps & { version: 1, type: 'embed', format: ElementFormatType }
 
 
 const convertImageElement = (domNode: Node) => {
@@ -24,7 +24,7 @@ const convertImageElement = (domNode: Node) => {
         const { alt, src, width, height } = domNode;
 
         return {
-            node: new EmbedNode({ alt, thumbnail: src, width, height, contentType: 'image' })
+            node: new EmbedNode({ alt, thumbnail: src, width, height, src, contentType: 'image' })
         };
     }
     return null;
@@ -41,7 +41,7 @@ export class EmbedNode extends DecoratorBlockNode {
         return new EmbedNode(node.props, node.__format, node.__key);
     }
 
-    static importJSON(serializedNode: SerializedImageNode) {
+    static importJSON(serializedNode: SerializedEmbedNode) {
         return new EmbedNode(serializedNode, serializedNode.format);
     }
 
@@ -106,7 +106,7 @@ export class EmbedNode extends DecoratorBlockNode {
     decorate() {
         return (
             <EmbedComponent
-                src={this.props.thumbnail}
+                src={this.props.src}
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
