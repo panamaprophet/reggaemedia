@@ -46,7 +46,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
 
             if ($isEmbedNode(node)) {
                 node.setWidthAndHeight(600, response.height);
-                node.setEmbedUrl(encodeURIComponent(src));
+                node.setSrc(encodeURIComponent(src));
             }
         })
     };
@@ -58,7 +58,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
             const node = $getNodeByKey(key);
 
             if ($isEmbedNode(node)) {
-                node.setEmbedUrl(encodeURIComponent(`${url}embed`));
+                node.setSrc(encodeURIComponent(`${url}embed`));
             }
         });
     };
@@ -132,12 +132,12 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
         (link: string) => {
             const url = new URL(link);
             const queryParams = new URLSearchParams(url.search);
-            let embedUrl = 'https://www.youtube.com/embed/';
+            let src = 'https://www.youtube.com/embed/';
 
             if (queryParams.get('list')) {
-                embedUrl += `videoseries?list=${queryParams.get('list')}`;
+                src += `videoseries?list=${queryParams.get('list')}`;
             } else if (queryParams.get('v')) {
-                embedUrl += queryParams.get('v');
+                src += queryParams.get('v');
             }
 
             const embedNode = new EmbedNode({
@@ -146,7 +146,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 height: 315,
                 contentType: 'youtube',
                 alt: '',
-                embedUrl,
+                src: encodeURIComponent(src),
             });
 
             $insertNodeToNearestRoot(embedNode);
@@ -165,7 +165,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 height: 165,
                 contentType: 'soundcloud',
                 alt: '',
-                embedUrl: '',
+                src: '',
             });
 
             handleSoundcloud(embedNode.__key, link);
@@ -186,7 +186,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 height: 760,
                 contentType: 'instagram',
                 alt: '',
-                embedUrl: '',
+                src: '',
             });
 
             handleInstagram(embedNode.__key, link);
