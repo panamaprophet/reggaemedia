@@ -20,6 +20,7 @@ export type SerializedImageNode = {
     type: 'embed';
     format: ElementFormatType,
     thumbnail: string;
+    src: string;
     alt: string;
     contentType: 'instagram' | 'soundcloud' | 'youtube' | 'image',
     height: number;
@@ -50,7 +51,7 @@ export class EmbedNode extends DecoratorBlockNode {
     }
 
     static importJSON(serializedNode: SerializedImageNode) {
-        return new EmbedNode(serializedNode);
+        return new EmbedNode(serializedNode, serializedNode.format);
     }
 
     exportDOM() {
@@ -69,7 +70,7 @@ export class EmbedNode extends DecoratorBlockNode {
         };
     }
 
-    constructor(props: ImagePayload, format?: ElementFormatType, key?: NodeKey) {
+    constructor(props: ImagePayload, format: ElementFormatType = '', key?: NodeKey) {
         super(format, key);
 
         this.props = {
