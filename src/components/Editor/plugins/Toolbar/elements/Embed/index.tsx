@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { Modal } from '@/components/Modal';
 import { InputText } from '@/components/Input/InputText';
-import { INSERT_INSTAGRAM_COMMAND, INSERT_SOUNDCLOUD_COMMAND, INSERT_YOUTUBE_COMMAND } from '../../../Embed';
+import { INSERT_EMBED_COMMAND } from '../../../Embed';
 
 type UrlType = 'instagram' | 'soundcloud' | 'youtube' | '';
 
@@ -32,16 +32,16 @@ export const Embed = () => {
 
     useRegisterListener('onEdit', setEditable);
 
-    const handleSumbit = (type: UrlType, url: string) => {
+    const handleSumbit = (type: UrlType, source: string) => {
         switch (type) {
             case 'youtube':
-                editor.dispatchCommand(INSERT_YOUTUBE_COMMAND, url);
+                editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'youtube', source });
                 break;
             case 'soundcloud':
-                editor.dispatchCommand(INSERT_SOUNDCLOUD_COMMAND, url);
+                editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'soundcloud', source });
                 break;
             case 'instagram':
-                editor.dispatchCommand(INSERT_INSTAGRAM_COMMAND, url);
+                editor.dispatchCommand(INSERT_EMBED_COMMAND, { type: 'instagram', source });
                 break;
         }
 
