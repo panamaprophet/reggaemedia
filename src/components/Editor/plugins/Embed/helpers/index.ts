@@ -1,8 +1,13 @@
 import { $insertNodeToNearestRoot } from '@lexical/utils';
 import { LexicalEditor } from 'lexical';
-import { EmbedNode, ImagePayload } from '../node';
+import { EmbedNode } from '../node';
 
-export const embedImageUrl = (source: string, _context: { editor: LexicalEditor }) => {
+interface Props {
+    source: string,
+    editor?: LexicalEditor,
+}
+
+export const embedImageUrl = ({ source }: Props) => {
     const embedNode = new EmbedNode({
         thumbnail: source,
         src: source,
@@ -17,7 +22,7 @@ export const embedImageUrl = (source: string, _context: { editor: LexicalEditor 
     return true;
 };
 
-export const embedYoutube = (source: string, _context: { editor: LexicalEditor }) => {
+export const embedYoutube = ({ source }: Props) => {
     const url = new URL(source);
     const queryParams = new URLSearchParams(url.search);
 
@@ -51,7 +56,7 @@ const getSoundcloudEmbedUrl = (source: string) =>
         .then(html => html.querySelector('iframe')!.getAttribute('src')!);
 
 
-export const embedSoundcloud = (source: string, { editor }: { editor: LexicalEditor }) => {
+export const embedSoundcloud = ({ source, editor }: Props) => {
     const embedNode = new EmbedNode({
         thumbnail: '/SoundcloudSkeleton.png',
         width: 500,
@@ -61,7 +66,7 @@ export const embedSoundcloud = (source: string, { editor }: { editor: LexicalEdi
         src: '',
     });
 
-    getSoundcloudEmbedUrl(source).then(src => editor.update(() => embedNode.setSrc(src)));
+    getSoundcloudEmbedUrl(source).then(src => editor?.update(() => embedNode.setSrc(src)));
 
     $insertNodeToNearestRoot(embedNode);
 
@@ -69,7 +74,7 @@ export const embedSoundcloud = (source: string, { editor }: { editor: LexicalEdi
 };
 
 
-export const embedInstagram = (source: string, _context: { editor: LexicalEditor }) => {
+export const embedInstagram = ({ source }: Props) => {
     const url = source.split('?')[0];
 
     const embedNode = new EmbedNode({
@@ -87,14 +92,13 @@ export const embedInstagram = (source: string, _context: { editor: LexicalEditor
 };
 
 export const embedImageFile = (editor: LexicalEditor, source: File, onUpload: (source: File) => Promise<string>) => {
-    const image: ImagePayload = {
+    const embedNode = new EmbedNode({
         thumbnail: URL.createObjectURL(source),
         alt: '',
         contentType: 'image',
         width: 300,
         height: 300,
-    };
-    const embedNode = new EmbedNode(image);
+    });
 
     onUpload(source).then(src => editor.update(() => embedNode.setSrc(src)));
 

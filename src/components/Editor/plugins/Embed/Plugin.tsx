@@ -39,13 +39,13 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
         ({ type, source }: { type: string, source: string } | { type: 'image', source: File | string }) => {
             switch (type) {
                 case 'instagram':
-                    return embedInstagram(source, { editor });
+                    return embedInstagram({ source });
                 case 'soundcloud':
-                    return embedSoundcloud(source, { editor });
+                    return embedSoundcloud({ source, editor });
                 case 'youtube':
-                    return embedYoutube(source, { editor });
+                    return embedYoutube({ source });
                 case 'image':
-                    return typeof source === 'string' ? embedImageUrl(source, { editor }) : embedImageFile(editor, source, onUpload);
+                    return typeof source === 'string' ? embedImageUrl({ source, editor }) : embedImageFile(editor, source, onUpload);
                 default:
                     return false;
             }
