@@ -5,7 +5,7 @@ import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 
 import { useResize } from '@/components/Editor/hooks/useResize';
-import { RESIZE_IMAGE_COMMAND } from '../command';
+import { RESIZE_EMBED_COMMAND } from '../command';
 import Image from 'next/image';
 import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
 
@@ -26,13 +26,11 @@ export const EmbedComponent = (props: Props): JSX.Element => {
 
     const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(props.nodeKey);
     const [isResizing, Markers, { width, height }] = useResize({
-        allowCorners: true,
-        allowWidthAndHeight: props.contentType === 'image',
+        keepAspectRatio: props.contentType !== 'image',
         isSelected,
         width: props.width,
         height: props.height,
-        nodeKey: props.nodeKey,
-        callback: (width: number, height: number) => editor.dispatchCommand(RESIZE_IMAGE_COMMAND, { width, height, key: props.nodeKey }),
+        callback: (width, height) => editor.dispatchCommand(RESIZE_EMBED_COMMAND, { width, height, key: props.nodeKey }),
     });
 
 
