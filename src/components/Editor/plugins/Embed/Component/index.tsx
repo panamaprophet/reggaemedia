@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
 import { EmbedProps } from '../node';
 
-type Props = Omit<EmbedProps, 'thumbnail'> & { resizable: boolean, nodeKey: NodeKey, format: ElementFormatType }
+type Props = Omit<EmbedProps, 'src'> & { resizable: boolean, nodeKey: NodeKey, format: ElementFormatType }
 
 export const EmbedComponent = (props: Props): JSX.Element => {
     const [editor] = useLexicalComposerContext();
@@ -55,7 +55,7 @@ export const EmbedComponent = (props: Props): JSX.Element => {
             <div className="relative inline-block" style={{ width, height }}>
                 <Image
                     fill
-                    src={props.src}
+                    src={props.thumbnail}
                     ref={ref}
                     alt={props.alt}
                 />

@@ -106,7 +106,7 @@ export class EmbedNode extends DecoratorBlockNode {
     decorate() {
         return (
             <EmbedComponent
-                src={this.props.src}
+                thumbnail={this.props.src}
                 alt={this.props.alt}
                 width={this.props.width}
                 height={this.props.height}
