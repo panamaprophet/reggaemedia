@@ -64,11 +64,11 @@ export const useEditorStateParser = (
         }
 
         if (isEmbed(node)) {
-            const { className, ...rest } = props;
+            const { key, className } = props;
 
             return (
-                <p className={className}>
-                    <Tag {...rest} />
+                <p key={key} className={className}>
+                    <Tag {...props} />
                 </p>
             );
         }

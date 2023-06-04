@@ -60,7 +60,7 @@ export const getTagByType = (nodeType: string) => {
 };
 
 export const getClassName = (node: SerializedLexicalNode, theme: EditorThemeClasses) => {
-    const align = isElementNode(node) || isEmbed(node) && getAlign(node.format);
+    const align = (isElementNode(node) || isEmbed(node)) && getAlign(node.format);
     const style = isText(node) && getTextStyle(node.format);
     const className = cx(align, style, isHeading(node) ? theme.heading?.[node.tag] : theme[node.type]);
 

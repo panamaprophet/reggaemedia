@@ -28,6 +28,7 @@ export const embedYoutube = ({ source }: Props) => {
 
     const videoId = searchParams.get('v');
     const playlistId = searchParams.get('list');
+    const startTime = searchParams.get('t');
 
     let src = 'https://www.youtube.com/embed/';
 
@@ -35,6 +36,12 @@ export const embedYoutube = ({ source }: Props) => {
         src += `videoseries?list=${playlistId}`;
     } else {
         src += videoId;
+    }
+
+    if (startTime) {
+        const separator = src.includes('?') ? '&' : '?';
+
+        src += `${separator}start=${parseInt(startTime)}`;
     }
 
     const embedNode = new EmbedNode({
