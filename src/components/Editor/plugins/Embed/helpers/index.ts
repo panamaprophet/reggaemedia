@@ -24,18 +24,21 @@ export const embedImageUrl = ({ source }: Props) => {
 
 export const embedYoutube = ({ source }: Props) => {
     const url = new URL(source);
-    const queryParams = new URLSearchParams(url.search);
+    const { searchParams } = url;
+
+    const videoId = searchParams.get('v');
+    const playlistId = searchParams.get('list');
 
     let src = 'https://www.youtube.com/embed/';
 
-    if (queryParams.get('list')) {
-        src += `videoseries?list=${queryParams.get('list')}`;
-    } else if (queryParams.get('v')) {
-        src += queryParams.get('v');
+    if (playlistId) {
+        src += `videoseries?list=${playlistId}`;
+    } else {
+        src += videoId;
     }
 
     const embedNode = new EmbedNode({
-        thumbnail: `https://img.youtube.com/vi/${queryParams.get('v')}/hqdefault.jpg`,
+        thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
         width: 560,
         height: 315,
         contentType: 'youtube',

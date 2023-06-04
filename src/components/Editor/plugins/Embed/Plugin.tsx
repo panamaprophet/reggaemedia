@@ -6,7 +6,6 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 
 import { INSERT_EMBED_COMMAND, RESIZE_EMBED_COMMAND } from './command';
 import { useRegisterCommand } from '../../hooks/useRegisterCommand';
-import { $isEmbedNode } from './node';
 import { embedImageFile, embedImageUrl, embedInstagram, embedSoundcloud, embedYoutube } from './helpers';
 
 
@@ -24,7 +23,7 @@ export const EmbedPlugin = ({ onUpload }: Props): JSX.Element | null => {
                 const { width, height, key } = payload;
                 const node = $getNodeByKey(key);
 
-                if ($isEmbedNode(node)) {
+                if (node?.type === 'embed') {
                     node.setWidthAndHeight(width, height);
                 }
             })

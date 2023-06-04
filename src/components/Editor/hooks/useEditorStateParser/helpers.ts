@@ -26,6 +26,7 @@ const tagMap: { [k: string]: string } = {
     text: 'span',
     link: 'a',
     linebreak: 'span',
+    embed: 'iframe',
 };
 
 export const getTextStyle = (format: number) => textStyle[format] || '';
@@ -34,7 +35,7 @@ export const getAlign = (formatType: ElementFormatType) => formatType ? `text-${
 
 export const isText = (node: SerializedLexicalNode): node is SerializedTextNode => node.type === 'text';
 
-export const isImage = (node: SerializedLexicalNode): node is SerializedEmbedNode => node.type === 'image';
+export const isImage = (node: SerializedLexicalNode): node is SerializedEmbedNode => isEmbed(node) && node.contentType === 'image';
 
 export const isHeading = (node: SerializedLexicalNode): node is SerializedHeadingNode => node.type === 'heading';
 
@@ -43,6 +44,8 @@ export const isLink = (node: SerializedLexicalNode): node is SerializedLinkNode 
 export const isElementNode = (node: SerializedLexicalNode): node is SerializedElementNode => 'children' in node;
 
 export const isCutter = (node: SerializedLexicalNode): node is SerializedCutterNode => node.type === 'cutter';
+
+export const isEmbed = (node: SerializedLexicalNode): node is SerializedEmbedNode => node.type === 'embed';
 
 export const getTagByType = (nodeType: string) => {
     const tag = tagMap[nodeType];
@@ -57,7 +60,7 @@ export const getTagByType = (nodeType: string) => {
 };
 
 export const getClassName = (node: SerializedLexicalNode, theme: EditorThemeClasses) => {
-    const align = isElementNode(node) && getAlign(node.format);
+    const align = isElementNode(node) || isEmbed(node) && getAlign(node.format);
     const style = isText(node) && getTextStyle(node.format);
     const className = cx(align, style, isHeading(node) ? theme.heading?.[node.tag] : theme[node.type]);
 

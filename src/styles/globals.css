@@ -23,8 +23,10 @@ body {
 }
 
 img,
-svg {
+svg,
+iframe {
     vertical-align: top;
+    display: inline-block;
 }
 
 #__next {
