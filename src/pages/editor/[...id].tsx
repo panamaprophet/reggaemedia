@@ -44,13 +44,13 @@ export const Page = () => {
     });
 
     useEffect(() => {
-        if (id) {
+        if (id && isLoading) {
             getArticle(id).then((article) => {
                 setState(article);
                 setLoading(false);
             });
         }
-    }, [id]);
+    }, [id, isLoading]);
 
     useEffect(() => {
         if (!state.authorId) {

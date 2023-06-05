@@ -1,5 +1,4 @@
-import type { ElementFormatType, LexicalNode, NodeKey } from 'lexical';
-
+import type { ElementFormatType, NodeKey } from 'lexical';
 import { DecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 import { EmbedComponent } from './Component';
 
@@ -106,17 +105,11 @@ export class EmbedNode extends DecoratorBlockNode {
     decorate() {
         return (
             <EmbedComponent
-                thumbnail={this.props.src}
-                alt={this.props.alt}
-                width={this.props.width}
-                height={this.props.height}
-                format={this.__format}
-                contentType={this.props.contentType}
-                nodeKey={this.getKey()}
                 resizable={true}
+                format={this.__format}
+                nodeKey={this.getKey()}
+                {...this.props}
             />
         );
     }
 }
-
-export const $isEmbedNode = (node: LexicalNode | null | undefined): node is EmbedNode => node instanceof EmbedNode;

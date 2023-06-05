@@ -5,6 +5,7 @@ import {
     getTagByType,
     isCutter,
     isElementNode,
+    isEmbed,
     isHeading,
     isImage,
     isLink,
@@ -44,14 +45,32 @@ export const useEditorStateParser = (
             Object.assign(props, { href: node.url });
         }
 
+        if (isEmbed(node)) {
+            Object.assign(props, {
+                width: node.width,
+                height: node.height,
+                src: decodeURIComponent(node.src),
+            });
+        }
+
         if (isText(node) && !props.className) {
             return node.text;
         }
 
         if (isImage(node)) {
-            const { alt, ...rest } = node;
+            const { alt, src } = node;
 
-            return <Image alt={alt} {...props} {...rest} />;
+            return <Image alt={alt} src={decodeURIComponent(src)} {...props} />;
+        }
+
+        if (isEmbed(node)) {
+            const { key, className } = props;
+
+            return (
+                <p key={key} className={className}>
+                    <Tag {...props} />
+                </p>
+            );
         }
 
         return <Tag {...props} />;
