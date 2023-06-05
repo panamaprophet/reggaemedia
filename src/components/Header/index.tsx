@@ -7,10 +7,12 @@ import { Instagram } from '../Icons/Instagram';
 import { Section } from '../Section';
 import { ReactNode } from 'react';
 import { cx } from '@/helpers';
+import { Logo } from '../Logo';
 
 
 interface Props {
     onSearch?: (text: string) => void,
+    hasInlineLogo?: boolean,
 }
 
 const LinkButtonWithIcon = ({ to, children, color = 'bg-black-500' }: { children: ReactNode, color: string, to: string }) => (
@@ -19,37 +21,49 @@ const LinkButtonWithIcon = ({ to, children, color = 'bg-black-500' }: { children
     </Link>
 );
 
-export const Header = ({ onSearch = () => { } }: Props) => {
+export const Header = ({ hasInlineLogo, onSearch = () => { } }: Props) => {
     const links = {
         youtube: 'https://www.youtube.com/watch?v=7ip0XCgggFQ',
         vk: 'https://vk.com/reggaemedia',
         instagram: 'https://www.instagram.com/reggaemedia/',
-    }
+    };
 
     return (
-        <Section>
-            <Row className="w-full px-4 py-2 uppercase text-gray-600 flex justify-between items-center">
-                <div className="flex gap-4">
-                    <Link className="text-xs uppercase" to="/">Статьи</Link>
-                    <Link className="text-xs uppercase" to="/">Связаться c нами</Link>
+        <>
+            <Section>
+                <Row className="w-full px-4 py-2 uppercase text-gray-600 flex justify-between items-center">
+                    <div className="flex gap-4 items-center">
+                        {hasInlineLogo && (
+                            <Link to="/">
+                                <Logo size="small" />
+                            </Link>
+                        )}
+                        <Link className="text-xs uppercase" to="/articles">Статьи</Link>
+                        <Link className="text-xs uppercase" to="/contacts">Связаться c нами</Link>
+                    </div>
+
+                    <div className="flex gap-4">
+                        <LinkButtonWithIcon to={links.vk} color="bg-blue-500">
+                            <VK />
+                        </LinkButtonWithIcon>
+
+                        <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
+                            <YouTube />
+                        </LinkButtonWithIcon>
+
+                        <LinkButtonWithIcon to={links.instagram} color="bg-blue-500">
+                            <Instagram />
+                        </LinkButtonWithIcon>
+
+                        <Search onSubmit={(query: string) => onSearch(query)} />
+                    </div>
+                </Row>
+            </Section>
+            {!hasInlineLogo && (
+                <div className="flex justify-center items-center border-b border-b-slate-200 py-16">
+                    <Logo size="medium" />
                 </div>
-
-                <div className="flex gap-4">
-                    <LinkButtonWithIcon to={links.vk} color="bg-blue-500">
-                        <VK />
-                    </LinkButtonWithIcon>
-
-                    <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
-                        <YouTube />
-                    </LinkButtonWithIcon>
-
-                    <LinkButtonWithIcon to={links.instagram} color="bg-blue-500">
-                        <Instagram />
-                    </LinkButtonWithIcon>
-
-                    <Search onSubmit={(query: string) => onSearch(query)} />
-                </div>
-            </Row>
-        </Section>
+            )}
+        </>
     );
 };
