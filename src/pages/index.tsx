@@ -5,7 +5,6 @@ import { getArticles } from '@/services/articles';
 import { ArticlePreview } from '@/components/ArticlePreview';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Logo } from '@/components/Logo';
 
 
 const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => (
@@ -15,10 +14,6 @@ const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => (
         </Head>
 
         <Header />
-
-        <div className="flex justify-center items-center border-b border-b-slate-200 py-16">
-            <Logo size="medium" />
-        </div>
 
         <main className="flex-grow">
             {articles.map((article) => (

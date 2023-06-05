@@ -29,7 +29,7 @@ const Page = ({ article, author, relatedArticles }: Props) => {
                 <title>{`Reggaemedia | ${article.title}`}</title>
             </Head>
 
-            <Header />
+            <Header hasInlineLogo={true} />
 
             <div className="max-w-4xl mx-auto my-0 pb-4 flex-grow">
                 <h1 className="text-3xl p-4 pt-8">
