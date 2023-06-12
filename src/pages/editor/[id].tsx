@@ -8,7 +8,7 @@ import { Tags } from '@/components/Tags';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { formatArticleDate, normalize } from '@/helpers/article';
 import { getArticleById } from '@/services/articles';
-import { getInitialArticle, saveArticle } from '@/actions/articles';
+import { createArticle, publishArticle, saveArticle, unpublishArticle } from '@/actions/articles';
 import { uploadFile } from '@/actions/storage';
 import { theme } from '@/theme';
 import { Article } from '@/types';
@@ -18,16 +18,23 @@ export const Page = ({ article }: { article: Article }) => {
     const router = useRouter();
     const [state, setState] = useState(article);
 
-    const save = async () => {
-        const hasId = Boolean(state.id);
-        const body = { root: normalize(state.body.root) };
-        const id = await saveArticle({ ...state, body });
+    const onSave = async (data: Article) => {
+        const hasId = Boolean(data.id);
+        const body = { root: normalize(data.body.root) };
+        const id = await saveArticle({ ...data, body });
 
         if (!hasId) {
             router.replace(`/editor/${id}`, undefined, { shallow: true });
+            setState({ ...data, id });
         }
+    };
 
-        setState({ ...state, id });
+    const onPublish = async () => {
+        const { publishedOn, updatedOn } = state.publishedOn
+            ? await unpublishArticle(state.id)
+            : await publishArticle(state.id);
+
+        setState({ ...state, updatedOn, publishedOn });
     };
 
     return (
@@ -35,12 +42,19 @@ export const Page = ({ article }: { article: Article }) => {
             <div className="flex justify-between items-center p-2 pt-4">
                 {state && (
                     <div className="text-sm text-gray-600">
-                        обновлено: {formatArticleDate(state)}
+                        обновлено: {formatArticleDate(state, true)}
                     </div>
                 )}
-                <Button type="secondary" onClick={save}>
-                    Сохранить
-                </Button>
+
+                <div className="flex gap-4">
+                    <Button type="secondary" onClick={onPublish}>
+                        {state.publishedOn ? 'Отменить публикацию' : 'Опубликовать'}
+                    </Button>
+
+                    <Button type="secondary" onClick={() => onSave(state)}>
+                        Сохранить
+                    </Button>
+                </div>
             </div>
 
             <div className="mt-4 m-2 p-2 bg-white rounded border">
@@ -84,7 +98,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (ctx) => {
 
     const article = hasId
         ? await getArticleById(id)
-        : await getInitialArticle({ authorId: userId });
+        : await createArticle({ authorId: userId });
 
     return {
         props: { article },

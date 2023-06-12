@@ -25,6 +25,11 @@ export const normalize = (node: SerializedLexicalNode) => {
 export const formatArticleDate = <T extends {
     updatedOn: number,
     createdOn: number,
-}>({ updatedOn, createdOn }: T) => {
-    return (new Date(updatedOn || createdOn)).toLocaleDateString('ru-RU');
+}>({ updatedOn, createdOn }: T, showTime?: boolean) => {
+    const target = new Date(updatedOn || createdOn);
+
+    const date = target.toLocaleDateString('ru-RU');
+    const time = target.toLocaleTimeString('ru-RU');
+
+    return showTime ? `${date} ${time}` : date;
 };

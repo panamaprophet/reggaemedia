@@ -10,7 +10,7 @@ export const EditorArticlePreview = ({ article, onRemove }: { article: Article, 
         </Link>
 
         <div className="text-xs text-gray-600">
-            Обновлено {formatArticleDate(article)}
+            Обновлено {formatArticleDate(article, true)}
         </div>
 
         <div className="flex flex-row gap-2 text-xs">
