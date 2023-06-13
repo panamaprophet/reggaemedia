@@ -70,7 +70,7 @@ export class ReggaemediaCdkStack extends Stack {
         articlesTable.addGlobalSecondaryIndex({
             indexName: 'publishedIndex',
             partitionKey: {
-                name: 'isPublished',
+                name: 'publishedOn',
                 type: AttributeType.NUMBER,
             },
             sortKey: {

@@ -21,3 +21,25 @@ export const getArticle = async (id: string) => fetch(`/api/articles/${id}`)
 
 export const removeArticle = (id: string) => fetch('/api/articles/' + id, { method: 'DELETE' })
     .then(response => response.json());
+
+export const createArticle = async ({ authorId }: { authorId: string }) => ({
+    authorId,
+    title: '',
+    tags: [],
+    body: {
+        root: {
+            direction: null,
+            format: '',
+            indent: 0,
+            type: 'root',
+            version: 1,
+            children: [{ type: 'paragraph', version: 1 }],
+        },
+    },
+    createdOn: Date.now(),
+    updatedOn: Date.now(),
+});
+
+export const publishArticle = (id: string) => fetch(`/api/articles/${id}/publish`, { method: 'POST' }).then(response => response.json());
+
+export const unpublishArticle = (id: string) => fetch(`/api/articles/${id}/unpublish`, { method: 'POST' }).then(response => response.json());

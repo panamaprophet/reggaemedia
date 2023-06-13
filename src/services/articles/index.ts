@@ -1,5 +1,13 @@
 import { randomUUID } from 'crypto';
-import { DeleteItemCommand, GetItemCommand, PutItemCommand, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
+import {
+    DeleteItemCommand,
+    GetItemCommand,
+    PutItemCommand,
+    QueryCommand,
+    ReturnValue,
+    ScanCommand,
+    UpdateItemCommand,
+} from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { client as db } from '@/providers/db';
 import { sortByDate } from '@/helpers';
@@ -99,7 +107,7 @@ export const getPublishedArticles = async () => {
         TableName: tableName,
         IndexName: 'publishedIndex',
         KeyConditionExpression: '#key = :value',
-        ExpressionAttributeNames: { '#key': 'isPublished' },
+        ExpressionAttributeNames: { '#key': 'publishedOn' },
         ExpressionAttributeValues: marshall({ ':value': true }),
         ScanIndexForward: false,
     }));
@@ -107,4 +115,45 @@ export const getPublishedArticles = async () => {
     return result.Items
         ? result.Items.map(item => unmarshall(item))
         : null;
+};
+
+export const unpublishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<Article, 'id' | 'updatedOn' | 'publishedOn'>> => {
+    const result = await db.send(new UpdateItemCommand({
+        TableName: tableName,
+        Key: marshall({ id }),
+        UpdateExpression: 'REMOVE publishedOn SET updatedOn = :updatedOn',
+        ExpressionAttributeValues: marshall({
+            ':updatedOn': Date.now(),
+        }),
+        ReturnValues: ReturnValue.UPDATED_NEW,
+    }));
+
+    const { publishedOn, updatedOn } = unmarshall(result.Attributes || {});
+
+    return {
+        id,
+        updatedOn,
+        publishedOn,
+    };
+};
+
+export const publishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<Article, 'id' | 'updatedOn' | 'publishedOn'>> => {
+    const result = await db.send(new UpdateItemCommand({
+        TableName: tableName,
+        Key: marshall({ id }),
+        UpdateExpression: 'SET publishedOn = :publishedOn, updatedOn = :updatedOn',
+        ExpressionAttributeValues: marshall({
+            ':publishedOn': Date.now(),
+            ':updatedOn': Date.now(),
+        }),
+        ReturnValues: ReturnValue.UPDATED_NEW,
+    }));
+
+    const { publishedOn, updatedOn } = unmarshall(result.Attributes || {});
+
+    return {
+        id,
+        updatedOn,
+        publishedOn,
+    };
 };
