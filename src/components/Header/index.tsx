@@ -8,7 +8,6 @@ import { Section } from '../Section';
 import { ReactNode } from 'react';
 import { cx } from '@/helpers';
 import { Logo } from '../Logo';
-import { getTags } from '@/services/articles';
 
 
 interface Props {
@@ -48,7 +47,7 @@ export const Header = ({ hasInlineLogo }: Props) => {
                             <VK />
                         </LinkButtonWithIcon>
 
-                        <LinkButtonWithIcon to={links.youtube} color="bg-blue-500">
+                        <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
                             <YouTube />
                         </LinkButtonWithIcon>
 
