@@ -14,7 +14,7 @@ export const Search = () => {
     const Icon = isSearch ? Close : SearchIcon;
 
     useEffect(() => {
-        getTags().then((arr) => setTags(arr));
+        getTags().then(setTags);
     }, [])
 
     return (
