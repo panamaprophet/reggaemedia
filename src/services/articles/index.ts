@@ -170,7 +170,7 @@ export const getTags = async () => {
     return Array.from(tags);
 };
 
-export const getArticlesWithTag = async (tag: string) => {
+export const getArticlesByTag = async (tag: string) => {
     const result = await getPublishedArticles();
     const articles = result?.filter((item) => item.tags.includes(tag));
 
