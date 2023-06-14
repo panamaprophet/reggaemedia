@@ -44,4 +44,4 @@ export const publishArticle = (id: string) => fetch(`/api/articles/${id}/publish
 
 export const unpublishArticle = (id: string) => fetch(`/api/articles/${id}/unpublish`, { method: 'POST' }).then(response => response.json());
 
-export const getTags = () => fetch('/api/articles/tags/', { method: 'GET' }).then(response => response.json());
+export const getTags = () => fetch('/api/articles/tags/').then(response => response.json());
