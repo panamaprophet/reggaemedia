@@ -9,22 +9,24 @@ import { Link } from '../Link';
 
 
 export const Search = () => {
-    const [isSearch, setSearch] = useState(false);
+    const [isOpen, setOpen] = useState(false);
     const [tags, setTags] = useState([]);
-    const Icon = isSearch ? Close : SearchIcon;
+    const Icon = isOpen ? Close : SearchIcon;
 
     useEffect(() => {
-        getTags().then(setTags);
-    }, [])
+        if (isOpen && tags.length === 0) {
+            getTags().then(setTags);
+        }
+    }, [isOpen])
 
     return (
         <>
-            <Button onClick={() => setSearch(!isSearch)}>
+            <Button onClick={() => setOpen(!isOpen)}>
                 <Icon />
             </Button>
 
             <Modal
-                isOpen={isSearch} onClose={() => setSearch(false)}
+                isOpen={isOpen} onClose={() => setOpen(false)}
             >
                 <Column className="items-center justify-center gap-4">
                     <p className="text-xs uppercase">Поиск по тегу</p>
