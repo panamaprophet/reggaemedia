@@ -16,6 +16,7 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
                 px-4
                 pt-6
                 pb-0
+                w-full
                 last:pb-6
                 mx-auto
                 hyphens-auto
