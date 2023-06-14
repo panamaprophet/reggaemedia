@@ -109,7 +109,7 @@ export const getPublishedArticles = async () => {
     }));
 
     return result.Items
-        ? result.Items.map(item => unmarshall(item))
+        ? result.Items.map(item => unmarshall(item) as Article)
         : null;
 };
 
@@ -156,19 +156,18 @@ export const publishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<
 
 export const getTags = async () => {
     const result = await getPublishedArticles();
-    const tags = result?.map((item) => item.tags).flat();
 
     if (!result) {
         return null;
     }
 
-    return tags?.reduce((acc, item) => {
-        if (acc.includes(item)) {
-            return acc;
-        }
+    const tags = result.reduce((acc, item) => {
+        item.tags.forEach((tag: string) => acc.add(tag));
 
-        return [...acc, item];
-    }, []);
+        return acc;
+    }, new Set());
+
+    return Array.from(tags);
 };
 
 export const getArticlesWithTag = async (tag: string) => {
