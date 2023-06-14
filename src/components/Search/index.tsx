@@ -1,56 +1,42 @@
 import { useEffect, useState } from 'react';
-import { Column, Row } from '../Layout';
-import { InputText } from '../Input/InputText';
+import { Column } from '../Layout';
 import { Button } from '../Button';
 import { Search as SearchIcon } from '../Icons/Search';
 import { Modal } from '../Modal';
 import { Close } from '../Icons/Close';
-
-interface Props {
-    onSubmit: (text: string) => void,
-}
+import { getTags } from '@/actions/articles';
+import { Link } from '../Link';
 
 
-export const Search = ({ onSubmit }: Props) => {
-    const [isSearch, setSearch] = useState(false);
-    const [query, setQuery] = useState('');
-    const Icon = isSearch ? Close : SearchIcon;
+export const Search = () => {
+    const [isOpen, setOpen] = useState(false);
+    const [tags, setTags] = useState([]);
+    const Icon = isOpen ? Close : SearchIcon;
 
     useEffect(() => {
-        const handleKeyboardClick = (event: KeyboardEvent) => {
-            if (event.code === 'Enter') onSubmit(query)
+        if (isOpen && tags.length === 0) {
+            getTags().then(setTags);
         }
-
-        document.addEventListener('keydown', handleKeyboardClick);
-
-        return () => document.removeEventListener('keydown', handleKeyboardClick);
-    }, [query, onSubmit])
+    }, [isOpen])
 
     return (
         <>
-            <Button onClick={() => setSearch(!isSearch)}>
+            <Button onClick={() => setOpen(!isOpen)}>
                 <Icon />
             </Button>
 
-            {isSearch && (
-                <Modal
-                    size="screen"
-                    isOpen={isSearch} onClose={() => setSearch(false)}
-                >
-                    <Column className="items-center justify-center gap-4">
-                        <p className="text-xs uppercase">Поиск по сайту</p>
-                        <Row className="gap-4">
-                            <InputText
-                                className="text-2xl"
-                                value={query}
-                                placeholder="Type and hit enter to search"
-                                onChange={text => setQuery(text)}
-                            />
-                            <Button onClick={() => onSubmit(query)}><SearchIcon size="xl" /></Button>
-                        </Row>
-                    </Column >
-                </Modal>
-            )}
+            <Modal
+                isOpen={isOpen} onClose={() => setOpen(false)}
+            >
+                <Column className="items-center justify-center gap-4">
+                    <p className="text-xs uppercase">Поиск по тегу</p>
+                    {tags.map((tag) => (
+                        <Link className='capitalize text-sky-600' key={tag} to={`/articles/tags/${tag}`}>
+                            {tag}
+                        </Link>
+                    ))}
+                </Column >
+            </Modal>
         </>
     );
 };

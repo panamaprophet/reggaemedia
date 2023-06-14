@@ -21,7 +21,7 @@ const LinkButtonWithIcon = ({ to, children, color = 'bg-black-500' }: { children
     </Link>
 );
 
-export const Header = ({ hasInlineLogo, onSearch = () => { } }: Props) => {
+export const Header = ({ hasInlineLogo }: Props) => {
     const links = {
         youtube: 'https://www.youtube.com/watch?v=7ip0XCgggFQ',
         vk: 'https://vk.com/reggaemedia',
@@ -55,7 +55,7 @@ export const Header = ({ hasInlineLogo, onSearch = () => { } }: Props) => {
                             <Instagram />
                         </LinkButtonWithIcon>
 
-                        <Search onSubmit={(query: string) => onSearch(query)} />
+                        <Search />
                     </div>
                 </Row>
             </Section>

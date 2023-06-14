@@ -3,7 +3,6 @@ import {
     DeleteItemCommand,
     GetItemCommand,
     PutItemCommand,
-    QueryCommand,
     ReturnValue,
     ScanCommand,
     UpdateItemCommand,
@@ -103,17 +102,14 @@ export const getRelatedArticles = async (id: string) => {
 };
 
 export const getPublishedArticles = async () => {
-    const result = await db.send(new QueryCommand({
+    const result = await db.send(new ScanCommand({
         TableName: tableName,
-        IndexName: 'publishedIndex',
-        KeyConditionExpression: '#key = :value',
-        ExpressionAttributeNames: { '#key': 'publishedOn' },
-        ExpressionAttributeValues: marshall({ ':value': true }),
-        ScanIndexForward: false,
+        Limit: 100,
+        FilterExpression: 'attribute_exists(publishedOn)',
     }));
 
     return result.Items
-        ? result.Items.map(item => unmarshall(item))
+        ? result.Items.map(item => unmarshall(item) as Article)
         : null;
 };
 
@@ -156,4 +152,31 @@ export const publishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<
         updatedOn,
         publishedOn,
     };
+};
+
+export const getTags = async () => {
+    const result = await getPublishedArticles();
+
+    if (!result) {
+        return null;
+    }
+
+    const tags = result.reduce((acc, item) => {
+        item.tags.forEach((tag: string) => acc.add(tag));
+
+        return acc;
+    }, new Set());
+
+    return Array.from(tags);
+};
+
+export const getArticlesByTag = async (tag: string) => {
+    const result = await getPublishedArticles();
+    const articles = result?.filter((item) => item.tags.includes(tag));
+
+    if (!result) {
+        return null;
+    }
+
+    return articles;
 };
