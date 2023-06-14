@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { getArticlesWithTag } from '@/services/articles';
+import { getArticlesByTag } from '@/services/articles';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticlePreview } from '@/components/ArticlePreview';
@@ -33,7 +33,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
     const { query: { tag } } = ctx;
 
-    const articles = await getArticlesWithTag(tag);
+    const articles = await getArticlesByTag(tag);
 
     return {
         props: {
