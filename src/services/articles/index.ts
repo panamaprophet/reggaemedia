@@ -103,13 +103,10 @@ export const getRelatedArticles = async (id: string) => {
 };
 
 export const getPublishedArticles = async () => {
-    const result = await db.send(new QueryCommand({
+    const result = await db.send(new ScanCommand({
         TableName: tableName,
-        IndexName: 'publishedIndex',
-        KeyConditionExpression: '#key = :value',
-        ExpressionAttributeNames: { '#key': 'publishedOn' },
-        ExpressionAttributeValues: marshall({ ':value': true }),
-        ScanIndexForward: false,
+        Limit: 100,
+        FilterExpression: 'attribute_exists(publishedOn)',
     }));
 
     return result.Items
@@ -156,4 +153,32 @@ export const publishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<
         updatedOn,
         publishedOn,
     };
+};
+
+export const getTags = async () => {
+    const result = await getPublishedArticles();
+    const tags = result?.map((item) => item.tags).flat();
+
+    if (!result) {
+        return null;
+    }
+
+    return tags?.reduce((acc, item) => {
+        if (acc.includes(item)) {
+            return acc;
+        }
+
+        return [...acc, item];
+    }, []);
+};
+
+export const getArticlesWithTag = async (tag: string) => {
+    const result = await getPublishedArticles();
+    const articles = result?.filter((item) => item.tags.includes(tag));
+
+    if (!result) {
+        return null;
+    }
+
+    return articles;
 };
