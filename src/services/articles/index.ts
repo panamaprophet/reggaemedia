@@ -3,7 +3,6 @@ import {
     DeleteItemCommand,
     GetItemCommand,
     PutItemCommand,
-    QueryCommand,
     ReturnValue,
     ScanCommand,
     UpdateItemCommand,

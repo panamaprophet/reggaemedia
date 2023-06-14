@@ -2,7 +2,7 @@ import { NextApiResponse, NextApiRequest } from 'next';
 import { getTags } from '@/services/articles';
 
 
-const handler = async (request: NextApiRequest, response: NextApiResponse) => {
+const handler = async (_request: NextApiRequest, response: NextApiResponse) => {
     try {
         const result = await getTags();
 
