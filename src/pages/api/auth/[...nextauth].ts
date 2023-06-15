@@ -17,6 +17,10 @@ const fieldsConfiguration = {
 
 
 export const authOptions = {
+    pages: {
+        signIn: '/auth/signin',
+        error: '/auth/signin',
+    },
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -37,10 +41,9 @@ export const authOptions = {
                 } catch (error) {
                     console.log('auth error =', error);
                     return null;
-
                 }
             },
-        })
+        }),
     ],
     callbacks: {
         jwt: async ({ token, user }: { token: any, user: any }) => {
@@ -75,7 +78,7 @@ export const authOptions = {
 
             return {
                 ...session,
-                user: { 
+                user: {
                     id: token.sub,
                     ...session.user,
                 },
