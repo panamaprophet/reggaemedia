@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { Article, User } from '@/types';
-import { getArticles } from '@/services/articles';
+import { getPublishedArticles } from '@/services/articles';
 import { ArticlePreview } from '@/components/ArticlePreview';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -30,7 +30,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps = async (_) => {
     return {
         props: {
-            articles: await getArticles(),
+            articles: await getPublishedArticles(),
             users: [], // @todo
         },
     };
