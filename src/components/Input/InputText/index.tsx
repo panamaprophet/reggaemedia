@@ -1,15 +1,16 @@
 import { cx } from '@/helpers';
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, HTMLInputTypeAttribute } from 'react';
 
 type Props = {
     value: string,
     placeholder?: string,
+    type?: HTMLInputTypeAttribute,
     onChange?: (value: string) => void,
     className?: string,
 };
 
 
-export const InputText = ({ value, className = '', placeholder, onChange }: Props) => {
+export const InputText = ({ value, type, className = '', placeholder, onChange }: Props) => {
     const _onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         if (onChange) {
             onChange(String(event.target.value));
@@ -20,7 +21,7 @@ export const InputText = ({ value, className = '', placeholder, onChange }: Prop
         <input
             className={cx('outline-none bg-transparent', className)}
             placeholder={placeholder}
-            type="text"
+            type={type}
             value={String(value)}
             readOnly={onChange ? false : true}
             onChange={_onChange}
