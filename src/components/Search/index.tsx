@@ -17,7 +17,7 @@ export const Search = () => {
         if (isOpen && tags.length === 0) {
             getTags().then(setTags);
         }
-    }, [isOpen])
+    }, [isOpen, tags]);
 
     return (
         <>
