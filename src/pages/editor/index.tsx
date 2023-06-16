@@ -8,6 +8,7 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getArticles, removeArticle } from '@/actions/articles';
 import { Article } from '@/types';
 import { Button } from '@/components/Button';
+import { Link } from '@/components/Link';
 
 
 const Page = () => {
@@ -48,9 +49,11 @@ const Page = () => {
 
             <div className="flex flex-col max-w-4xl w-full mx-auto p-4">
                 <div className="flex justify-end items-center pb-4">
-                    <Button type="secondary" to="/editor/new">
-                        Новая статья
-                    </Button>
+                    <Link to="/editor/new">
+                        <Button type="secondary">
+                            Новая статья
+                        </Button>
+                    </Link>
                 </div>
 
                 {articles.map((article) => (
