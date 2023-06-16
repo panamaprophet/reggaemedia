@@ -10,7 +10,7 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
     const body = useEditorStateParser(article.body, { theme, isPreview: true });
 
     return (
-        <div
+        <article
             className="
                 max-w-4xl
                 px-4
@@ -38,6 +38,6 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
             <div className="w-full flex items-center justify-center pt-6 pb-0 group-last:hidden">
                 <Ellipsis />
             </div>
-        </div>
+        </article>
     );
 };
