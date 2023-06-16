@@ -16,7 +16,7 @@ export const EditorArticlePreview = ({ article, onRemove }: { article: Article, 
         <div className="flex flex-row gap-2 text-xs">
             <Link className="text-blue-400" to={`/editor/${article.id}`}>Редактировать</Link> ·
             <Link className="text-blue-400" to={`/articles/${article.id}`}>Просмотр</Link> ·
-            <Link className="text-red-400" onClick={() => onRemove(article.id)}>Удалить</Link>
+            <Link className="text-red-400" to="" onClick={() => onRemove(article.id)}>Удалить</Link>
         </div>
     </div>
 );
