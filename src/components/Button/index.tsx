@@ -35,28 +35,22 @@ const ButtonType = {
 const ButtonSize = {
     'small': 'px-2 py-1 text-xs shadow-sm rounded',
     'medium': 'px-4 py-2 text-sm shadow-sm rounded-md',
-}
+};
 
 interface Props {
     children: ReactNode,
     onClick?: () => void,
     type?: keyof typeof ButtonType,
     size?: keyof typeof ButtonSize,
-    to?: string,
 }
 
 export const Button = ({
     type = 'default',
     size = 'medium',
     children,
-    to,
     onClick,
-}: Props) => {
-    const Tag = to ? 'a' : 'button';
-
-    return (
-        <Tag className={cx(ButtonSize[size], ButtonType[type])} href={to} onClick={onClick}>
-            {children}
-        </Tag>
-    );
-};
+}: Props) => (
+    <button className={cx(ButtonSize[size], ButtonType[type])} onClick={onClick}>
+        {children}
+    </button>
+);
