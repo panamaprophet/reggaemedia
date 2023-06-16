@@ -1,62 +1,24 @@
-import { cx } from '@/helpers';
+import { clickableSize, clickableStyle, cx } from '@/helpers';
 import { ReactNode } from 'react';
-
-
-const ButtonType = {
-    'default': `
-        outline-none
-        bg-none
-        text-inherit
-    `,
-    'secondary': `
-        font-semibold
-        bg-white
-        text-slate-700
-        border
-        border-slate-300
-        focus:ring-4
-        focus:ring-offset-2
-        focus:ring-offset-slate-50
-        focus:ring-blue-300
-    `,
-    'delete': `
-        font-semibold
-        bg-red-500
-        text-slate-100
-        border
-        border-red-200
-        focus:ring-4
-        focus:ring-offset-2
-        focus:ring-offset-slate-50
-        focus:ring-blue-300
-    `
-};
-
-const ButtonSize = {
-    'small': 'px-2 py-1 text-xs shadow-sm rounded',
-    'medium': 'px-4 py-2 text-sm shadow-sm rounded-md',
-}
 
 interface Props {
     children: ReactNode,
     onClick?: () => void,
-    type?: keyof typeof ButtonType,
-    size?: keyof typeof ButtonSize,
-    to?: string,
+    style?: keyof typeof clickableStyle,
+    size?: keyof typeof clickableSize,
+    type?: 'button' | 'submit' | 'reset' | undefined,
 }
 
 export const Button = ({
-    type = 'default',
+    style = 'default',
     size = 'medium',
     children,
-    to,
+    type,
     onClick,
 }: Props) => {
-    const Tag = to ? 'a' : 'button';
-
     return (
-        <Tag className={cx(ButtonSize[size], ButtonType[type])} href={to} onClick={onClick}>
+        <button className={cx(clickableSize[size], clickableStyle[style])} type={type} onClick={onClick}>
             {children}
-        </Tag>
+        </button>
     );
 };

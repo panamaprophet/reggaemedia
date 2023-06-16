@@ -1,18 +1,26 @@
-import { cx } from '@/helpers';
+import { clickableSize, clickableStyle, cx } from '@/helpers';
 import { ReactNode } from 'react';
 
 
-type Props = {
+interface Props {
     children: ReactNode,
-    className?: string,
-    to?: string,
-    target?: '_self' | '_blank',
     onClick?: () => void,
+    style?: keyof typeof clickableStyle,
+    size?: keyof typeof clickableSize,
+    to?: string,
+    className?: string,
 }
 
-
-export const Link = ({ className, children, to, ...props }: Props) => (
-    <a className={cx('hover:underline underline-offset-2 transition cursor-pointer', className)} href={to} {...props}>
-        {children}
-    </a>
-);
+export const Link = ({
+    style,
+    size,
+    className,
+    children,
+    to,
+}: Props) => {
+    return (
+        <a className={cx(className, size && clickableSize[size], style && clickableStyle[style])} href={to}>
+            {children}
+        </a>
+    );
+};
