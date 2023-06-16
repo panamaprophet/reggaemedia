@@ -80,18 +80,15 @@ export const getRelatedArticles = async (id: string) => {
         TableName: tableName,
         Limit: 100,
         ProjectionExpression: 'id, title',
+        FilterExpression: 'attribute_exists(publishedOn)',
     }));
 
     if (!result.Items || result.Items.length === 1) {
         return null;
     }
 
-    const items = result.Items
-        .map(item => unmarshall(item))
-        .map(item => item as Pick<Article, 'id' | 'title'>);
-
+    const items = result.Items.map(item => unmarshall(item) as Pick<Article, 'id' | 'title'>);
     const currentArticleIndex = items.findIndex(item => item.id === id);
-
     const previous = items[currentArticleIndex - 1] || null;
     const next = items[currentArticleIndex + 1] || null;
 
