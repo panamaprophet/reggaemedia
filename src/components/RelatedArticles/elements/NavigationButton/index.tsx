@@ -1,6 +1,6 @@
-import { Button } from '@/components/Button';
 import { ArrowLeft } from '@/components/Icons/ArrowLeft';
 import { ArrowRight } from '@/components/Icons/ArrowRight';
+import { Link } from '@/components/Link';
 
 
 export const NavigationButton = (props: {
@@ -13,7 +13,7 @@ export const NavigationButton = (props: {
     const text = isPrevious ? 'Предыдущая статья' : 'Следующая статья'
 
     return (
-        <Button type="secondary" to={`/articles/${props.id}`}>
+        <Link style="secondary" to={`/articles/${props.id}`}>
             <div className="flex items-center gap-4" title={props.title}>
                 {isPrevious && (
                     <div className="flex-shrink-0">
@@ -35,6 +35,6 @@ export const NavigationButton = (props: {
                     </div>
                 )}
             </div>
-        </Button>
+        </Link>
     );
 };

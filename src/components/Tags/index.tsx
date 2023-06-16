@@ -52,7 +52,7 @@ export const Tags = ({ value = [], onChange }: { value: string[], onChange: (val
     return (
         <div className="flex items-center gap-2 p-4">
             {value.map((tag) => (
-                <Button key={tag} type="secondary" size="small">
+                <Button key={tag} style="secondary" size="small">
                     <div className="flex items-center">
                         <Input
                             value={tag}

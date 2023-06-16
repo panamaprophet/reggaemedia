@@ -47,11 +47,11 @@ export const Page = ({ article }: { article: Article }) => {
                 )}
 
                 <div className="flex gap-4">
-                    <Button type="secondary" onClick={onPublish}>
+                    <Button style="secondary" onClick={onPublish}>
                         {state.publishedOn ? 'Отменить публикацию' : 'Опубликовать'}
                     </Button>
 
-                    <Button type="secondary" onClick={() => onSave(state)}>
+                    <Button style="secondary" onClick={() => onSave(state)}>
                         Сохранить
                     </Button>
                 </div>
