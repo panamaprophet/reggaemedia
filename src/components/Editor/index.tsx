@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { EditorState, LexicalEditor, SerializedEditorState } from 'lexical';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -11,9 +12,10 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { ToolbarPlugin, EmbedPlugin, FocusPlugin } from './plugins';
+import { ToolbarPlugin, EmbedPlugin, FocusPlugin, TreeViewPlugin } from './plugins';
 import { EmbedNode } from './plugins/Embed/node';
 import * as CutterPlugin from './plugins/Cutter';
+import FloatingLinkEditorPlugin from './plugins/FloatLink/plugin';
 
 
 export const onError = (error: Error) => {
@@ -30,6 +32,14 @@ interface Props {
 }
 
 export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
+    const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+
+    const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+        if (_floatingAnchorElem !== null) {
+            setFloatingAnchorElem(_floatingAnchorElem);
+        }
+    };
+
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
@@ -68,7 +78,11 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
             <ToolbarPlugin />
             <div className='w-full h-screen-1/2'>
                 <RichTextPlugin
-                    contentEditable={<ContentEditable className="min-h-full focus:outline-none p-4" />}
+                    contentEditable={
+                        <div className="relative" ref={onRef}>
+                            <ContentEditable className="min-h-full focus:outline-none p-4" />
+                        </div>
+                    }
                     placeholder={null}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
@@ -80,6 +94,10 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
                 <CheckListPlugin />
                 <FocusPlugin />
                 <CutterPlugin.Plugin />
+                {/* <TreeViewPlugin /> */}
+                {floatingAnchorElem && (
+                    <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
+                )}
             </div>
         </LexicalComposer>
     );
