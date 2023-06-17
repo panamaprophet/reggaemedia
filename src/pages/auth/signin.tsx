@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
-import { Column } from '@/components/Layout';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { GetServerSidePropsContext } from 'next';
@@ -17,29 +16,45 @@ const Page = ({ callbackUrl, error }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const onSubmit = (event: SyntheticEvent) => {
+        event.preventDefault();
+        signIn('credentials', { username, password, callbackUrl });
+    };
+
     return (
-        <Column className="m-auto gap-4">
-            {error && <p className="text-red-500">Некорректная почта или пароль</p>}
-            <Column>
-                <p>Почта:</p>
+        <form
+            className="flex flex-col m-auto gap-4 max-w-xs w-full"
+            onSubmit={onSubmit}
+        >
+            {error && (
+                <p className="text-red-500 bg-red-400/10 p-2 rounded text-center mb-4 border-red-400 border">
+                    Некорректная почта или пароль
+                </p>
+            )}
+
+            <label className="flex flex-col gap-1">
+                Почта:
                 <InputText
                     value={username}
-                    className="border py-2 px-2 rounded"
+                    placeholder="mail@example.com"
                     onChange={setUsername}
                 />
-            </Column>
-            <Column>
-                <p>Пароль:</p>
+            </label>
+
+            <label className="flex flex-col gap-1">
+                Пароль:
                 <InputText
                     type="password"
                     value={password}
-                    className="border py-2 px-2 rounded"
                     onChange={setPassword}
                 />
-            </Column>
-            <Button onClick={() => signIn('credentials', { username, password, callbackUrl }, )}>Войти</Button>
-        </Column>
-    )
+            </label>
+
+            <div className="mt-4 w-full flex flex-col">
+                <Button type="secondary" onClick={onSubmit}>Войти</Button>
+            </div>
+        </form>
+    );
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -49,7 +64,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (session) {
         return { redirect: { destination: callbackUrl } };
     }
-    
+
     return { props: { callbackUrl, error } };
 }
 

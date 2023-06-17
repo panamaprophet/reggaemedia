@@ -19,7 +19,7 @@ export const InputText = ({ value, type, className = '', placeholder, onChange }
 
     return (
         <input
-            className={cx('outline-none bg-transparent', className)}
+            className={cx('w-full p-2 border rounded-md outline-none bg-transparent', className)}
             placeholder={placeholder}
             type={type}
             value={String(value)}
