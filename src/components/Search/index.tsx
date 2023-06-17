@@ -10,7 +10,7 @@ import { Link } from '../Link';
 
 export const Search = () => {
     const [isOpen, setOpen] = useState(false);
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState<string[]>([]);
     const Icon = isOpen ? Close : SearchIcon;
 
     useEffect(() => {
