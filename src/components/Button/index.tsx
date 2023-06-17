@@ -1,5 +1,5 @@
 import { cx } from '@/helpers';
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
 
 const ButtonType = {
@@ -34,12 +34,12 @@ const ButtonType = {
 
 const ButtonSize = {
     'small': 'px-2 py-1 text-xs shadow-sm rounded',
-    'medium': 'px-4 py-2 text-sm shadow-sm rounded-md',
+    'medium': 'px-4 py-2.5 text-sm shadow-sm rounded-md',
 };
 
 interface Props {
     children: ReactNode,
-    onClick?: () => void,
+    onClick?: MouseEventHandler<HTMLButtonElement>,
     type?: keyof typeof ButtonType,
     size?: keyof typeof ButtonSize,
 }
