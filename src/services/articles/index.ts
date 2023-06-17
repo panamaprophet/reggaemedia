@@ -155,14 +155,14 @@ export const getTags = async () => {
     const result = await getPublishedArticles();
 
     if (!result) {
-        return null;
+        return [];
     }
 
     const tags = result.reduce((acc, item) => {
         item.tags.forEach((tag: string) => acc.add(tag));
 
         return acc;
-    }, new Set());
+    }, new Set<string>());
 
     return Array.from(tags);
 };
