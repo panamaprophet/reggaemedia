@@ -1,4 +1,4 @@
-import { getSelectedNode } from '@/helpers';
+import * as React from 'react';
 
 import {$isAutoLinkNode, $isLinkNode} from '@lexical/link';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -10,15 +10,14 @@ import {
     SELECTION_CHANGE_COMMAND,
 } from 'lexical';
 import {useCallback, useState} from 'react';
-import * as React from 'react';
 import {createPortal} from 'react-dom';
 import { useRegisterListener } from '../../hooks/useRegisterListener';
 import { useRegisterCommandCritical } from '../../hooks/useRegisterCommand';
 import FloatingLinkEditor from './component';
+import { getSelectedNode } from '@/helpers';
 
 
-const useFloatingLinkEditorToolbar = (editor: LexicalEditor,anchorElem: HTMLElement ) => {
-    const [activeEditor, setActiveEditor] = useState(editor);
+const useFloatingLinkEditorToolbar = (editor: LexicalEditor, anchorElem: HTMLElement ) => {
     const [isLink, setIsLink] = useState(false);
 
     const updateToolbar = useCallback(() => {
@@ -42,15 +41,15 @@ const useFloatingLinkEditorToolbar = (editor: LexicalEditor,anchorElem: HTMLElem
         });
     }))
 
-    useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, (_payload, newEditor) => {
+    useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, (_payload) => {
         updateToolbar();
-        setActiveEditor(newEditor);
+
         return false;
     })
 
     return createPortal(
         <FloatingLinkEditor
-            editor={activeEditor}
+            editor={editor}
             isLink={isLink}
             setIsLink={setIsLink}
         />,
@@ -58,11 +57,7 @@ const useFloatingLinkEditorToolbar = (editor: LexicalEditor,anchorElem: HTMLElem
     );
 }
 
-export default function FloatingLinkEditorPlugin({
-    anchorElem = document.body,
-}: {
-  anchorElem?: HTMLElement;
-}): JSX.Element | null {
+export default function FloatingLinkEditorPlugin({ anchorElem = document.body }: { anchorElem?: HTMLElement }) {
     const [editor] = useLexicalComposerContext();
     
     return useFloatingLinkEditorToolbar(editor, anchorElem);
