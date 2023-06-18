@@ -12,7 +12,7 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { ToolbarPlugin, EmbedPlugin, FocusPlugin, TreeViewPlugin } from './plugins';
+import { ToolbarPlugin, EmbedPlugin, FocusPlugin } from './plugins';
 import { EmbedNode } from './plugins/Embed/node';
 import * as CutterPlugin from './plugins/Cutter';
 import FloatingLinkEditorPlugin from './plugins/FloatLink/plugin';
