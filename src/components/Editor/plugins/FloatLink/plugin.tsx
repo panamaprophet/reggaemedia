@@ -14,10 +14,10 @@ import {createPortal} from 'react-dom';
 import { useRegisterListener } from '../../hooks/useRegisterListener';
 import { useRegisterCommandCritical } from '../../hooks/useRegisterCommand';
 import FloatingLinkEditor from './component';
-import { getSelectedNode } from '@/helpers';
+import { getSelectedNode } from './helpers';
 
 
-const useFloatingLinkEditorToolbar = (editor: LexicalEditor, anchorElem: HTMLElement ) => {
+const useFloatingLinkEditorToolbar = (editor: LexicalEditor) => {
     const [isLink, setIsLink] = useState(false);
 
     const updateToolbar = useCallback(() => {
@@ -45,7 +45,15 @@ const useFloatingLinkEditorToolbar = (editor: LexicalEditor, anchorElem: HTMLEle
         updateToolbar();
 
         return false;
-    })
+    });
+
+    const parent = editor.getRootElement()?.parentElement;
+
+    
+    if (!parent) {
+        return null;
+    }
+
 
     return createPortal(
         <FloatingLinkEditor
@@ -53,12 +61,12 @@ const useFloatingLinkEditorToolbar = (editor: LexicalEditor, anchorElem: HTMLEle
             isLink={isLink}
             setIsLink={setIsLink}
         />,
-        anchorElem,
+        parent,
     );
 }
 
-export default function FloatingLinkEditorPlugin({ anchorElem = document.body }: { anchorElem?: HTMLElement }) {
+export default function FloatLinkPlugin() {
     const [editor] = useLexicalComposerContext();
     
-    return useFloatingLinkEditorToolbar(editor, anchorElem);
+    return useFloatingLinkEditorToolbar(editor);
 }
