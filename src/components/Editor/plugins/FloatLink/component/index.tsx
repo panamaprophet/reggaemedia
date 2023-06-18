@@ -1,9 +1,9 @@
 import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
-import { getSelectedNode } from '@/helpers';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { LexicalEditor, $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH, SELECTION_CHANGE_COMMAND, COMMAND_PRIORITY_LOW } from 'lexical';
+import { LexicalEditor, $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH } from 'lexical';
 import { Dispatch, useRef, useState, useCallback, useEffect } from 'react';
+import { getSelectedNode } from '../helpers';
 
 interface Props {
     editor: LexicalEditor;
@@ -15,49 +15,49 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [linkUrl, setLinkUrl] = useState('');
-    const [{ top, left, height }, setSelectedNode] = useState({
+    const [position, setPosition] = useState({
         top: 0,
         left: 0,
-        height: 0,
     });
-    const { x = 0, y = 0 } = editor.getRootElement()?.getBoundingClientRect() || {};
-
 
     const updateLinkEditor = useCallback(() => {
-        const selection = $getSelection();
+        editor.getEditorState().read(() => {
 
-        if ($isRangeSelection(selection)) {
-            const node = getSelectedNode(selection);
-            const parent = node.getParent();
-            if ($isLinkNode(parent)) {
-                setLinkUrl(parent.getURL());
-            } else if ($isLinkNode(node)) {
-                setLinkUrl(node.getURL());
-            } else {
-                setLinkUrl('');
+            const selection = $getSelection();
+
+            if ($isRangeSelection(selection)) {
+                const node = getSelectedNode(selection);
+                const parent = node.getParent();
+                if ($isLinkNode(parent)) {
+                    setLinkUrl(parent.getURL());
+                } else if ($isLinkNode(node)) {
+                    setLinkUrl(node.getURL());
+                } else {
+                    setLinkUrl('');
+                }
             }
-        }
 
-        const nativeSelection = window.getSelection();
+            const nativeSelection = window.getSelection();
 
-        if (!nativeSelection) {
-            return;
-        }
+            if (!nativeSelection) {
+                return;
+            }
 
-        const domRect = nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+            const selectionOffset = nativeSelection?.anchorNode?.parentElement?.getBoundingClientRect();
+            const editorOffset = editor.getRootElement()?.parentElement?.getBoundingClientRect();
+            if (!selectionOffset || !editorOffset) {
+                return;
+            }
 
-        if (!domRect) {
-            return;
-        }
+            const top = selectionOffset.top - editorOffset.top + selectionOffset.height;
+            const left = selectionOffset.left - editorOffset.left;
 
-        setSelectedNode({
-            top: domRect.top,
-            left: domRect.left,
-            height: domRect.height,
+            setPosition({ top, left });
+
         });
-
+    
         return true;
-    }, []);
+    }, [editor]);
 
     useRegisterCommand(
         KEY_ESCAPE_COMMAND,
@@ -71,39 +71,15 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
         COMMAND_PRIORITY_HIGH,
     );
 
-    useRegisterCommand(
-        SELECTION_CHANGE_COMMAND,
-        () => {
-            updateLinkEditor();
-
-            return false;
-        },
-        COMMAND_PRIORITY_LOW,
-    );
-
     useEffect(() => {
-        const update = () => {
-            editor.getEditorState().read(() => {
-                updateLinkEditor();
-            });
-        };
+        window.addEventListener('resize', updateLinkEditor);
     
-        window.addEventListener('resize', update);
-    
-        return () => {
-            window.removeEventListener('resize', update);
-        };
-    }, [editor, updateLinkEditor]);
+        return () => window.removeEventListener('resize', updateLinkEditor);
+    }, [updateLinkEditor]);
 
-    useRegisterListener('onUpdate', editor.registerUpdateListener(({editorState}) => {
-        editorState.read(() => {
-            updateLinkEditor();
-        });
-    }));
+    useRegisterListener('onUpdate', updateLinkEditor);
 
-    const monitorInputInteraction = (
-        event: React.KeyboardEvent<HTMLInputElement>,
-    ) => {
+    const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
 
@@ -128,7 +104,7 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
                     rounded
                     bg-white
                 "
-            style={{ top: top - y + height, left: left - x }}
+            style={position}
         >
             <input
                 ref={inputRef}
@@ -137,9 +113,7 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
                 onChange={(event) => {
                     setLinkUrl(event.target.value);
                 }}
-                onKeyDown={(event) => {
-                    monitorInputInteraction(event);
-                }}
+                onKeyDown={onKeydown}
             />
             <button className="p-2 border rounded" onClick={handleLinkSubmission}>
                         Сохранить
