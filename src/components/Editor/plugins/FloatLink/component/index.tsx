@@ -1,10 +1,9 @@
 import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { getSelectedNode } from '@/helpers';
-import { sanitizeUrl } from '@/helpers/url';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { LexicalEditor, RangeSelection, GridSelection, NodeSelection, $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH } from 'lexical';
-import { Dispatch, useRef, useState, useCallback } from 'react';
+import { LexicalEditor, $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH, SELECTION_CHANGE_COMMAND, COMMAND_PRIORITY_LOW } from 'lexical';
+import { Dispatch, useRef, useState, useCallback, useEffect } from 'react';
 
 interface Props {
     editor: LexicalEditor;
@@ -16,15 +15,13 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [linkUrl, setLinkUrl] = useState('');
-    const [lastSelection, setLastSelection] = useState<
-    RangeSelection | GridSelection | NodeSelection | null
-  >(null);
-    const [{ bottom, left }, setSelectedNode] = useState({
+    const [{ top, left, height }, setSelectedNode] = useState({
         top: 0,
-        right: 0,
-        bottom: 0,
         left: 0,
+        height: 0,
     });
+    const { x = 0, y = 0 } = editor.getRootElement()?.getBoundingClientRect() || {};
+
 
     const updateLinkEditor = useCallback(() => {
         const selection = $getSelection();
@@ -41,27 +38,26 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
             }
         }
 
-        const editorElem = editorRef.current;
         const nativeSelection = window.getSelection();
 
-        if (editorElem === null) {
+        if (!nativeSelection) {
             return;
         }
 
-        const domRect: DOMRect | undefined = nativeSelection?.anchorNode?.parentElement?.getBoundingClientRect();
+        const domRect = nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+
+        if (!domRect) {
+            return;
+        }
 
         setSelectedNode({
-            top: domRect?.top || 0,
-            right: domRect?.right || 0,
-            bottom: domRect?.bottom || 0,
-            left: domRect?.left || 0,
+            top: domRect.top,
+            left: domRect.left,
+            height: domRect.height,
         });
-
-        setLastSelection(selection);
 
         return true;
     }, []);
-
 
     useRegisterCommand(
         KEY_ESCAPE_COMMAND,
@@ -75,45 +71,64 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
         COMMAND_PRIORITY_HIGH,
     );
 
+    useRegisterCommand(
+        SELECTION_CHANGE_COMMAND,
+        () => {
+            updateLinkEditor();
+
+            return false;
+        },
+        COMMAND_PRIORITY_LOW,
+    );
+
+    useEffect(() => {
+        const update = () => {
+            editor.getEditorState().read(() => {
+                updateLinkEditor();
+            });
+        };
+    
+        window.addEventListener('resize', update);
+    
+        return () => {
+            window.removeEventListener('resize', update);
+        };
+    }, [editor, updateLinkEditor]);
+
     useRegisterListener('onUpdate', editor.registerUpdateListener(({editorState}) => {
         editorState.read(() => {
             updateLinkEditor();
         });
-    }))
+    }));
 
     const monitorInputInteraction = (
         event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
         if (event.key === 'Enter') {
             event.preventDefault();
+
             handleLinkSubmission();
         }
     };
 
-    const handleLinkSubmission = () => {
-        if (lastSelection !== null) {
-            if (linkUrl !== '') {
-                editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl(linkUrl));
-            }
-        }
-    };
+    const handleLinkSubmission = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
 
     return isLink ? (
         <div
             ref={editorRef} 
             className="
-                flex
-                absolute
-                py-2
-                px-2
-                items-center
-                justify-center
-                gap-2
-                border
-                rounded
-                bg-white
-            "
-            style={{ top: bottom, left }}
+                    flex
+                    absolute
+                    py-2
+                    px-2
+                    items-center
+                    justify-center
+                    gap-2
+                    border
+                    rounded
+                    bg-white
+                "
+            style={{ top: top - y + height, left: left - x }}
         >
             <input
                 ref={inputRef}
