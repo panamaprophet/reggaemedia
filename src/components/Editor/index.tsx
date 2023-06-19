@@ -14,6 +14,7 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { ToolbarPlugin, EmbedPlugin, FocusPlugin } from './plugins';
 import { EmbedNode } from './plugins/Embed/node';
 import * as CutterPlugin from './plugins/Cutter';
+import { FloatLinkPlugin } from './plugins/FloatLink/plugin';
 
 
 export const onError = (error: Error) => {
@@ -66,9 +67,9 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <ToolbarPlugin />
-            <div className='w-full h-screen-1/2'>
+            <div className="w-full h-screen-1/2">
                 <RichTextPlugin
-                    contentEditable={<ContentEditable className="min-h-full focus:outline-none p-4" />}
+                    contentEditable={<ContentEditable className="relative min-h-full focus:outline-none p-4" />}
                     placeholder={null}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
@@ -80,6 +81,7 @@ export const Editor = ({ initialState, theme, onChange, onUpload }: Props) => {
                 <CheckListPlugin />
                 <FocusPlugin />
                 <CutterPlugin.Plugin />
+                <FloatLinkPlugin />
             </div>
         </LexicalComposer>
     );
