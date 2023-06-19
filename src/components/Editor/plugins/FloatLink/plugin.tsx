@@ -6,67 +6,36 @@ import {$findMatchingParent} from '@lexical/utils';
 import {
     $getSelection,
     $isRangeSelection,
-    LexicalEditor,
-    SELECTION_CHANGE_COMMAND,
 } from 'lexical';
 import {useCallback, useState} from 'react';
 import {createPortal} from 'react-dom';
 import { useRegisterListener } from '../../hooks/useRegisterListener';
-import { useRegisterCommandCritical } from '../../hooks/useRegisterCommand';
-import FloatingLinkEditor from './component';
 import { getSelectedNode } from './helpers';
+import FloatingLinkEditor from './component';
 
 
-const useFloatingLinkEditorToolbar = (editor: LexicalEditor) => {
+export const FloatLinkPlugin = () => {
     const [isLink, setIsLink] = useState(false);
+    const [editor] = useLexicalComposerContext();
 
     const updateToolbar = useCallback(() => {
-        const selection = $getSelection();
-        if ($isRangeSelection(selection)) {
-            const node = getSelectedNode(selection);
-            const linkParent = $findMatchingParent(node, $isLinkNode);
-            const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode);
+        editor.getEditorState().read(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                const node = getSelectedNode(selection);
+                const linkParent = $findMatchingParent(node, $isLinkNode);
+                const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode);
 
-            if (linkParent != null && autoLinkParent == null) {
-                setIsLink(true);
-            } else {
-                setIsLink(false);
+                setIsLink(Boolean(linkParent && !autoLinkParent));
             }
-        }
-    }, []);
-
-    useRegisterListener('onUpdate', editor.registerUpdateListener(({editorState}) => {
-        editorState.read(() => {
-            updateToolbar();
         });
-    }))
+    }, [editor]);
 
-    useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, (_payload) => {
-        updateToolbar();
-
-        return false;
-    });
-
-    const parent = editor.getRootElement()?.parentElement;
-
+    useRegisterListener('onUpdate', updateToolbar);
     
-    if (!parent) {
+    if (!isLink) {
         return null;
     }
 
-
-    return createPortal(
-        <FloatingLinkEditor
-            editor={editor}
-            isLink={isLink}
-            setIsLink={setIsLink}
-        />,
-        parent,
-    );
-}
-
-export default function FloatLinkPlugin() {
-    const [editor] = useLexicalComposerContext();
-    
-    return useFloatingLinkEditorToolbar(editor);
+    return createPortal(<FloatingLinkEditor />, document.body);
 }
