@@ -1,28 +1,21 @@
 import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand';
 import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { LexicalEditor, $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH } from 'lexical';
-import { Dispatch, useRef, useState, useCallback, useEffect } from 'react';
+import { $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH, SELECTION_CHANGE_COMMAND, COMMAND_PRIORITY_LOW } from 'lexical';
+import { useState, useCallback, useEffect, useLayoutEffect } from 'react';
 import { getSelectedNode } from '../helpers';
+import { InputText } from '@/components/Input/InputText';
+import { Button } from '@/components/Button';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
-interface Props {
-    editor: LexicalEditor;
-    isLink: boolean;
-    setIsLink: Dispatch<boolean>;
-}
 
-const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
-    const editorRef = useRef<HTMLDivElement | null>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+const FloatingLinkEditor = () => {
+    const [editor] = useLexicalComposerContext();
     const [linkUrl, setLinkUrl] = useState('');
-    const [position, setPosition] = useState({
-        top: 0,
-        left: 0,
-    });
+    const [position, setPosition] = useState({ top: 0, left: 0 });
 
     const updateLinkEditor = useCallback(() => {
         editor.getEditorState().read(() => {
-
             const selection = $getSelection();
 
             if ($isRangeSelection(selection)) {
@@ -43,41 +36,45 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
                 return;
             }
 
-            const selectionOffset = nativeSelection?.anchorNode?.parentElement?.getBoundingClientRect();
-            const editorOffset = editor.getRootElement()?.parentElement?.getBoundingClientRect();
-            if (!selectionOffset || !editorOffset) {
+            const selectionOffset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0];
+ 
+            if (!selectionOffset) {
                 return;
             }
-
-            const top = selectionOffset.top - editorOffset.top + selectionOffset.height;
-            const left = selectionOffset.left - editorOffset.left;
+            const top = selectionOffset.top + selectionOffset.height;
+            const left = selectionOffset.left;
 
             setPosition({ top, left });
-
         });
     
         return true;
     }, [editor]);
 
+    useRegisterCommand(KEY_ESCAPE_COMMAND, () => true, COMMAND_PRIORITY_HIGH);
+
     useRegisterCommand(
-        KEY_ESCAPE_COMMAND,
+        SELECTION_CHANGE_COMMAND,
         () => {
-            if (isLink) {
-                setIsLink(false);
-                return true;
-            }
+            updateLinkEditor();
+
             return false;
         },
-        COMMAND_PRIORITY_HIGH,
+        COMMAND_PRIORITY_LOW,
     );
 
     useEffect(() => {
         window.addEventListener('resize', updateLinkEditor);
+        window.addEventListener('scroll', updateLinkEditor);
     
-        return () => window.removeEventListener('resize', updateLinkEditor);
+        return () => {
+            window.removeEventListener('resize', updateLinkEditor);
+            window.removeEventListener('scroll', updateLinkEditor);
+        };
     }, [updateLinkEditor]);
 
     useRegisterListener('onUpdate', updateLinkEditor);
+    
+    useLayoutEffect(() => { updateLinkEditor() }, [updateLinkEditor]);
 
     const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -89,37 +86,36 @@ const FloatingLinkEditor = ({ editor, isLink, setIsLink }: Props) => {
 
     const handleLinkSubmission = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
 
-    return isLink ? (
+    return (
         <div
-            ref={editorRef} 
             className="
-                    flex
-                    absolute
-                    py-2
-                    px-2
-                    items-center
-                    justify-center
-                    gap-2
-                    border
-                    rounded
-                    bg-white
-                "
+                flex
+                fixed
+                py-2
+                px-2
+                items-center
+                justify-center
+                gap-2
+                border
+                rounded
+                bg-white
+            "
             style={position}
         >
-            <input
-                ref={inputRef}
+            <InputText
                 className="p-2 border rounded"
                 value={linkUrl}
-                onChange={(event) => {
-                    setLinkUrl(event.target.value);
-                }}
+                onChange={setLinkUrl}
                 onKeyDown={onKeydown}
             />
-            <button className="p-2 border rounded" onClick={handleLinkSubmission}>
-                        Сохранить
-            </button>
+            <Button
+                type="secondary"
+                onClick={handleLinkSubmission}
+            >
+                Сохранить
+            </Button>
         </div>
-    ) : null;
+    );
 }
 
 export default FloatingLinkEditor;
