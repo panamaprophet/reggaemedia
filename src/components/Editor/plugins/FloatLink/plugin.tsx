@@ -1,41 +1,55 @@
 import * as React from 'react';
 
-import {$isAutoLinkNode, $isLinkNode} from '@lexical/link';
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {$findMatchingParent} from '@lexical/utils';
-import {
-    $getSelection,
-    $isRangeSelection,
-} from 'lexical';
-import {useCallback, useState} from 'react';
-import {createPortal} from 'react-dom';
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $findMatchingParent } from '@lexical/utils';
+import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_HIGH, KEY_ESCAPE_COMMAND } from 'lexical';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useRegisterListener } from '../../hooks/useRegisterListener';
 import { getSelectedNode } from './helpers';
 import FloatingLinkEditor from './component';
+import { useRegisterCommand } from '../../hooks/useRegisterCommand';
 
 
 export const FloatLinkPlugin = () => {
-    const [isLink, setIsLink] = useState(false);
     const [editor] = useLexicalComposerContext();
+    const [link, setLink] = useState('');
 
-    const updateToolbar = useCallback(() => {
+    useRegisterListener('onUpdate', () => {
         editor.getEditorState().read(() => {
             const selection = $getSelection();
+
             if ($isRangeSelection(selection)) {
                 const node = getSelectedNode(selection);
                 const linkParent = $findMatchingParent(node, $isLinkNode);
-                const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode);
 
-                setIsLink(Boolean(linkParent && !autoLinkParent));
+                let url = '';
+
+                if ($isLinkNode(node)) {
+                    url = node.getURL();
+                }
+
+                if ($isLinkNode(linkParent)) {
+                    url = linkParent.getURL();
+                }
+
+                setLink(url);
             }
         });
-    }, [editor]);
+    });
 
-    useRegisterListener('onUpdate', updateToolbar);
-    
-    if (!isLink) {
+    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, link);
+
+    useRegisterCommand(KEY_ESCAPE_COMMAND, () => {
+        setLink('');
+
+        return true;
+    }, COMMAND_PRIORITY_HIGH);
+
+    if (!link) {
         return null;
     }
 
-    return createPortal(<FloatingLinkEditor />, document.body);
+    return createPortal(<FloatingLinkEditor link={link} onChange={setLink} onSubmit={submit} />, document.body);
 }
