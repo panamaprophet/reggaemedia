@@ -16,3 +16,16 @@ export const getSelectedNode = (selection: RangeSelection) => {
         return $isAtNodeEnd(anchor) ? anchorNode : focusNode;
     }
 }
+
+export const getCurrentSelectionOffset = () => {
+    const offset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0];
+
+    if (!offset) {
+        return { top: 0, left: 0 };
+    }
+
+    return {
+        top: offset.top + offset.height,
+        left: offset.left,
+    };
+};

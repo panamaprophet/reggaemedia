@@ -1,20 +1,8 @@
 import { useState, useEffect } from 'react';
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
+import { getCurrentSelectionOffset } from '../helpers';
 
-
-const getCurrentSelectionOffset = () => {
-    const offset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0];
-
-    if (!offset) {
-        return { top: 0, left: 0 };
-    }
-
-    return {
-        top: offset.top + offset.height,
-        left: offset.left,
-    };
-};
 
 interface Props {
     link: string,
