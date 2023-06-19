@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
-import { getCurrentSelectionOffset } from '../helpers';
+import useOffset from '@/components/Editor/hooks/useOffset';
 
 
 interface Props {
@@ -12,21 +11,7 @@ interface Props {
 
 
 const FloatingLinkEditor = ({ link, onChange, onSubmit }: Props) => {
-    const [offset, setOffset] = useState(getCurrentSelectionOffset());
-
-    useEffect(() => {
-        const updateOffset = () => setOffset(getCurrentSelectionOffset());
-
-        window.addEventListener('resize', updateOffset);
-        window.addEventListener('scroll', updateOffset);
-        window.addEventListener('mouseup', updateOffset);
-
-        return () => {
-            window.removeEventListener('resize', updateOffset);
-            window.removeEventListener('scroll', updateOffset);
-            window.removeEventListener('mouseup', updateOffset);
-        };
-    }, []);
+    const offset = useOffset();
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
