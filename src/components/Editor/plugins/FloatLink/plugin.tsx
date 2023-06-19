@@ -15,6 +15,7 @@ import { useRegisterCommand } from '../../hooks/useRegisterCommand';
 export const FloatLinkPlugin = () => {
     const [editor] = useLexicalComposerContext();
     const [link, setLink] = useState('');
+    const [key, setKey] = useState('');
 
     useRegisterListener('onUpdate', () => {
         editor.getEditorState().read(() => {
@@ -23,6 +24,8 @@ export const FloatLinkPlugin = () => {
             if ($isRangeSelection(selection)) {
                 const node = getSelectedNode(selection);
                 const linkParent = $findMatchingParent(node, $isLinkNode);
+
+                setKey(node.getKey());
 
                 let url = '';
 
@@ -51,5 +54,5 @@ export const FloatLinkPlugin = () => {
         return null;
     }
 
-    return createPortal(<FloatingLinkEditor link={link} onChange={setLink} onSubmit={submit} />, document.body);
+    return createPortal(<FloatingLinkEditor link={link} onChange={setLink} onSubmit={submit} />, document.body, key);
 }
