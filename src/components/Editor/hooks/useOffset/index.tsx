@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCurrentSelectionOffset } from '../../plugins/FloatLink/helpers';
 
-const useOffset = () => {
+const useSelectionOffset = () => {
     const [offset, setOffset] = useState(getCurrentSelectionOffset());
 
     useEffect(() => {
@@ -19,4 +19,4 @@ const useOffset = () => {
     return offset;
 }
 
-export default useOffset;
+export default useSelectionOffset;

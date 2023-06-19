@@ -1,6 +1,6 @@
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
-import useOffset from '@/components/Editor/hooks/useOffset';
+import useSelectionOffset from '@/components/Editor/hooks/useOffset';
 
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 
 const FloatingLinkEditor = ({ link, onChange, onSubmit }: Props) => {
-    const offset = useOffset();
+    const offset = useSelectionOffset();
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
