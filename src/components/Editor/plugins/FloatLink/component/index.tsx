@@ -1,117 +1,60 @@
-import { useRegisterCommand } from '@/components/Editor/hooks/useRegisterCommand';
-import { useRegisterListener } from '@/components/Editor/hooks/useRegisterListener';
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { $getSelection, $isRangeSelection, KEY_ESCAPE_COMMAND, COMMAND_PRIORITY_HIGH, SELECTION_CHANGE_COMMAND, COMMAND_PRIORITY_LOW } from 'lexical';
-import { useState, useCallback, useEffect, useLayoutEffect } from 'react';
-import { getSelectedNode } from '../helpers';
+import { useState, useEffect } from 'react';
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 
-const FloatingLinkEditor = () => {
-    const [editor] = useLexicalComposerContext();
-    const [linkUrl, setLinkUrl] = useState('');
-    const [position, setPosition] = useState({ top: 0, left: 0 });
+const getCurrentSelectionOffset = () => {
+    const offset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0];
 
-    const updateLinkEditor = useCallback(() => {
-        editor.getEditorState().read(() => {
-            const selection = $getSelection();
+    if (!offset) {
+        return { top: 0, left: 0 };
+    }
 
-            if ($isRangeSelection(selection)) {
-                const node = getSelectedNode(selection);
-                const parent = node.getParent();
-                if ($isLinkNode(parent)) {
-                    setLinkUrl(parent.getURL());
-                } else if ($isLinkNode(node)) {
-                    setLinkUrl(node.getURL());
-                } else {
-                    setLinkUrl('');
-                }
-            }
+    return {
+        top: offset.top + offset.height,
+        left: offset.left,
+    };
+};
 
-            const nativeSelection = window.getSelection();
+interface Props {
+    link: string,
+    onChange: (link: string) => void,
+    onSubmit: () => void,
+}
 
-            if (!nativeSelection) {
-                return;
-            }
 
-            const selectionOffset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0];
- 
-            if (!selectionOffset) {
-                return;
-            }
-            const top = selectionOffset.top + selectionOffset.height;
-            const left = selectionOffset.left;
-
-            setPosition({ top, left });
-        });
-    
-        return true;
-    }, [editor]);
-
-    useRegisterCommand(KEY_ESCAPE_COMMAND, () => true, COMMAND_PRIORITY_HIGH);
-
-    useRegisterCommand(
-        SELECTION_CHANGE_COMMAND,
-        () => {
-            updateLinkEditor();
-
-            return false;
-        },
-        COMMAND_PRIORITY_LOW,
-    );
+const FloatingLinkEditor = ({ link, onChange, onSubmit }: Props) => {
+    const [offset, setOffset] = useState(getCurrentSelectionOffset());
 
     useEffect(() => {
-        window.addEventListener('resize', updateLinkEditor);
-        window.addEventListener('scroll', updateLinkEditor);
-    
+        const updateOffset = () => setOffset(getCurrentSelectionOffset());
+
+        window.addEventListener('resize', updateOffset);
+        window.addEventListener('scroll', updateOffset);
+        window.addEventListener('mouseup', updateOffset);
+
         return () => {
-            window.removeEventListener('resize', updateLinkEditor);
-            window.removeEventListener('scroll', updateLinkEditor);
+            window.removeEventListener('resize', updateOffset);
+            window.removeEventListener('scroll', updateOffset);
+            window.removeEventListener('mouseup', updateOffset);
         };
-    }, [updateLinkEditor]);
+    }, []);
 
-    useRegisterListener('onUpdate', updateLinkEditor);
-    
-    useLayoutEffect(() => { updateLinkEditor() }, [updateLinkEditor]);
-
-    const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
 
-            handleLinkSubmission();
+            onSubmit()
         }
     };
 
-    const handleLinkSubmission = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
-
     return (
         <div
-            className="
-                flex
-                fixed
-                py-2
-                px-2
-                items-center
-                justify-center
-                gap-2
-                border
-                rounded
-                bg-white
-            "
-            style={position}
+            className="flex fixed p-2 gap-2 border rounded bg-white"
+            style={offset}
         >
-            <InputText
-                className="p-2 border rounded"
-                value={linkUrl}
-                onChange={setLinkUrl}
-                onKeyDown={onKeydown}
-            />
-            <Button
-                type="secondary"
-                onClick={handleLinkSubmission}
-            >
+            <InputText value={link} onChange={onChange} onKeyDown={onKeyDown} />
+            <Button type="secondary" onClick={onSubmit}>
                 Сохранить
             </Button>
         </div>
