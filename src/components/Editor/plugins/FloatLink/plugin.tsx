@@ -14,8 +14,9 @@ import { useRegisterCommand } from '../../hooks/useRegisterCommand';
 
 export const FloatLinkPlugin = () => {
     const [editor] = useLexicalComposerContext();
-    const [link, setLink] = useState('');
+    const [url, setUrl] = useState('');
     const [key, setKey] = useState('');
+    const [isBlank, setBlank] = useState(false);
 
     useRegisterListener('onUpdate', () => {
         editor.getEditorState().read(() => {
@@ -24,35 +25,36 @@ export const FloatLinkPlugin = () => {
             if ($isRangeSelection(selection)) {
                 const node = getSelectedNode(selection);
                 const linkParent = $findMatchingParent(node, $isLinkNode);
-
                 setKey(node.getKey());
 
                 let url = '';
 
                 if ($isLinkNode(node)) {
                     url = node.getURL();
+                    setBlank(node.__target === '_blank');
                 }
 
                 if ($isLinkNode(linkParent)) {
                     url = linkParent.getURL();
+                    setBlank(linkParent.__target === '_blank');
                 }
 
-                setLink(url);
+                setUrl(url);
             }
         });
     });
 
-    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, link);
+    const submit = (target: string) => editor.dispatchCommand(TOGGLE_LINK_COMMAND, { url, target });
 
     useRegisterCommand(KEY_ESCAPE_COMMAND, () => {
-        setLink('');
+        setUrl('');
 
         return true;
     }, COMMAND_PRIORITY_HIGH);
 
-    if (!link) {
+    if (!url) {
         return null;
     }
 
-    return createPortal(<FloatingLinkEditor link={link} onChange={setLink} onSubmit={submit} />, document.body, key);
+    return createPortal(<FloatingLinkEditor isBlank={isBlank} url={url} onChange={setUrl} onSubmit={submit} />, document.body, key);
 }
