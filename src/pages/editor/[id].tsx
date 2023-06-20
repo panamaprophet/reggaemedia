@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { Tags } from '@/components/Tags';
+import { InputText } from '@/components/Input/InputText';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { formatArticleDate, normalize } from '@/helpers/article';
 import { getArticleById } from '@/services/articles';
@@ -58,11 +59,11 @@ export const Page = ({ article }: { article: Article }) => {
             </div>
 
             <div className="mt-4 m-2 p-2 bg-white rounded border">
-                <input
+                <InputText
                     value={state.title}
-                    onChange={(event) => setState({ ...state, title: event.target.value })}
+                    onChange={(title) => setState({ ...state, title })}
                     placeholder="Заголовок"
-                    className="max-w-full w-full focus:outline-none text-3xl p-4"
+                    className="focus:outline-none !text-3xl !p-4 !bg-transparent !border-0"
                 />
 
                 <Tags value={state.tags} onChange={(tags) => setState({ ...state, tags })} />
