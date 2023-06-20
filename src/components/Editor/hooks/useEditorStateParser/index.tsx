@@ -42,7 +42,7 @@ export const useEditorStateParser = (
         }
 
         if (isLink(node)) {
-            Object.assign(props, { href: node.url });
+            Object.assign(props, { href: node.url, target: node.target });
         }
 
         if (isEmbed(node)) {
