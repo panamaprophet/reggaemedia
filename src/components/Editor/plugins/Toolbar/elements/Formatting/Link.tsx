@@ -15,7 +15,7 @@ export const Link = () => {
 
     const insertLink = () =>
         !isActive
-            ? editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://google.com')
+            ? editor.dispatchCommand(TOGGLE_LINK_COMMAND, { url: 'https://google.com', target: '_blank' })
             : editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
 
     const $updateActive = () => {
