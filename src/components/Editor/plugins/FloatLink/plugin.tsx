@@ -1,22 +1,20 @@
-import * as React from 'react';
-
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $findMatchingParent } from '@lexical/utils';
-import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_HIGH, KEY_ESCAPE_COMMAND } from 'lexical';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
+import { $getSelection, $isRangeSelection } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { TOGGLE_LINK_COMMAND } from '@lexical/link';
+
 import { useRegisterListener } from '../../hooks/useRegisterListener';
-import { getSelectedNode } from './helpers';
-import FloatingLinkEditor from './component';
-import { useRegisterCommand } from '../../hooks/useRegisterCommand';
+import { getLinkNode, getSelectedNode } from './helpers';
+import { Modal } from '@/components/Modal';
+import useSelectionOffset from '../../hooks/useOffset';
+import LinkEditor from './component';
 
 
 export const FloatLinkPlugin = () => {
+    const [offset, refreshOffset] = useSelectionOffset();
     const [editor] = useLexicalComposerContext();
-    const [url, setUrl] = useState('');
-    const [key, setKey] = useState('');
-    const [isBlank, setBlank] = useState(false);
+    const [linkState, setLinkState] = useState({ url: '', target: '_blank' });
+    const [isOpen, setOpen] = useState(false);
 
     useRegisterListener('onUpdate', () => {
         editor.getEditorState().read(() => {
@@ -24,37 +22,36 @@ export const FloatLinkPlugin = () => {
 
             if ($isRangeSelection(selection)) {
                 const node = getSelectedNode(selection);
-                const linkParent = $findMatchingParent(node, $isLinkNode);
-                setKey(node.getKey());
+                const linkNode = getLinkNode(node);
 
-                let url = '';
+                if (!linkNode) {
+                    setOpen(false);
 
-                if ($isLinkNode(node)) {
-                    url = node.getURL();
-                    setBlank(node.__target === '_blank');
+                    return;
                 }
 
-                if ($isLinkNode(linkParent)) {
-                    url = linkParent.getURL();
-                    setBlank(linkParent.__target === '_blank');
-                }
+                refreshOffset();
 
-                setUrl(url);
+                setLinkState({ url: linkNode.getURL(), target: linkNode.getTarget() || '_blank' })
+
+                setOpen(true);
             }
         });
     });
 
-    const submit = (target: string) => editor.dispatchCommand(TOGGLE_LINK_COMMAND, { url, target });
+    const handleChange = (link: string, target: boolean) => 
+        setLinkState({ url: link, target: target ? '_blank' : '_self' });
 
-    useRegisterCommand(KEY_ESCAPE_COMMAND, () => {
-        setUrl('');
+    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkState);
 
-        return true;
-    }, COMMAND_PRIORITY_HIGH);
-
-    if (!url) {
-        return null;
-    }
-
-    return createPortal(<FloatingLinkEditor isBlank={isBlank} url={url} onChange={setUrl} onSubmit={submit} />, document.body, key);
+    return (
+        <Modal isOpen={isOpen} onClose={() => setOpen(false)} type="float" position={offset}>
+            <LinkEditor
+                isBlank={linkState.target  === '_blank'}
+                url={linkState.url}
+                onChange={handleChange}
+                onSubmit={submit}
+            />,
+        </Modal>
+    )
 }
