@@ -8,7 +8,7 @@ const Page = () => (
             <title>Reggaemedia | Страница не найдена</title>
         </Head>
         <div className="h-screen flex flex-col">
-            <Header />
+            <Header hasInlineLogo />
             <div className="flex items-center justify-center w-full flex-grow">
                 <h1 className="text-2xl font-extrabold text-slate-900 border-r pr-5">404</h1>
                 <h2 className="text-slate-700 ml-5">
