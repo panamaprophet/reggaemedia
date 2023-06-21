@@ -1,52 +1,43 @@
+import { KeyboardEvent } from 'react';
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
-import useSelectionOffset from '@/components/Editor/hooks/useOffset';
-import { useEffect, useState } from 'react';
 
 
 interface Props {
     url: string,
-    onChange: (url: string) => void,
-    onSubmit: (target: string) => void,
     isBlank: boolean,
+    onChange: (link: string, target: boolean) => void,
+    onSubmit: () => void,
 }
 
 
-const FloatingLinkEditor = ({ url, isBlank, onChange, onSubmit }: Props) => {
-    const [checked, setChecked] = useState(isBlank);
-    const target = checked ? '_blank' : '_self';
-    const offset = useSelectionOffset();
-
-    const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+const LinkEditor = ({ url, isBlank, onChange, onSubmit }: Props) => {
+    const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
 
-            onSubmit(target);
+            onSubmit();
         }
     };
 
-    useEffect(() => {
-        onSubmit(target);
-    }, [checked])
-
     return (
-        <div className="flex flex-col gap-2 fixed border p-2 order rounded bg-white" style={offset}>
+        <div className="flex flex-col gap-2 border p-2 order rounded bg-white shadow-md">
             <div className="flex gap-2">
-                <InputText value={url} onChange={onChange} onKeyDown={onKeyDown} />
-                <Button type="secondary" onClick={() => onSubmit(target)}>
+                <InputText value={url} onChange={(value) => onChange(value, isBlank)} onKeyDown={onKeyDown} />
+                <Button type="secondary" onClick={onSubmit}>
                     Сохранить
                 </Button>
             </div>
-            <label className="flex p-1 justify-between items-center">
-                Открывать ссылку в новой вкладке
+            <label className="flex items-center justify-start gap-2">
                 <input
                     type="checkbox"
-                    checked={checked}
-                    onChange={(event) => setChecked(event.target.checked)}
+                    checked={isBlank}
+                    onChange={(event) => onChange(url, event.target.checked)}
                 />
+                Открывать в новой вкладке
             </label>
         </div>
     );
 }
 
-export default FloatingLinkEditor;
+export default LinkEditor;
