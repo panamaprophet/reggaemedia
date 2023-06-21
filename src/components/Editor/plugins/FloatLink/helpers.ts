@@ -1,5 +1,6 @@
+import { LinkNode, $isLinkNode } from '@lexical/link';
 import { $isAtNodeEnd } from '@lexical/selection';
-import { RangeSelection } from 'lexical';
+import { ElementNode, RangeSelection, TextNode } from 'lexical';
 
 export const getSelectedNode = (selection: RangeSelection) => {
     const anchor = selection.anchor;
@@ -15,4 +16,16 @@ export const getSelectedNode = (selection: RangeSelection) => {
     } else {
         return $isAtNodeEnd(anchor) ? anchorNode : focusNode;
     }
+}
+
+export const getLinkNode  = (node: TextNode | ElementNode): LinkNode | null => {
+    if ($isLinkNode(node)) {
+        return node;
+    }
+
+    if ($isLinkNode(node.getParent())) {
+        return node.getParent();
+    }
+
+    return null;
 }
