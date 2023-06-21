@@ -47,7 +47,7 @@ export const FloatLinkPlugin = () => {
     return (
         <Modal isOpen={isOpen} onClose={() => setOpen(false)} type="float" position={offset}>
             <LinkEditor
-                isBlank={state.target  === '_blank'}
+                isBlank={state.target === '_blank'}
                 url={state.url}
                 onChange={handleChange}
                 onSubmit={submit}
