@@ -13,7 +13,7 @@ import LinkEditor from './component';
 export const FloatLinkPlugin = () => {
     const [offset, refreshOffset] = useSelectionOffset();
     const [editor] = useLexicalComposerContext();
-    const [linkState, setLinkState] = useState({ url: '', target: '_blank' });
+    const [state, setState] = useState({ url: '', target: '_blank' });
     const [isOpen, setOpen] = useState(false);
 
     useRegisterListener('onUpdate', () => {
@@ -32,7 +32,7 @@ export const FloatLinkPlugin = () => {
 
                 refreshOffset();
 
-                setLinkState({ url: linkNode.getURL(), target: linkNode.getTarget() || '_blank' })
+                setState({ url: linkNode.getURL(), target: linkNode.getTarget() || '_blank' })
 
                 setOpen(true);
             }
@@ -40,15 +40,15 @@ export const FloatLinkPlugin = () => {
     });
 
     const handleChange = (link: string, target: boolean) => 
-        setLinkState({ url: link, target: target ? '_blank' : '_self' });
+        setState({ url: link, target: target ? '_blank' : '_self' });
 
-    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkState);
+    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, state);
 
     return (
         <Modal isOpen={isOpen} onClose={() => setOpen(false)} type="float" position={offset}>
             <LinkEditor
-                isBlank={linkState.target  === '_blank'}
-                url={linkState.url}
+                isBlank={state.target  === '_blank'}
+                url={state.url}
                 onChange={handleChange}
                 onSubmit={submit}
             />,
