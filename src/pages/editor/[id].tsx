@@ -6,6 +6,8 @@ import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { Tags } from '@/components/Tags';
 import { InputText } from '@/components/Input/InputText';
+import { ArrowSmallLeft } from '@/components/Icons/ArrowSmallLeft';
+import { Link } from '@/components/Link';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { formatArticleDate, normalize } from '@/helpers/article';
 import { getArticleById } from '@/services/articles';
@@ -41,11 +43,19 @@ export const Page = ({ article }: { article: Article }) => {
     return (
         <div className="max-w-4xl w-full mx-auto mb-4">
             <div className="flex justify-between items-center p-2 pt-4">
-                {state && (
-                    <div className="text-sm text-gray-600">
-                        обновлено: {formatArticleDate(state, true)}
-                    </div>
-                )}
+                <div className="flex gap-4 items-center">
+                    <Link to="/editor">
+                        <Button type="secondary">
+                            <ArrowSmallLeft size="sm" />
+                        </Button>
+                    </Link>
+
+                    {state && (
+                        <div className="text-sm text-gray-600">
+                            обновлено: {formatArticleDate(state, true)}
+                        </div>
+                    )}
+                </div>
 
                 <div className="flex gap-4">
                     <Button type="secondary" onClick={onPublish}>
