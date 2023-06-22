@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
 
 const getCurrentSelectionOffset = () => {
-    const offset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0];
-
-    if (!offset) {
+    try {
+        const offset = window.getSelection()?.getRangeAt(0)?.getClientRects()?.[0]!;
+    
+        return {
+            top: offset.top + offset.height,
+            left: offset.left,
+        };
+    } catch (e) {
         return { top: 0, left: 0 };
     }
-
-    return {
-        top: offset.top + offset.height,
-        left: offset.left,
-    };
 };
 
 const useSelectionOffset = () => {
     const [offset, setOffset] = useState(getCurrentSelectionOffset());
+
+    const refreshOffset = () => setOffset(getCurrentSelectionOffset());
 
     useEffect(() => {
         const updateOffset = () => setOffset(getCurrentSelectionOffset());
@@ -28,7 +30,7 @@ const useSelectionOffset = () => {
         };
     }, []);
 
-    return offset;
+    return [offset, refreshOffset] as const;
 }
 
 export default useSelectionOffset;

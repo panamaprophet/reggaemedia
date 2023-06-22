@@ -1,21 +1,20 @@
-import * as React from 'react';
-
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $findMatchingParent } from '@lexical/utils';
-import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_HIGH, KEY_ESCAPE_COMMAND } from 'lexical';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
+import { $getSelection, $isRangeSelection } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { TOGGLE_LINK_COMMAND } from '@lexical/link';
+
 import { useRegisterListener } from '../../hooks/useRegisterListener';
-import { getSelectedNode } from './helpers';
-import FloatingLinkEditor from './component';
-import { useRegisterCommand } from '../../hooks/useRegisterCommand';
+import { getLinkNode, getSelectedNode } from './helpers';
+import { Modal } from '@/components/Modal';
+import useSelectionOffset from '../../hooks/useOffset';
+import LinkEditor from './component';
 
 
 export const FloatLinkPlugin = () => {
+    const [offset, refreshOffset] = useSelectionOffset();
     const [editor] = useLexicalComposerContext();
-    const [link, setLink] = useState('');
-    const [key, setKey] = useState('');
+    const [state, setState] = useState({ url: '', target: '_blank' });
+    const [isOpen, setOpen] = useState(false);
 
     useRegisterListener('onUpdate', () => {
         editor.getEditorState().read(() => {
@@ -23,36 +22,36 @@ export const FloatLinkPlugin = () => {
 
             if ($isRangeSelection(selection)) {
                 const node = getSelectedNode(selection);
-                const linkParent = $findMatchingParent(node, $isLinkNode);
+                const linkNode = getLinkNode(node);
 
-                setKey(node.getKey());
+                if (!linkNode) {
+                    setOpen(false);
 
-                let url = '';
-
-                if ($isLinkNode(node)) {
-                    url = node.getURL();
+                    return;
                 }
 
-                if ($isLinkNode(linkParent)) {
-                    url = linkParent.getURL();
-                }
+                refreshOffset();
 
-                setLink(url);
+                setState({ url: linkNode.getURL(), target: linkNode.getTarget() || '_blank' })
+
+                setOpen(true);
             }
         });
     });
 
-    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, link);
+    const handleChange = (link: string, target: boolean) => 
+        setState({ url: link, target: target ? '_blank' : '_self' });
 
-    useRegisterCommand(KEY_ESCAPE_COMMAND, () => {
-        setLink('');
+    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, state);
 
-        return true;
-    }, COMMAND_PRIORITY_HIGH);
-
-    if (!link) {
-        return null;
-    }
-
-    return createPortal(<FloatingLinkEditor link={link} onChange={setLink} onSubmit={submit} />, document.body, key);
+    return (
+        <Modal isOpen={isOpen} onClose={() => setOpen(false)} type="float" position={offset}>
+            <LinkEditor
+                isBlank={state.target === '_blank'}
+                url={state.url}
+                onChange={handleChange}
+                onSubmit={submit}
+            />,
+        </Modal>
+    )
 }
