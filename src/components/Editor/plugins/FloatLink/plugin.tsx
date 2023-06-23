@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { $getSelection, $isRangeSelection } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { TOGGLE_LINK_COMMAND } from '@lexical/link';
-
 import { useRegisterListener } from '../../hooks/useRegisterListener';
 import { getLinkNode, getSelectedNode } from './helpers';
 import { Modal } from '@/components/Modal';
@@ -13,8 +12,11 @@ import LinkEditor from './component';
 export const FloatLinkPlugin = () => {
     const [offset, refreshOffset] = useSelectionOffset();
     const [editor] = useLexicalComposerContext();
-    const [state, setState] = useState({ url: '', target: '_blank' });
-    const [isOpen, setOpen] = useState(false);
+    const [state, setState] = useState<{ url: string, target: string } | null>(null);
+
+    const { url = '', target = '' } = state || {};
+
+    const onSubmit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, state);
 
     useRegisterListener('onUpdate', () => {
         editor.getEditorState().read(() => {
@@ -25,32 +27,32 @@ export const FloatLinkPlugin = () => {
                 const linkNode = getLinkNode(node);
 
                 if (!linkNode) {
-                    setOpen(false);
-
+                    setState(null);
                     return;
                 }
 
                 refreshOffset();
 
-                setState({ url: linkNode.getURL(), target: linkNode.getTarget() || '_blank' })
-
-                setOpen(true);
+                setState({
+                    url: linkNode.getURL(),
+                    target: linkNode.getTarget() || '_blank'
+                });
             }
         });
     });
 
-    const handleChange = (link: string, target: boolean) => 
-        setState({ url: link, target: target ? '_blank' : '_self' });
-
-    const submit = () => editor.dispatchCommand(TOGGLE_LINK_COMMAND, state);
-
     return (
-        <Modal isOpen={isOpen} onClose={() => setOpen(false)} type="float" position={offset}>
+        <Modal
+            type="float"
+            position={offset}
+            isOpen={Boolean(state)}
+            onClose={() => setState(null)}
+        >
             <LinkEditor
-                isBlank={state.target === '_blank'}
-                url={state.url}
-                onChange={handleChange}
-                onSubmit={submit}
+                url={url}
+                target={target}
+                onChange={setState}
+                onSubmit={onSubmit}
             />,
         </Modal>
     )
