@@ -5,7 +5,7 @@ import { TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { useRegisterListener } from '../../hooks/useRegisterListener';
 import { getLinkNode, getSelectedNode } from './helpers';
 import { Modal } from '@/components/Modal';
-import useSelectionOffset from '../../hooks/useOffset';
+import useSelectionOffset from '../../hooks/useSelectionOffset';
 import LinkEditor from './component';
 
 
