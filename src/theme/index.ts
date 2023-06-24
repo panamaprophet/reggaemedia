@@ -16,7 +16,7 @@ export const theme = {
         listitemUnchecked: 'list-none border border-black rounded bg-transparent',
     },
     image: 'inline-block',
-    link: 'text-blue-500',
+    link: 'underline underline-offset-2 transition cursor-pointer',
     linebreak: 'block w-full h-5',
     text: {
         underline: 'underline underline-offset-2',
