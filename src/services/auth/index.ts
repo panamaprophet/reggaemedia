@@ -68,7 +68,12 @@ export const refreshAccessToken = async (id: string, refreshToken: string) => {
         throw Error('token refresh failed');
     }
 
-    return getAccessTokenFromAuthenticationResult(AuthenticationResult);
+    const result = getAccessTokenFromAuthenticationResult(AuthenticationResult);
+
+    return {
+        ...result,
+        refreshToken: result.refreshToken || refreshToken,
+    }
 };
 
 export const getUserInfo = async (username: string) => {
