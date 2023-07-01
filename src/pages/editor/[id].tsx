@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
-import { useRouter } from 'next/router';
 import { Button } from '@/components/Button';
 import { Editor } from '@/components/Editor';
 import { Tags } from '@/components/Tags';
@@ -9,28 +8,24 @@ import { InputText } from '@/components/Input/InputText';
 import { ArrowSmallLeft } from '@/components/Icons/ArrowSmallLeft';
 import { Link } from '@/components/Link';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { formatArticleDate, normalize } from '@/helpers/article';
 import { getArticleById } from '@/services/articles';
-import { createArticle, publishArticle, saveArticle, unpublishArticle } from '@/actions/articles';
+import { createArticle, publishArticle, unpublishArticle } from '@/actions/articles';
 import { uploadFile } from '@/actions/storage';
 import { theme } from '@/theme';
 import { Article } from '@/types';
+import { useSaving } from '@/hooks/useSaving';
 
 
 export const Page = ({ article }: { article: Article }) => {
-    const router = useRouter();
-    const [state, setState] = useState(article);
+    const [state, saveState, onSave, onAutoSave, setState] = useSaving(article);
 
-    const onSave = async (data: Article) => {
-        const hasId = Boolean(data.id);
-        const body = { root: normalize(data.body.root) };
-        const id = await saveArticle({ ...data, body });
+    useEffect(() => {
+        const id = setInterval(() => onAutoSave(), 300000);
 
-        if (!hasId) {
-            router.replace(`/editor/${id}`, undefined, { shallow: true });
-            setState({ ...data, id });
+        return () => {
+            clearInterval(id);
         }
-    };
+    }, [onAutoSave]);
 
     const onPublish = async () => {
         const { publishedOn, updatedOn } = state.publishedOn
@@ -52,17 +47,19 @@ export const Page = ({ article }: { article: Article }) => {
 
                     {state && (
                         <div className="text-sm text-gray-600">
-                            обновлено: {formatArticleDate(state, true)}
+                            Последнее сохранение: {saveState.savedTime}
                         </div>
                     )}
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
+                    {saveState.isAutoSaving && <p className='text-sm text-green-400'>Автосохранение...</p>}
+                    {saveState.isSaving && <p className='text-sm text-green-400'>Сохранение...</p>}
                     <Button type="secondary" onClick={onPublish}>
                         {state.publishedOn ? 'Отменить публикацию' : 'Опубликовать'}
                     </Button>
 
-                    <Button type="secondary" onClick={() => onSave(state)}>
+                    <Button type="secondary" onClick={onSave}>
                         Сохранить
                     </Button>
                 </div>
