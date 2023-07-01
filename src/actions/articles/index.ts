@@ -16,7 +16,7 @@ export const saveArticle = async (article: Partial<Article>) => {
 
 export const getArticles = () => fetchJson<{ articles: Article[] }>('/api/articles').then(response => response.articles);
 
-export const getArticle = async (id: string) => fetchJson<Article>(`/api/articles/${id}`)
+export const getArticle = async (id: string) => fetchJson<Record<'article', Article>>(`/api/articles/${id}`);
 
 export const removeArticle = (id: string) => fetchJson<{ success: boolean }>('/api/articles/' + id, { method: 'DELETE' });
 
