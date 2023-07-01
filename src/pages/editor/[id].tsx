@@ -14,6 +14,7 @@ import { uploadFile } from '@/actions/storage';
 import { theme } from '@/theme';
 import { Article } from '@/types';
 import { useSaving } from '@/hooks/useSaving';
+import { formatArticleDate } from '@/helpers/article';
 
 
 export const Page = ({ article }: { article: Article }) => {
@@ -47,7 +48,7 @@ export const Page = ({ article }: { article: Article }) => {
 
                     {state && (
                         <div className="text-sm text-gray-600">
-                            Последнее сохранение: {saveState.savedTime}
+                            Последнее сохранение: {formatArticleDate(state, true)}
                         </div>
                     )}
                 </div>
