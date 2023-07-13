@@ -22,7 +22,7 @@ export const EmbedComponent = (props: Props): JSX.Element => {
         isSelected,
         width: props.width,
         height: props.height,
-        callback: (width, height) => editor.dispatchCommand(RESIZE_EMBED_COMMAND, { width, height, key: props.nodeKey }),
+        callback: (size) => editor.dispatchCommand(RESIZE_EMBED_COMMAND, { ...size, key: props.nodeKey }),
     });
 
 

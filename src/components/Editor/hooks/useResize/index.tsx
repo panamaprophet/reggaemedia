@@ -1,4 +1,4 @@
-import { useCallback, useEffect, MouseEvent as SyntheticMouseEvent, useState, ReactNode } from 'react';
+import { useCallback, useEffect, MouseEvent as SyntheticMouseEvent, useState } from 'react';
 import { Marker } from './Marker';
 
 interface Props {
@@ -6,11 +6,8 @@ interface Props {
     height: number,
     isSelected: boolean,
     keepAspectRatio: boolean,
-    callback: (width: number, height: number) => void,
+    callback: ({ width, height }: { width: number, height: number }) => void,
 }
-
-type ReturnType = [boolean, ReactNode, { width: number, height: number }];
-
 
 const getDirection = (movementX: number, movementY: number) => {
     const direction = [];
@@ -24,67 +21,62 @@ const getDirection = (movementX: number, movementY: number) => {
     return direction;
 };
 
-export const useResize = (props: Props): ReturnType => {
-    const [{ width, height }, setSize] = useState({ width: props.width, height: props.height });
+export const useResize = ({ callback, width, height, isSelected }: Props) => {
+    const [size, setSize] = useState({ width, height });
     const [isResizing, setResizing] = useState(false);
     const [type, setType] = useState<string | null>(null);
-    const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
-    const callback = props.callback;
 
     const onResizeStart = (event: SyntheticMouseEvent) => {
         setResizing(true);
         setType(event.currentTarget.getAttribute('data-name'));
-        setStartPoint({ x: event.clientX, y: event.clientY });
     };
 
     const onResize = useCallback((event: MouseEvent) => {
-        const { clientX: x, clientY: y } = event;
         const keepAspectRatio = event.altKey;
 
-        let w = width;
-        let h = height;
+        let newWidth = size.width;
+        let newHeight = size.height;
 
         const directions = getDirection(event.movementX, event.movementY);
 
         const isLeft = type === 'top-left' || type === 'bottom-left';
         const isTop = type === 'top-left' || type === 'top-right';
 
-        const dx = Math.abs(x - startPoint.x);
-        const dy = Math.abs(y - startPoint.y);
+        const dx = Math.abs(event.movementX);
+        const dy = Math.abs(event.movementY);
 
         directions.map((direction) => {
             switch (direction) {
                 case 'left':
-                    w = isLeft ? width + dx : width - dx;
+                    newWidth = isLeft ? newWidth + dx : newWidth - dx;
                     break;
                 case 'right':
-                    w = isLeft ? width - dx : width + dx;
+                    newWidth = isLeft ? newWidth - dx : newWidth + dx;
                     break;
                 case 'up':
-                    h = isTop ? height + dy : height - dy;
+                    newHeight = isTop ? newHeight + dy : newHeight - dy;
                     break;
                 case 'down':
-                    h = isTop ? height - dy : height + dy;
+                    newHeight = isTop ? newHeight - dy : newHeight + dy;
                     break;
             }
 
             if (keepAspectRatio && (direction === 'left' || direction === 'right')) {
-                h = h / (width / w);
+                newHeight = newHeight / (size.width / newWidth);
             }
-    
+
             if (keepAspectRatio && (direction === 'up' || direction === 'down')) {
-                w = w / (height / h);
+                newWidth = newWidth / (size.height / newHeight);
             }
         });
 
-        setStartPoint({ x, y });
-        setSize({ width: w, height: h });
-    }, [startPoint, type, height, width]);
+        setSize({ width: newWidth, height: newHeight });
+    }, [type, size]);
 
     const onResizeEnd = useCallback(() => {
         setResizing(false);
-        callback(width, height);
-    }, [callback, width, height]);
+        callback(size);
+    }, [callback, size]);
 
     useEffect(() => {
         if (!isResizing) {
@@ -102,7 +94,7 @@ export const useResize = (props: Props): ReturnType => {
 
     let Markers = null;
 
-    if (props.isSelected) {
+    if (isSelected) {
         Markers = (
             <>
                 <Marker onClick={onResizeStart} type="top-left" />
@@ -113,5 +105,5 @@ export const useResize = (props: Props): ReturnType => {
         )
     }
 
-    return [isResizing, Markers, { width, height }];
+    return [isResizing, Markers, size] as const;
 }
