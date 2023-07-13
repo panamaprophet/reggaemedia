@@ -52,7 +52,7 @@ export const EmbedComponent = (props: Props): JSX.Element => {
                 focus: 'outline-sky-600',
             }}
         >
-            <div className="relative inline-block" style={{ width, height }}>
+            <div className="relative inline-block select-none" style={{ width, height }}>
                 <Image
                     fill
                     src={props.thumbnail}
