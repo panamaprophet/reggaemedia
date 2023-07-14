@@ -1,4 +1,3 @@
-import { MouseEventHandler } from 'react';
 import { cx } from '@/helpers';
 
 
@@ -12,10 +11,10 @@ const MarkerPositionMap: { [k in MarkerType]: string } = {
 };
 
 
-export const Marker = ({ type, onClick }: { type: MarkerType, onClick: MouseEventHandler<HTMLDivElement> }) => (
+export const Marker = ({ type, onClick }: { type: MarkerType, onClick: (type: MarkerType) => void }) => (
     <div
         data-name={type}
-        onMouseDown={onClick}
+        onMouseDown={() => onClick(type)}
         className={cx('absolute w-2 h-2 bg-sky-600', MarkerPositionMap[type])}
     />
 );

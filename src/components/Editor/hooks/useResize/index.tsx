@@ -1,4 +1,4 @@
-import { useCallback, useEffect, MouseEvent as SyntheticMouseEvent, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Marker } from './Marker';
 
 interface Props {
@@ -23,13 +23,7 @@ const getDirection = (movementX: number, movementY: number) => {
 
 export const useResize = ({ callback, width, height, isSelected }: Props) => {
     const [size, setSize] = useState({ width, height });
-    const [isResizing, setResizing] = useState(false);
     const [type, setType] = useState<string | null>(null);
-
-    const onResizeStart = (event: SyntheticMouseEvent) => {
-        setResizing(true);
-        setType(event.currentTarget.getAttribute('data-name'));
-    };
 
     const onResize = useCallback((event: MouseEvent) => {
         const keepAspectRatio = event.altKey;
@@ -44,6 +38,8 @@ export const useResize = ({ callback, width, height, isSelected }: Props) => {
 
         const dx = Math.abs(event.movementX);
         const dy = Math.abs(event.movementY);
+
+        const ratio = size.width / size.height;
 
         directions.map((direction) => {
             switch (direction) {
@@ -62,11 +58,11 @@ export const useResize = ({ callback, width, height, isSelected }: Props) => {
             }
 
             if (keepAspectRatio && (direction === 'left' || direction === 'right')) {
-                newHeight = newHeight / (size.width / newWidth);
+                newHeight =  newWidth / ratio;
             }
 
             if (keepAspectRatio && (direction === 'up' || direction === 'down')) {
-                newWidth = newWidth / (size.height / newHeight);
+                newWidth = newHeight * ratio;
             }
         });
 
@@ -74,12 +70,12 @@ export const useResize = ({ callback, width, height, isSelected }: Props) => {
     }, [type, size]);
 
     const onResizeEnd = useCallback(() => {
-        setResizing(false);
+        setType(null);
         callback(size);
     }, [callback, size]);
 
     useEffect(() => {
-        if (!isResizing) {
+        if (!type) {
             return;
         }
 
@@ -90,20 +86,20 @@ export const useResize = ({ callback, width, height, isSelected }: Props) => {
             document.removeEventListener('mousemove', onResize);
             document.removeEventListener('mouseup', onResizeEnd);
         }
-    }, [isResizing, onResizeEnd, onResize]);
+    }, [type, onResizeEnd, onResize]);
 
     let Markers = null;
 
     if (isSelected) {
         Markers = (
             <>
-                <Marker onClick={onResizeStart} type="top-left" />
-                <Marker onClick={onResizeStart} type="top-right" />
-                <Marker onClick={onResizeStart} type="bottom-right" />
-                <Marker onClick={onResizeStart} type="bottom-left" />
+                <Marker onClick={setType} type="top-left" />
+                <Marker onClick={setType} type="top-right" />
+                <Marker onClick={setType} type="bottom-right" />
+                <Marker onClick={setType} type="bottom-left" />
             </>
         )
     }
 
-    return [isResizing, Markers, size] as const;
-}
+    return [Boolean(type), Markers, size] as const;
+};
