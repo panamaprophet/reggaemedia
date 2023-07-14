@@ -1,5 +1,6 @@
 import { EditorThemeClasses, SerializedEditorState, SerializedLexicalNode } from 'lexical';
 import Image from 'next/image';
+import { cx } from '@/helpers';
 import {
     getClassName,
     getTagByType,
@@ -45,31 +46,22 @@ export const useEditorStateParser = (
             Object.assign(props, { href: node.url, target: node.target });
         }
 
-        if (isEmbed(node)) {
-            Object.assign(props, {
-                width: node.width,
-                height: node.height,
-                src: decodeURIComponent(node.src),
-            });
-        }
 
         if (isText(node) && !props.className) {
             return node.text;
         }
 
-        if (isImage(node)) {
-            const { alt, src } = node;
-
-            return <Image alt={alt} src={decodeURIComponent(src)} {...props} />;
-        }
-
         if (isEmbed(node)) {
             const { key, className } = props;
+            const { width, height, alt, src } = node;
+
+            const EmbedTag = isImage(node) ? Image : Tag;
+            const fullProps = { width, height, alt, src: decodeURIComponent(src) };
 
             return (
-                <p key={key} className={className}>
-                    <Tag {...props} />
-                </p>
+                <span key={key} className={cx('block', className)}>
+                    <EmbedTag {...fullProps} />
+                </span>
             );
         }
 

@@ -22,7 +22,7 @@ export const EmbedComponent = (props: Props): JSX.Element => {
         isSelected,
         width: props.width,
         height: props.height,
-        callback: (width, height) => editor.dispatchCommand(RESIZE_EMBED_COMMAND, { width, height, key: props.nodeKey }),
+        callback: (size) => editor.dispatchCommand(RESIZE_EMBED_COMMAND, { ...size, key: props.nodeKey }),
     });
 
 
@@ -52,7 +52,7 @@ export const EmbedComponent = (props: Props): JSX.Element => {
                 focus: 'outline-sky-600',
             }}
         >
-            <div className="relative inline-block" style={{ width, height }}>
+            <div className="relative inline-block select-none" style={{ width, height }}>
                 <Image
                     fill
                     src={props.thumbnail}
