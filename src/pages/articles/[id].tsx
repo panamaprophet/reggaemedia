@@ -1,7 +1,7 @@
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
-import { getArticleById, getRelatedArticles } from '@/services/articles';
+import { getArticleById, getPublishedArticles, getRelatedArticles } from '@/services/articles';
 import { theme } from '@/theme';
 import { Article, User } from '@/types';
 import { getUserById } from '@/services/auth';
@@ -57,9 +57,18 @@ const Page = ({ article, author, relatedArticles }: Props) => {
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
-    const { query } = ctx;
-    const { id } = query;
+export const getStaticPaths: GetStaticPaths = async () => {
+    const articles = await getPublishedArticles() ?? [];
+
+    return {
+        paths: articles.map(({ id }) => ({ params: { id } })),
+        fallback: false,
+    };
+};
+
+export const getStaticProps: GetStaticProps<{}, { id: string }> = async (ctx) => {
+    const { params } = ctx;
+    const { id } = params!;
 
     const article = await getArticleById(id);
     const author = article && await getUserById(article.authorId);
