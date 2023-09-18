@@ -47,7 +47,7 @@ export const getArticleById = async (id: string) => {
         Key: marshall({ id }),
     }));
 
-    return result.Item ? unmarshall(result.Item) : null;
+    return result.Item ? unmarshall(result.Item) as Article : null;
 };
 
 export const removeArticleById = async (id: string) => {
@@ -105,9 +105,13 @@ export const getPublishedArticles = async () => {
         FilterExpression: 'attribute_exists(publishedOn)',
     }));
 
+    if (!result.Items) {
+        return null;
+    }
+
     return result.Items
-        ? result.Items.map(item => unmarshall(item) as Article)
-        : null;
+        .map(item => unmarshall(item) as Article)
+        .sort((a, b) => b.publishedOn! - a.publishedOn!);
 };
 
 export const unpublishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<Article, 'id' | 'updatedOn' | 'publishedOn'>> => {

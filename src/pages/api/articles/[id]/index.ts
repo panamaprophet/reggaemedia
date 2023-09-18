@@ -24,6 +24,9 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     if (request.method === 'DELETE') {
         const success = await removeArticleById(id);
 
+        await response.revalidate('/');
+        await response.revalidate(`/articles/${query.id}`);
+
         return response.json({ success });
     }
 

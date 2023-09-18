@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { Article, User } from '@/types';
 import { getPublishedArticles } from '@/services/articles';
 import { ArticlePreview } from '@/components/ArticlePreview';
@@ -27,7 +27,7 @@ const Page = ({ articles = [] }: { articles: Article[], users: User[] }) => (
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps = async (_) => {
+export const getStaticProps: GetStaticProps = async () => {
     return {
         props: {
             articles: await getPublishedArticles(),
