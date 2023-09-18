@@ -11,6 +11,9 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
     const result = await unpublishArticle({ id });
 
+    await response.revalidate(`/articles/${id}`);
+    await response.revalidate('/');
+
     return response.json(result);
 };
 

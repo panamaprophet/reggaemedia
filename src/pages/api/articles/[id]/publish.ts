@@ -11,7 +11,8 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
     const result = await publishArticle({ id });
 
-    // await response.revalidate('/articles/' + id);
+    await response.revalidate(`/articles/${id}`);
+    await response.revalidate('/');
 
     return response.json(result);
 };
