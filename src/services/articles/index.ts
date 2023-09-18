@@ -47,7 +47,7 @@ export const getArticleById = async (id: string) => {
         Key: marshall({ id }),
     }));
 
-    return result.Item ? unmarshall(result.Item) : null;
+    return result.Item ? unmarshall(result.Item) as Article : null;
 };
 
 export const removeArticleById = async (id: string) => {

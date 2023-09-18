@@ -2,13 +2,13 @@ import { SerializedEditorState } from 'lexical';
 
 
 export interface User {
-    id: string,
+    id: UUID,
     name: string,
     email: string,
 }
 
 export interface Article {
-    id: string,
+    id: UUID,
     authorId: User['id'],
 
     title: string,
