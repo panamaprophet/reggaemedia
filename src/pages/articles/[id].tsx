@@ -26,14 +26,6 @@ const getArticleBody = (article: Article) => article?.body ?? {} as SerializedEd
 const Page = ({ article, author, relatedArticles }: Props) => {
     const body = useEditorStateParser(getArticleBody(article), { theme });
 
-    if (!article) {
-        return (
-            <>
-                Загрузка...
-            </>
-        )
-    }
-
     return (
         <>
             <Head>
@@ -74,7 +66,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
     return {
         paths,
-        fallback: true,
+        fallback: 'blocking',
     };
 };
 
