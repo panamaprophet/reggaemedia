@@ -20,6 +20,10 @@ export const useEditorStateParser = (
 ) => {
     let key = 0;
 
+    if (!root) {
+        return null;
+    }
+
     const convertToHtml = (node: SerializedLexicalNode) => {
         const Tag = isHeading(node) ? node.tag : getTagByType(node.type);
 
