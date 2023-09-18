@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
+import { SerializedEditorState } from 'lexical';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
 import { getArticleById, getPublishedArticles, getRelatedArticles } from '@/services/articles';
 import { theme } from '@/theme';
@@ -19,9 +20,19 @@ type Props = {
     },
 }
 
+const getArticleBody = (article: Article) => article?.body ?? {} as SerializedEditorState;
+
 
 const Page = ({ article, author, relatedArticles }: Props) => {
-    const body = useEditorStateParser(article.body, { theme });
+    const body = useEditorStateParser(getArticleBody(article), { theme });
+
+    if (!article) {
+        return (
+            <>
+                Загрузка...
+            </>
+        )
+    }
 
     return (
         <>
@@ -59,10 +70,11 @@ export default Page;
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const articles = await getPublishedArticles() ?? [];
+    const paths = articles.map(({ id }) => ({ params: { id } }));
 
     return {
-        paths: articles.map(({ id }) => ({ params: { id } })),
-        fallback: false,
+        paths,
+        fallback: true,
     };
 };
 
@@ -74,8 +86,10 @@ export const getStaticProps: GetStaticProps<{}, { id: string }> = async (ctx) =>
     const author = article && await getUserById(article.authorId);
     const relatedArticles = article && await getRelatedArticles(id);
 
+    const notFound = !article || !article.publishedOn;
+
     return {
-        notFound: !article,
+        notFound,
         props: {
             article,
             author,
