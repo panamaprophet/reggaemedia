@@ -105,9 +105,13 @@ export const getPublishedArticles = async () => {
         FilterExpression: 'attribute_exists(publishedOn)',
     }));
 
+    if (!result.Items) {
+        return null;
+    }
+
     return result.Items
-        ? result.Items.map(item => unmarshall(item) as Article)
-        : null;
+        .map(item => unmarshall(item) as Article)
+        .sort((a, b) => b.publishedOn! - a.publishedOn!);
 };
 
 export const unpublishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<Article, 'id' | 'updatedOn' | 'publishedOn'>> => {
