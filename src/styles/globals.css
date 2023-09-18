@@ -27,6 +27,7 @@ svg,
 iframe {
     vertical-align: top;
     display: inline-block;
+    max-width: 100%;
 }
 
 #__next {
