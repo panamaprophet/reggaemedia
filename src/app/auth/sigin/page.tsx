@@ -4,7 +4,7 @@ import { signIn } from 'next-auth/react';
 import { InputText } from '@/components/Input/InputText';
 import { Button } from '@/components/Button';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from '../../api/auth/[...nextauth]/route';
 import { GetServerSidePropsContext } from 'next';
 
 interface Props {

@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import Head from 'next/head';
 import { EditorArticlePreview } from '@/components/EditorArticlePreview';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getArticles, removeArticle } from '@/actions/articles';
 import { Article } from '@/types';
 import { Button } from '@/components/Button';

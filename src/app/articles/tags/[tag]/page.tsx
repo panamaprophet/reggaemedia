@@ -1,18 +1,15 @@
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import { getArticlesByTag } from '@/services/articles';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticlePreview } from '@/components/ArticlePreview';
-import { Article } from '@/types';
 
 
-type Props = {
-    articles: Article[],
-}
+const Page = async ({ params }: { params: { tag: string } }) => {
+    const { tag } = params;
+    const articles = await getArticlesByTag(tag) ?? [];
 
-const Page = ({ articles }: Props) => {
     return (
         <>
             <Head>
@@ -29,15 +26,3 @@ const Page = ({ articles }: Props) => {
 };
 
 export default Page;
-
-export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
-    const { query: { tag } } = ctx;
-
-    const articles = await getArticlesByTag(tag);
-
-    return {
-        props: {
-            articles,
-        },
-    };
-};

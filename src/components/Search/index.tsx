@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Column } from '../Layout';
 import { Button } from '../Button';

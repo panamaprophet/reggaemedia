@@ -1,42 +1,42 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import { SerializedEditorState } from 'lexical';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
 import { getArticleById, getPublishedArticles, getRelatedArticles } from '@/services/articles';
 import { theme } from '@/theme';
-import { Article, User } from '@/types';
+import { Article } from '@/types';
 import { getUserById } from '@/services/auth';
 import { formatArticleDate } from '@/helpers/article';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { RelatedArticles } from '@/components/RelatedArticles';
 
+const getArticleBody = (article: Article | null) => article?.body ?? {} as SerializedEditorState;
 
-type Props = {
-    article: Article,
-    author: User,
-    relatedArticles?: {
-        [key in 'previous' | 'next']: Pick<Article, 'id' | 'title'> | null
-    },
-}
+const Page = async ({ params }: { params: { id: string } }) => {
+    const id = params.id;
+    const article = await getArticleById(id);
+    const author = article && await getUserById(article.authorId);
+    const relatedArticles = article && await getRelatedArticles(id);
 
-const getArticleBody = (article: Article) => article?.body ?? {} as SerializedEditorState;
+    const articleTitle = article?.title || '';
+    const articleBody = getArticleBody(article);
+    const body = useEditorStateParser(articleBody, { theme });
 
-
-const Page = ({ article, author, relatedArticles }: Props) => {
-    const body = useEditorStateParser(getArticleBody(article), { theme });
+    if (!article || !author) {
+        return null;
+    }
 
     return (
         <>
             <Head>
-                <title>{`Reggaemedia | ${article.title}`}</title>
+                <title>{`Reggaemedia | ${articleTitle}`}</title>
             </Head>
 
             <Header hasInlineLogo={true} />
 
             <article className="max-w-4xl mx-auto my-0 pb-4 flex-grow">
                 <h1 className="text-3xl p-4 pt-8">
-                    {article.title}
+                    {articleTitle}
                 </h1>
 
                 <div className="flex flex-col justify-center items-start text-gray-400 text-sm p-4">
@@ -60,32 +60,9 @@ const Page = ({ article, author, relatedArticles }: Props) => {
 
 export default Page;
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const generateStaticParams = async () => {
     const articles = await getPublishedArticles() ?? [];
     const paths = articles.map(({ id }) => ({ params: { id } }));
 
-    return {
-        paths,
-        fallback: 'blocking',
-    };
-};
-
-export const getStaticProps: GetStaticProps<{}, { id: string }> = async (ctx) => {
-    const { params } = ctx;
-    const { id } = params!;
-
-    const article = await getArticleById(id);
-    const author = article && await getUserById(article.authorId);
-    const relatedArticles = article && await getRelatedArticles(id);
-
-    const notFound = !article || !article.publishedOn;
-
-    return {
-        notFound,
-        props: {
-            article,
-            author,
-            relatedArticles,
-        },
-    };
+    return paths;
 };

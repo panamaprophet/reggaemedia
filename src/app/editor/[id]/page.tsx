@@ -8,7 +8,7 @@ import { Tags } from '@/components/Tags';
 import { InputText } from '@/components/Input/InputText';
 import { ArrowSmallLeft } from '@/components/Icons/ArrowSmallLeft';
 import { Link } from '@/components/Link';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { authOptions } from '@/app/api/[...nextauth]';
 import { formatArticleDate, normalize } from '@/helpers/article';
 import { getArticleById } from '@/services/articles';
 import { createArticle, publishArticle, saveArticle, unpublishArticle } from '@/actions/articles';
