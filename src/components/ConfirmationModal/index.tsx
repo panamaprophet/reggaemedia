@@ -1,9 +1,5 @@
-import { ComponentProps } from 'react';
-import { Modal } from '../Modal';
+import { Props as ModalProps, Modal } from '../Modal';
 import { Button } from '../Button';
-
-
-type ModalProps = ComponentProps<typeof Modal>;
 
 type Props = Omit<ModalProps, 'onClose'> & {
     onConfirm: () => void,
