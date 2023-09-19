@@ -68,7 +68,7 @@ const getSoundcloudEmbedUrl = (source: string) =>
 
 export const embedSoundcloud = ({ source, editor }: Props) => {
     const embedNode = new EmbedNode({
-        thumbnail: '/SoundcloudSkeleton.png',
+        thumbnail: '',
         width: 500,
         height: 165,
         contentType: 'soundcloud',
@@ -88,7 +88,7 @@ export const embedInstagram = ({ source }: Props) => {
     const url = source.split('?')[0];
 
     const embedNode = new EmbedNode({
-        thumbnail: '/InstagramSkeleton.png',
+        thumbnail: '',
         width: 470,
         height: 760,
         contentType: 'instagram',
