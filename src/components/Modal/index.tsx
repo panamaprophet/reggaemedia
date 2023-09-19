@@ -17,7 +17,7 @@ const modalOverlay = {
     'default': 'bg-slate-50/95' 
 }
 
-interface Props {
+export interface Props {
     children: ReactNode,
     isOpen: boolean,
     type?: 'default' | 'float',
