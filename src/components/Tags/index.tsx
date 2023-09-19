@@ -11,7 +11,7 @@ export const Tags = ({ value = [], onChange }: { value: string[], onChange: (val
     }
 
     return (
-        <div className="flex items-center gap-2 p-4">
+        <div className="flex flex-wrap items-center gap-2 p-4">
             {value.map((tag, index) => (
                 <Tag
                     key={`${tag}_${index}`}

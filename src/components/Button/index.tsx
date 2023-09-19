@@ -18,6 +18,7 @@ const ButtonType = {
         focus:ring-offset-2
         focus:ring-offset-slate-50
         focus:ring-blue-300
+        max-w-full
     `,
     'delete': `
         font-semibold

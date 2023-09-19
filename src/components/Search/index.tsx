@@ -26,15 +26,18 @@ export const Search = () => {
             </Button>
 
             <Modal
-                isOpen={isOpen} onClose={() => setOpen(false)}
+                isOpen={isOpen}
+                onClose={() => setOpen(false)}
             >
                 <Column className="items-center justify-center gap-4">
-                    <p className="text-xs uppercase">Поиск по тегу</p>
-                    {tags.map((tag) => (
-                        <Link className='capitalize text-sky-600' key={tag} to={`/articles/tags/${tag}`}>
-                            {tag}
-                        </Link>
-                    ))}
+                    <p className="text-3xl p-4 pt-8">Поиск по тегу</p>
+                    <div className="gap-x-16 md:columns-4 columns-2">
+                        {tags.map((tag, index) => (
+                            <Link className='capitalize text-sky-600 block' key={tag + index} to={`/articles/tags/${tag}`}>
+                                {tag}
+                            </Link>
+                        ))}
+                    </div>
                 </Column >
             </Modal>
         </>
