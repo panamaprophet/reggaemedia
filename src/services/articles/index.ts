@@ -107,11 +107,7 @@ export const getPublishedArticles = async () => {
 
     console.log('getPublishedArticles. consumed capacity: %s', result.ConsumedCapacity);
 
-    if (!result.Items) {
-        return null;
-    }
-
-    return result.Items
+    return (result.Items || [])
         .map(item => unmarshall(item) as Article)
         .sort((a, b) => b.publishedOn! - a.publishedOn!);
 };

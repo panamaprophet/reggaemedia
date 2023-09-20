@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { SerializedEditorState } from 'lexical';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
 import { getArticleById, getPublishedArticles, getRelatedArticles } from '@/services/articles';
@@ -9,8 +8,17 @@ import { formatArticleDate } from '@/helpers/article';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { RelatedArticles } from '@/components/RelatedArticles';
+import { Metadata } from 'next';
 
 const getArticleBody = (article: Article | null) => article?.body ?? {} as SerializedEditorState;
+
+export const generateMetadata = async (props: { params: { id: string } }): Promise<Metadata> => {
+    const article = await getArticleById(props.params.id);
+
+    return {
+        title: `Reggaemedia | ${article ? article.title : 'статья не найдена'}`,
+    };
+};
 
 const Page = async ({ params }: { params: { id: string } }) => {
     const id = params.id;
@@ -28,10 +36,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
     return (
         <>
-            <Head>
-                <title>{`Reggaemedia | ${articleTitle}`}</title>
-            </Head>
-
             <Header hasInlineLogo={true} />
 
             <article className="max-w-4xl mx-auto my-0 pb-4 flex-grow">
