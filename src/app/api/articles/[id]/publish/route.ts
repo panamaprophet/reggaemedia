@@ -9,5 +9,5 @@ export const POST = async (_: Request, context: { params: { id: string } }) => {
     revalidatePath('/');
     revalidatePath(`/articles/${context.params.id}`);
 
-    NextResponse.json(result);
+    return NextResponse.json(result);
 };

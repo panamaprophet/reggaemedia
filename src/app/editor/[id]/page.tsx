@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { ArticleEditForm } from '../../../components/ArticleEditForm/ArticleEditForm';
 
 
-export const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: { id: string } }) => {
     const isNew = params.id === 'new';
 
     const session = await getServerSession();

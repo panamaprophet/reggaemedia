@@ -22,7 +22,7 @@ export const AuthForm = () => {
 
     return (
         <form
-            className="flex flex-col m-auto gap-4 max-w-xs w-full"
+            className="flex flex-col m-auto gap-4 max-w-xs w-full h-full justify-center"
             onSubmit={onSubmit}
         >
             {error && (

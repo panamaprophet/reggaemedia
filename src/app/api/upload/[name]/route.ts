@@ -10,5 +10,5 @@ export const GET = async (_: Request, context: { params: { name: string } }) => 
     const target = `uploads/${name}`;
     const url = await getUploadUrl(BUCKET_NAME, target);
 
-    NextResponse.json({ url });
+    return NextResponse.json({ url });
 };
