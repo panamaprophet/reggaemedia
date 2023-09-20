@@ -20,6 +20,13 @@ export const generateMetadata = async (props: { params: { id: string } }): Promi
     };
 };
 
+export const generateStaticParams = async () => {
+    const articles = await getPublishedArticles() ?? [];
+    const paths = articles.map(({ id }) => ({ id }));
+
+    return paths;
+};
+
 const Page = async ({ params }: { params: { id: string } }) => {
     const id = params.id;
     const article = await getArticleById(id);
@@ -63,10 +70,3 @@ const Page = async ({ params }: { params: { id: string } }) => {
 };
 
 export default Page;
-
-export const generateStaticParams = async () => {
-    const articles = await getPublishedArticles() ?? [];
-    const paths = articles.map(({ id }) => ({ params: { id } }));
-
-    return paths;
-};
