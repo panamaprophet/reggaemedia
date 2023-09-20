@@ -1,8 +1,8 @@
-import { getPublishedArticles } from '@/services/articles';
-import { ArticlePreview } from '@/components/ArticlePreview';
+import { Metadata } from 'next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Metadata } from 'next';
+import { ArticlePreview } from '@/components/ArticlePreview';
+import { getPublishedArticles } from '@/services/articles';
 
 export const metadata: Metadata = {
     title: 'Reggaemedia | Статьи',

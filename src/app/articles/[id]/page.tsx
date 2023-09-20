@@ -1,22 +1,23 @@
+import { Metadata } from 'next';
 import { SerializedEditorState } from 'lexical';
 import { useEditorStateParser } from '@/components/Editor/hooks/useEditorStateParser';
-import { getArticleById, getPublishedArticles, getRelatedArticles } from '@/services/articles';
-import { theme } from '@/theme';
-import { Article } from '@/types';
-import { getUserById } from '@/services/auth';
-import { formatArticleDate } from '@/helpers/article';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { RelatedArticles } from '@/components/RelatedArticles';
-import { Metadata } from 'next';
+import { getArticleById, getPublishedArticles, getRelatedArticles } from '@/services/articles';
+import { getUserById } from '@/services/auth';
+import { formatArticleDate } from '@/helpers/article';
+import { theme } from '@/theme';
+import { Article } from '@/types';
 
 const getArticleBody = (article: Article | null) => article?.body ?? {} as SerializedEditorState;
 
 export const generateMetadata = async (props: { params: { id: string } }): Promise<Metadata> => {
     const article = await getArticleById(props.params.id);
+    const title = article ? article.title : 'статья не найдена';
 
     return {
-        title: `Reggaemedia | ${article ? article.title : 'статья не найдена'}`,
+        title: `Reggaemedia | ${title}`,
     };
 };
 

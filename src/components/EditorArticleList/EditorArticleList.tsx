@@ -1,9 +1,8 @@
 'use client';
 
-import { removeArticle } from '@/actions/articles';
 import { EditorArticlePreview } from '@/components/EditorArticlePreview';
+import { removeArticle } from '@/actions/articles';
 import { Article } from '@/types';
-
 
 export const EditorArticleList = ({ articles }: { articles: Article[] }) => {
     return (

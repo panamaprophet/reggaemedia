@@ -1,8 +1,8 @@
-import { getArticlesByTag } from '@/services/articles';
+import { Metadata } from 'next';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticlePreview } from '@/components/ArticlePreview';
-import { Metadata } from 'next';
+import { getArticlesByTag } from '@/services/articles';
 
 export const metadata: Metadata = {
     title: 'Reggaemedia | Поиск по тегу',

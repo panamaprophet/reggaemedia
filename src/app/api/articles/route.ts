@@ -1,5 +1,5 @@
-import { createArticle, getArticles, getPublishedArticles } from '@/services/articles';
 import { NextResponse } from 'next/server';
+import { createArticle, getArticles, getPublishedArticles } from '@/services/articles';
 
 export const POST = async (request: Request) => {
     const payload = JSON.parse(request.body as any);

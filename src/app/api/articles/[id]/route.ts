@@ -1,6 +1,6 @@
-import { getArticleById, removeArticleById, updateArticleById } from '@/services/articles';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
+import { getArticleById, removeArticleById, updateArticleById } from '@/services/articles';
 
 export const PUT = async (request: Request, context: { params: { id: string } }) => {
     const payload = await request.json();

@@ -1,10 +1,10 @@
+import { Metadata, NextPage } from 'next';
+import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
-import { getArticles } from '@/services/articles';
 import { Button } from '@/components/Button';
 import { Link } from '@/components/Link';
-import { redirect } from 'next/navigation';
-import { Metadata, NextPage } from 'next';
 import { EditorArticleList } from '@/components/EditorArticleList/EditorArticleList';
+import { getArticles } from '@/services/articles';
 
 export const metadata: Metadata = {
     title: 'Reggaemedia | Редактор',
