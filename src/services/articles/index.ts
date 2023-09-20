@@ -65,11 +65,9 @@ export const getArticles = async () => {
         Limit: 100,
     }));
 
-    if (!result.Items) {
-        return null;
-    }
+    console.log('getArticles. consumed capacity: %s', result.ConsumedCapacity);
 
-    return result.Items
+    return (result.Items || [])
         .map(item => unmarshall(item))
         .map(item => item as Article) // @todo: add transform step
         .sort(sortByDate);
@@ -82,6 +80,8 @@ export const getRelatedArticles = async (id: string) => {
         ProjectionExpression: 'id, title',
         FilterExpression: 'attribute_exists(publishedOn)',
     }));
+
+    console.log('getRelatedArticles. consumed capacity: %s', result.ConsumedCapacity);
 
     if (!result.Items || result.Items.length === 1) {
         return null;
@@ -104,6 +104,8 @@ export const getPublishedArticles = async () => {
         Limit: 100,
         FilterExpression: 'attribute_exists(publishedOn)',
     }));
+
+    console.log('getPublishedArticles. consumed capacity: %s', result.ConsumedCapacity);
 
     if (!result.Items) {
         return null;

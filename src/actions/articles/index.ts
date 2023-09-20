@@ -20,7 +20,8 @@ export const getArticle = async (id: string) => fetchJson<Article>(`/api/article
 
 export const removeArticle = (id: string) => fetchJson<{ success: boolean }>('/api/articles/' + id, { method: 'DELETE' });
 
-export const createArticle = async ({ authorId }: { authorId: string }) => ({
+export const createArticle = async ({ authorId }: { authorId: string }): Promise<Article> => ({
+    id: null,
     authorId,
     title: '',
     tags: [],
