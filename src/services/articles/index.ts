@@ -3,6 +3,7 @@ import {
     DeleteItemCommand,
     GetItemCommand,
     PutItemCommand,
+    ReturnConsumedCapacity,
     ReturnValue,
     ScanCommand,
     UpdateItemCommand,
@@ -63,6 +64,7 @@ export const getArticles = async () => {
     const result = await db.send(new ScanCommand({
         TableName: tableName,
         Limit: 100,
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
     console.log('getArticles. consumed capacity: %s', result.ConsumedCapacity);
@@ -79,6 +81,7 @@ export const getRelatedArticles = async (id: string) => {
         Limit: 100,
         ProjectionExpression: 'id, title',
         FilterExpression: 'attribute_exists(publishedOn)',
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
     console.log('getRelatedArticles. consumed capacity: %s', result.ConsumedCapacity);
@@ -103,6 +106,7 @@ export const getPublishedArticles = async () => {
         TableName: tableName,
         Limit: 100,
         FilterExpression: 'attribute_exists(publishedOn)',
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
     console.log('getPublishedArticles. consumed capacity: %s', result.ConsumedCapacity);
