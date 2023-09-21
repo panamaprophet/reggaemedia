@@ -1,7 +1,5 @@
+import { fetchJson } from '@/helpers';
 import { Article } from '@/types';
-
-
-const fetchJson = <T>(...args: Parameters<typeof fetch>): Promise<T> => fetch(...args).then(response => response.json());
 
 export const saveArticle = async (article: Partial<Article>) => {
     const hasId = Boolean(article.id);

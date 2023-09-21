@@ -13,3 +13,5 @@ export const sortByDate = (a: Article, b: Article) => (b.updatedOn || b.createdO
 export const removeByIndex = <T,>(index: number, items: T[]) => items.filter((_, itemIndex) => itemIndex !== index);
 
 export const setByIndex = <T,>(index: number, value: T, items: T[]) => items.map((item, itemIndex) => itemIndex === index ? value : item);
+
+export const fetchJson = <T>(...args: Parameters<typeof fetch>): Promise<T> => fetch(...args).then(response => response.json());
