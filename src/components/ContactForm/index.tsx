@@ -9,10 +9,14 @@ export const ContactForm = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [isSubmitted, setSubmitted] = useState(false);
 
-    const onSubmit = (event: FormEvent) => {
+    const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        sendMessage(message, { name, email });
+
+        const { success } = await sendMessage(message, { name, email });
+
+        setSubmitted(success);
     };
 
     return (
@@ -46,8 +50,8 @@ export const ContactForm = () => {
             </label>
 
             <div className="mt-4 w-full flex flex-col">
-                <Button type="secondary" onClick={onSubmit}>
-                    Отправить
+                <Button type="secondary" onClick={onSubmit} disabled={isSubmitted}>
+                    {isSubmitted ? 'Отправлено' : 'Отправить'}
                 </Button>
             </div>
         </form>

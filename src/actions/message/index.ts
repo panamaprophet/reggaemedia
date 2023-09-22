@@ -5,10 +5,10 @@ export const sendMessage = (
     sender: {
         name: string,
         email: string,
-    }) => fetchJson('/api/message', {
-    method: 'POST',
-    body: JSON.stringify({
-        message,
-        sender,
-    }),
-});
+    }) => fetchJson<{ success: boolean }>('/api/message', {
+        method: 'POST',
+        body: JSON.stringify({
+            message,
+            sender,
+        }),
+    });

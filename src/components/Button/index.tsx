@@ -40,18 +40,20 @@ const ButtonSize = {
 
 interface Props {
     children: ReactNode,
-    onClick?: MouseEventHandler<HTMLButtonElement>,
+    disabled?: boolean,
     type?: keyof typeof ButtonType,
     size?: keyof typeof ButtonSize,
+    onClick?: MouseEventHandler<HTMLButtonElement>,
 }
 
 export const Button = ({
     type = 'default',
     size = 'medium',
     children,
+    disabled,
     onClick,
 }: Props) => (
-    <button className={cx(ButtonSize[size], ButtonType[type])} onClick={onClick}>
+    <button className={cx(ButtonSize[size], ButtonType[type])} onClick={onClick} disabled={disabled}>
         {children}
     </button>
 );
