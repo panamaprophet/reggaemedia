@@ -1,6 +1,6 @@
 'use client';
 
-import { EditorArticlePreview } from '@/components/EditorArticlePreview';
+import { ListItem } from './elements/ListItem';
 import { removeArticle } from '@/actions/articles';
 import { Article } from '@/types';
 
@@ -8,7 +8,7 @@ export const EditorArticleList = ({ articles }: { articles: Article[] }) => {
     return (
         <>
             {articles.map((article) => (
-                <EditorArticlePreview
+                <ListItem
                     key={article.id}
                     article={article}
                     onRemove={async id => removeArticle(id)}

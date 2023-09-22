@@ -2,12 +2,12 @@
 
 import { formatArticleDate } from '@/helpers/article';
 import { Article } from '@/types';
-import { Link } from '../Link';
-import { ConfirmationModal } from '../ConfirmationModal';
+import { Link } from '../../../Link';
+import { ConfirmationModal } from '../../../ConfirmationModal';
 import { useState } from 'react';
 
 
-export const EditorArticlePreview = ({ article, onRemove }: { article: Article, onRemove: (id: string) => void }) => {
+export const ListItem = ({ article, onRemove }: { article: Article, onRemove: (id: string) => void }) => {
     const [selectedArticle, setSelectedArticle] = useState<Article>();
 
     return (

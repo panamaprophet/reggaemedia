@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
-import { ArticleEditForm } from '@/components/ArticleEditForm/ArticleEditForm';
+import { ArticleEditForm } from '@/components/ArticleEditForm';
 import { getArticleById } from '@/services/articles';
 import { createArticle } from '@/actions/articles';
 

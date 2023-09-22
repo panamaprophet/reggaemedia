@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { Button } from '@/components/Button';
 import { Link } from '@/components/Link';
-import { EditorArticleList } from '@/components/EditorArticleList/EditorArticleList';
+import { EditorArticleList } from '@/components/EditorArticleList';
 import { getArticles } from '@/services/articles';
 
 export const metadata: Metadata = {

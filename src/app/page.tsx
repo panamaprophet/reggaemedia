@@ -16,9 +16,7 @@ const Page = async () => {
             <Header />
 
             <main className="flex-grow">
-                {articles.map((article) => (
-                    <ArticlePreview article={article} key={article.id} />
-                ))}
+                {articles.map((article) => <ArticlePreview key={article.id} article={article} />)}
             </main>
 
             <Footer />

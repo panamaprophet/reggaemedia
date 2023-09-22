@@ -1,4 +1,3 @@
-import { Row } from '../Layout';
 import { Link } from '../Link';
 import { Search } from '../Search';
 import { YouTube } from '../Icons/YouTube';
@@ -8,7 +7,6 @@ import { Section } from '../Section';
 import { ReactNode } from 'react';
 import { cx } from '@/helpers';
 import { Logo } from '../Logo';
-
 
 interface Props {
     onSearch?: (text: string) => void,
@@ -31,7 +29,7 @@ export const Header = ({ hasInlineLogo }: Props) => {
     return (
         <>
             <Section>
-                <Row className="w-full px-4 py-2 uppercase text-gray-600 flex justify-between items-center">
+                <div className="w-full px-4 py-2 uppercase text-gray-600 flex justify-between items-center">
                     <div className="flex gap-4 items-center">
                         {hasInlineLogo && (
                             <Link to="/">
@@ -57,7 +55,7 @@ export const Header = ({ hasInlineLogo }: Props) => {
 
                         <Search />
                     </div>
-                </Row>
+                </div>
             </Section>
             {!hasInlineLogo && (
                 <div className="flex justify-center items-center border-b border-b-slate-200 py-16">

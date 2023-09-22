@@ -16,7 +16,9 @@ const Page = async ({ params }: { params: { tag: string } }) => {
         <>
             <Header hasInlineLogo={true} />
 
-            {articles.map((article) => <ArticlePreview key={article.id} article={article} />)}
+            <main className="flex-grow">
+                {articles.map((article) => <ArticlePreview key={article.id} article={article} />)}
+            </main>
 
             <Footer />
         </>
