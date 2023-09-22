@@ -82,11 +82,7 @@ export const BlockFormatDropDown = () => {
     useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, $updateBlockStyle);
 
     return (
-        <DropDown
-            disabled={!isEditable}
-            buttonLabel={blockTypeToBlockName[blockType]}
-            buttonAriaLabel="Formatting options for text style"
-        >
+        <DropDown disabled={!isEditable} label={blockTypeToBlockName[blockType]}>
             <DropDownItem
                 isActive={blockType === 'paragraph'}
                 onClick={() => formatParagraph(editor)}>

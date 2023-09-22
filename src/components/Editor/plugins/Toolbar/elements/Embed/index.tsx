@@ -44,10 +44,7 @@ export const Embed = () => {
 
     return (
         <>
-            <DropDown
-                buttonLabel={'Медиа'}
-                buttonAriaLabel="Formatting options for text style"
-            >
+            <DropDown label="Медиа">
                 <DropDownItem onClick={() => setEmbedType('youtube')}>
                     YouTube
                 </DropDownItem>

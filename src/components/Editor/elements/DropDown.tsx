@@ -25,15 +25,12 @@ export const DropDownItem = ({ isActive = false, onClick, children }: ItemProps)
 }
 
 interface Props {
+    label: ReactNode;
     children: ReactNode;
     disabled?: boolean;
-    buttonLabel?: string;
-    buttonAriaLabel?: string;
-    stopCloseOnClickSelf?: boolean;
-    ButtonIconComponent?: ReactNode | null;
 }
 
-export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = false, ButtonIconComponent }: Props): JSX.Element => {
+export const DropDown = ({ children, label, disabled = false }: Props): JSX.Element => {
     const [showDropDown, setShowDropDown] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -61,19 +58,16 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
         <div className="relative cursor-pointer" ref={ref}>
             <Button
                 disabled={disabled}
-                // aria-label={buttonAriaLabel || buttonLabel}
-                // className="flex items-center justify-center gap-2 p-2"
                 onClick={() => setShowDropDown(!showDropDown)}
             >
                 <div className="flex items-center gap-2">
-                    {ButtonIconComponent}
-                    {buttonLabel && <span className="text dropdown-button-text">{buttonLabel}</span>}
+                    <span className="text dropdown-button-text">{label}</span>
                     <Chevron />
                 </div>
             </Button>
 
             {showDropDown && (
-                <div className='absolute border rounded bg-white p-3f' onClick={() => setShowDropDown(false)}>
+                <div className='absolute border rounded bg-white p-3' onClick={() => setShowDropDown(false)}>
                     {children}
                 </div>
             )}

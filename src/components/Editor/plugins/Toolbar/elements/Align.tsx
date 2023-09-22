@@ -38,7 +38,8 @@ const $getFormatType = (node?: LexicalNode) => {
 
 export const Align = () => {
     const [editor] = useLexicalComposerContext();
-    const [CurrentIcon, setCurrentIcon] = useState(() => AlignLeft);
+    const [formatType, setFormatType] = useState<keyof typeof formatTypeToIconMap>('left');
+    const CurrentIcon = formatTypeToIconMap[formatType];
 
     const updateCurrentIcon = () => {
         editor.getEditorState().read(() => {
@@ -46,18 +47,14 @@ export const Align = () => {
             const node = selection?.getNodes()[0];
             const formatType = $getFormatType(node);
 
-            setCurrentIcon(() => formatTypeToIconMap[formatType]);
+            setFormatType(formatType);
         });
     };
 
     useRegisterListener('onUpdate', updateCurrentIcon);
 
     return (
-        <DropDown
-            disabled={!editor.isEditable()}
-            ButtonIconComponent={<CurrentIcon />}
-            buttonAriaLabel="Formatting options for text alignment"
-        >
+        <DropDown disabled={!editor.isEditable()} label={<CurrentIcon />}>
             <DropDownItem onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}>
                 <AlignLeft />
                 Left Align
