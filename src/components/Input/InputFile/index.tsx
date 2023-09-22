@@ -1,47 +1,24 @@
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler } from 'react';
 
 
 interface Props {
     multiple?: boolean,
-    maxSize?: number,
     onChange: (files: File[] | File) => void,
 };
 
-const MESSAGE_RESET_TIMEOUT = 4200;
-const DEFAULT_MAX_SIZE = 1024 * 1024
-
-export const InputFile = ({ multiple = false, onChange, maxSize = DEFAULT_MAX_SIZE }: Props) => {
-    const [isError, setError] = useState(false);
-
+export const InputFile = ({ multiple = false, onChange }: Props) => {
     const _onChange: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent<HTMLInputElement>) => {
-
         if (!event.target.files) {
             console.warn('no files was selected');
             return;
         }
 
-        if (!event.target.files[0]) {
-            return;
-        }
+        const files = Array.from(event.target.files);
+        // @todo: bring back max size check
+        // const size = files.reduce((size, file) => file.size + size, 0);
 
-        if (event.target.files[0].size > maxSize) {
-            setError(true);
-
-            return;
-        }
-
-        multiple
-            ? onChange(Array.from(event.target.files))
-            : onChange(event.target.files[0]);
+        onChange(files);
     }
-
-    useEffect(() => {
-        if (!isError) { return };
-
-        const id = setTimeout(() => setError(false), MESSAGE_RESET_TIMEOUT);
-
-        return () => clearTimeout(id);
-    }, [isError])
 
     return (
         <label>
