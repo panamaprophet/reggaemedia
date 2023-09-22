@@ -15,7 +15,7 @@ export const NavigationButton = (props: {
 
     return (
         <Link to={`/articles/${props.id}`}>
-            <Button type="secondary">
+            <Button theme="secondary">
                 <div className="flex items-center gap-4" title={props.title}>
                     {isPrevious && (
                         <div className="flex-shrink-0">

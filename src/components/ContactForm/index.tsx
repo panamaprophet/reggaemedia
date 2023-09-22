@@ -50,7 +50,7 @@ export const ContactForm = () => {
             </label>
 
             <div className="mt-4 w-full flex flex-col">
-                <Button type="secondary" onClick={onSubmit} disabled={isSubmitted}>
+                <Button theme="secondary" type="submit" disabled={isSubmitted}>
                     {isSubmitted ? 'Отправлено' : 'Отправить'}
                 </Button>
             </div>

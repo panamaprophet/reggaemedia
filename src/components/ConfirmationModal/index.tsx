@@ -22,8 +22,8 @@ export const ConfirmationModal = ({
             {children}
 
             <div className="flex flex-row pt-4 gap-4 justify-center">
-                <Button type="delete" onClick={onConfirm}>{confirmButtonText}</Button>
-                <Button type="secondary" onClick={onDecline}>{declineButtonText}</Button>
+                <Button theme="delete" onClick={onConfirm}>{confirmButtonText}</Button>
+                <Button theme="secondary" onClick={onDecline}>{declineButtonText}</Button>
             </div>
         </div>
     </Modal>

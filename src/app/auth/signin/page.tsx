@@ -49,7 +49,7 @@ const Page = () => {
             </label>
 
             <div className="mt-4 w-full flex flex-col">
-                <Button type="secondary" onClick={onSubmit}>Войти</Button>
+                <Button theme="secondary" type="submit">Войти</Button>
             </div>
         </form>
     );

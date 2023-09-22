@@ -26,7 +26,7 @@ export const ArticleEditForm = ({ article }: { article: Article }) => {
             <div className="flex justify-between items-center p-2 pt-4">
                 <div className="flex gap-4 items-center">
                     <Link to="/editor">
-                        <Button type="secondary">
+                        <Button theme="secondary">
                             <ArrowSmallLeft size="sm" />
                         </Button>
                     </Link>
@@ -38,12 +38,12 @@ export const ArticleEditForm = ({ article }: { article: Article }) => {
 
                 <div className="flex gap-4">
                     {!isNewArticle && (
-                        <Button type="secondary" onClick={onPublish}>
+                        <Button theme="secondary" onClick={onPublish}>
                             {state.publishedOn ? 'Отменить публикацию' : 'Опубликовать'}
                         </Button>
                     )}
 
-                    <Button type="secondary" onClick={onSave}>
+                    <Button theme="secondary" onClick={onSave}>
                         Сохранить
                     </Button>
                 </div>

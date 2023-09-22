@@ -22,7 +22,7 @@ const Page: NextPage = async () => {
         <div className="flex flex-col max-w-4xl w-full mx-auto p-4">
             <div className="flex justify-end items-center pb-4">
                 <Link to="/editor/new">
-                    <Button type="secondary">
+                    <Button theme="secondary">
                         Новая статья
                     </Button>
                 </Link>
