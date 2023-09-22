@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Button } from '@/components/Button';
 import { InputText } from '@/components/Input/InputText';
 import { sendMessage } from '@/actions/message';
@@ -10,7 +10,10 @@ export const ContactForm = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
-    const onSubmit = () => sendMessage(message, { name, email });
+    const onSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        sendMessage(message, { name, email });
+    };
 
     return (
         <form onSubmit={onSubmit} className="flex flex-col gap-4">

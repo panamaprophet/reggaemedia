@@ -10,7 +10,7 @@ export const POST = async (request: Request) => {
     const response = await sendEmail({
         from: email,
         to: ADMIN_EMAIL,
-        subject: `Reggaemedia | письмо от ${name}`,
+        subject: `Reggaemedia | ${name} написал письмо`,
         body: message,
     });
 
