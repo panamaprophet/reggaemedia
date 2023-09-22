@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Chevron } from '@/components/Icons/Chevron';
+import { Button } from '@/components/Button';
 import { cx } from '@/helpers';
 
 
@@ -58,16 +59,18 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
 
     return (
         <div className="relative cursor-pointer" ref={ref}>
-            <button
+            <Button
                 disabled={disabled}
-                aria-label={buttonAriaLabel || buttonLabel}
-                className="flex items-center justify-center gap-2 p-2"
+                // aria-label={buttonAriaLabel || buttonLabel}
+                // className="flex items-center justify-center gap-2 p-2"
                 onClick={() => setShowDropDown(!showDropDown)}
             >
-                {ButtonIconComponent}
-                {buttonLabel && <span className="text dropdown-button-text">{buttonLabel}</span>}
-                <Chevron />
-            </button>
+                <div className="flex items-center gap-2">
+                    {ButtonIconComponent}
+                    {buttonLabel && <span className="text dropdown-button-text">{buttonLabel}</span>}
+                    <Chevron />
+                </div>
+            </Button>
 
             {showDropDown && (
                 <div className='absolute border rounded bg-white p-3f' onClick={() => setShowDropDown(false)}>

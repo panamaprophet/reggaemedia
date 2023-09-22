@@ -1,33 +1,29 @@
-import { MutableRefObject, ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { Button } from '@/components/Button';
+import { cx } from '@/helpers';
 
 interface Props {
-    children: ReactNode,
-    disabled?: boolean,
-    className?: string,
-    onClick: () => void,
     title?: string,
-    ariaLabel?: string,
-    ref?: MutableRefObject<HTMLButtonElement>
+    active?: boolean,
+    disabled?: boolean,
+    children: ReactNode,
+    onClick: () => void,
 }
 
 export const Item = ({
     children,
     title = '',
-    ariaLabel = '',
+    active = false,
     disabled = false,
-    className = '',
     onClick,
-    ref
 }: Props) => (
-    <button
-        type="button"
-        disabled={disabled}
+    <Button
+        theme="secondary"
         onClick={onClick}
-        className={'w-8 h-8 p-1 flex items-center justify-center ' + className}
-        title={title}
-        aria-label={ariaLabel}
-        ref={ref}
+        disabled={disabled}
     >
-        {children}
-    </button>
+        <div className={cx('flex items-center justify-center', active && 'bg-slate-100')} title={title}>
+            {children}
+        </div>
+    </Button>
 )

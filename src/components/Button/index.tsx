@@ -38,11 +38,17 @@ const ButtonSize = {
     'medium': 'px-4 py-2.5 text-sm shadow-sm rounded-md',
 };
 
+const ButtonWidth = {
+    'full': 'w-full',
+    'auto': 'w-auto',
+};
+
 interface Props {
     children: ReactNode,
     disabled?: boolean,
     theme?: keyof typeof ButtonTheme,
     size?: keyof typeof ButtonSize,
+    width?: keyof typeof ButtonWidth,
     type?: ButtonHTMLAttributes<HTMLButtonElement>['type'],
     onClick?: MouseEventHandler<HTMLButtonElement>,
 }
@@ -50,6 +56,7 @@ interface Props {
 export const Button = ({
     theme = 'default',
     size = 'medium',
+    width = 'auto',
     type,
     children,
     disabled,
@@ -58,7 +65,8 @@ export const Button = ({
     <button
         className={cx(
             ButtonSize[size],
-            ButtonTheme[theme]
+            ButtonTheme[theme],
+            ButtonWidth[width],
         )}
         onClick={onClick}
         disabled={disabled}

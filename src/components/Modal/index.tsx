@@ -49,7 +49,7 @@ export const Modal = ({ children, size = 'auto', type = 'default', isOpen, onClo
     }
 
     return createPortal(
-        <div className="fixed h-full w-full top-0 left-0 right-0 bottom-0">
+        <div className="fixed h-full w-full top-0 left-0 right-0 bottom-0 z-10">
             <div className={`fixed h-full w-full ${modalOverlay[type]}`} onClick={onClose} />
             <div className={`fixed ${modalSizes[size]} ${modalType[type]}`} style={position}>
                 {children}

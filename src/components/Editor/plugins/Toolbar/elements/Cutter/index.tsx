@@ -1,6 +1,7 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { Scissors } from '@/components/Icons/Scissors';
 import { INSERT_CUTTER_COMMAND } from '../../../Cutter';
+import { Item } from '../Item';
 
 
 export const Cutter = () => {
@@ -9,8 +10,11 @@ export const Cutter = () => {
     const onClick = () => editor.dispatchCommand(INSERT_CUTTER_COMMAND, undefined);
 
     return (
-        <div className="cursor-pointer" onClick={onClick}>
+        <Item
+            title="Вставить разрыв"
+            onClick={onClick}
+        >
             <Scissors />
-        </div>
+        </Item>
     );
 };

@@ -3,6 +3,7 @@ import { InputFile } from '@/components/Input/InputFile';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { INSERT_EMBED_COMMAND } from '../../Embed';
 import { InputText } from '@/components/Input/InputText';
+import { Button } from '@/components/Button';
 
 
 interface Props {
@@ -22,7 +23,7 @@ export const UploadFile = ({ onSubmit }: Props) => {
     return (
         <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2'>
             <InputFile multiple onChange={(data) => Array.isArray(data) ? setImages(data) : setImages([data])} />
-            <button disabled={images.length === 0} className='w-full cursor-pointer border p-2' onClick={handleSumbit}>Загрузить</button>
+            <Button theme="secondary" width="full" disabled={images.length === 0} onClick={handleSumbit}>Загрузить</Button>
         </div>
     )
 }
@@ -39,8 +40,8 @@ export const UploadUrl = ({ onSubmit }: Props) => {
 
     return (
         <div className='flex flex-col gap-2 bg-white rounded border items-center justify-center p-2'>
-            <InputText placeholder='Insert URL' className='w-full border rounded p-2' value={url} onChange={(data) => setUrl(data)} />
-            <button disabled={!url} className='w-full cursor-pointer rounded border p-2' onClick={handleSumbit}>Submit</button>
+            <InputText placeholder="Сссылка" className="w-full border rounded p-2" value={url} onChange={(data) => setUrl(data)} />
+            <Button theme="secondary" width="full" disabled={!url} onClick={handleSumbit}>Загрузить</Button>
         </div>
     )
 }

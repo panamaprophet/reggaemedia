@@ -40,11 +40,10 @@ export const Link = () => {
 
     return (
         <Item
+            title="Сссылка"
+            active={isActive}
             disabled={!isEditable}
             onClick={insertLink}
-            className={isActive ? 'border rounded bg-slate-100' : ''}
-            title="Link"
-            aria-label="Format text as Link."
         >
             <LinkIcon />
         </Item>

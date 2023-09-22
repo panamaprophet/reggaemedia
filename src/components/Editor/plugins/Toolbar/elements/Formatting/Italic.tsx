@@ -28,11 +28,10 @@ export const Italic = () => {
 
     return (
         <Item
+            title="Italic"
+            active={isActive}
             disabled={!isEditable}
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
-            className={isActive ? 'border rounded bg-slate-100' : ''}
-            title="Italic"
-            aria-label="Format text as italic."
         >
             <ItalicIcon />
         </Item>

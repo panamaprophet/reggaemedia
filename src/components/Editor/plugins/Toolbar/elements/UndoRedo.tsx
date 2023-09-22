@@ -36,20 +36,17 @@ export const UndoRedo = () => {
     return (
         <>
             <Item
-                disabled={!canUndo || !editor.isEditable()}
-                onClick={() => {
-                    editor.dispatchCommand(UNDO_COMMAND, undefined);
-                }}
                 title="Undo"
+                disabled={!canUndo || !editor.isEditable()}
+                onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
             >
                 <UndoIcon />
             </Item>
+
             <Item
-                disabled={!canRedo || !editor.isEditable()}
-                onClick={() => {
-                    editor.dispatchCommand(REDO_COMMAND, undefined);
-                }}
                 title="Redo"
+                disabled={!canRedo || !editor.isEditable()}
+                onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
             >
                 <RedoIcon />
             </Item>

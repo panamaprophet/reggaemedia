@@ -28,11 +28,10 @@ export const Underline = () => {
 
     return (
         <Item
+            title="Underline"
+            active={isActive}
             disabled={!isEditable}
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
-            className={isActive ? 'border rounded bg-slate-100' : ''}
-            title="Underline"
-            aria-label="Format text as underline."
         >
             <UnderlineIcon />
         </Item>
