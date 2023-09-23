@@ -1,3 +1,5 @@
+'use client';
+
 import { EditorState, LexicalEditor, SerializedEditorState } from 'lexical';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';

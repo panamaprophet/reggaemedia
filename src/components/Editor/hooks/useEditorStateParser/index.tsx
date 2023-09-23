@@ -27,8 +27,9 @@ export const useEditorStateParser = (
     const convertToHtml = (node: SerializedLexicalNode) => {
         const Tag = isHeading(node) ? node.tag : getTagByType(node.type);
 
+        key++;
+
         const props = {
-            key: key++,
             children: null,
             className: getClassName(node, theme),
         };
@@ -56,7 +57,7 @@ export const useEditorStateParser = (
         }
 
         if (isEmbed(node)) {
-            const { key, className } = props;
+            const { className } = props;
             const { width, height, alt, src } = node;
 
             const EmbedTag = isImage(node) ? Image : Tag;
@@ -69,7 +70,7 @@ export const useEditorStateParser = (
             );
         }
 
-        return <Tag {...props} />;
+        return <Tag key={key} {...props} />;
     };
 
     return convertToHtml(root);

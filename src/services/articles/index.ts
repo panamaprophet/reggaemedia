@@ -3,6 +3,7 @@ import {
     DeleteItemCommand,
     GetItemCommand,
     PutItemCommand,
+    ReturnConsumedCapacity,
     ReturnValue,
     ScanCommand,
     UpdateItemCommand,
@@ -63,13 +64,12 @@ export const getArticles = async () => {
     const result = await db.send(new ScanCommand({
         TableName: tableName,
         Limit: 100,
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
-    if (!result.Items) {
-        return null;
-    }
+    console.log('getArticles. consumed capacity: %s', result.ConsumedCapacity);
 
-    return result.Items
+    return (result.Items || [])
         .map(item => unmarshall(item))
         .map(item => item as Article) // @todo: add transform step
         .sort(sortByDate);
@@ -81,7 +81,10 @@ export const getRelatedArticles = async (id: string) => {
         Limit: 100,
         ProjectionExpression: 'id, title',
         FilterExpression: 'attribute_exists(publishedOn)',
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
+
+    console.log('getRelatedArticles. consumed capacity: %s', result.ConsumedCapacity);
 
     if (!result.Items || result.Items.length === 1) {
         return null;
@@ -103,13 +106,12 @@ export const getPublishedArticles = async () => {
         TableName: tableName,
         Limit: 100,
         FilterExpression: 'attribute_exists(publishedOn)',
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
-    if (!result.Items) {
-        return null;
-    }
+    console.log('getPublishedArticles. consumed capacity: %s', result.ConsumedCapacity);
 
-    return result.Items
+    return (result.Items || [])
         .map(item => unmarshall(item) as Article)
         .sort((a, b) => b.publishedOn! - a.publishedOn!);
 };

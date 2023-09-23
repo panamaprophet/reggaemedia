@@ -1,8 +1,8 @@
 import { cx } from '@/helpers';
-import { MouseEventHandler, ReactNode } from 'react';
+import { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
 
-const ButtonType = {
+const ButtonTheme = {
     'default': `
         outline-none
         bg-none
@@ -38,20 +38,40 @@ const ButtonSize = {
     'medium': 'px-4 py-2.5 text-sm shadow-sm rounded-md',
 };
 
+const ButtonWidth = {
+    'full': 'w-full',
+    'auto': 'w-auto',
+};
+
 interface Props {
     children: ReactNode,
-    onClick?: MouseEventHandler<HTMLButtonElement>,
-    type?: keyof typeof ButtonType,
+    disabled?: boolean,
+    theme?: keyof typeof ButtonTheme,
     size?: keyof typeof ButtonSize,
+    width?: keyof typeof ButtonWidth,
+    type?: ButtonHTMLAttributes<HTMLButtonElement>['type'],
+    onClick?: MouseEventHandler<HTMLButtonElement>,
 }
 
 export const Button = ({
-    type = 'default',
+    theme = 'default',
     size = 'medium',
+    width = 'auto',
+    type,
     children,
+    disabled,
     onClick,
 }: Props) => (
-    <button className={cx(ButtonSize[size], ButtonType[type])} onClick={onClick}>
+    <button
+        className={cx(
+            ButtonSize[size],
+            ButtonTheme[theme],
+            ButtonWidth[width],
+        )}
+        onClick={onClick}
+        disabled={disabled}
+        type={type}
+    >
         {children}
     </button>
 );

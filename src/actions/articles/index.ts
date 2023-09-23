@@ -1,7 +1,5 @@
+import { fetchJson } from '@/helpers';
 import { Article } from '@/types';
-
-
-const fetchJson = <T>(...args: Parameters<typeof fetch>): Promise<T> => fetch(...args).then(response => response.json());
 
 export const saveArticle = async (article: Partial<Article>) => {
     const hasId = Boolean(article.id);
@@ -20,7 +18,8 @@ export const getArticle = async (id: string) => fetchJson<Article>(`/api/article
 
 export const removeArticle = (id: string) => fetchJson<{ success: boolean }>('/api/articles/' + id, { method: 'DELETE' });
 
-export const createArticle = async ({ authorId }: { authorId: string }) => ({
+export const createArticle = async ({ authorId }: { authorId: string }): Promise<Article> => ({
+    id: null,
     authorId,
     title: '',
     tags: [],

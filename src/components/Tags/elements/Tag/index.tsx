@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Tag = ({ value, onChange, onRemove }: Props) => (
-    <Button type="secondary" size="small">
+    <Button theme="secondary" size="small">
         <div className="flex items-center">
             <Input value={value} onChange={onChange} />
 

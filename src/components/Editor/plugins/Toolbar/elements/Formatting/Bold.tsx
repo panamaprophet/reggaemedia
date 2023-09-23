@@ -28,11 +28,10 @@ export const Bold = () => {
 
     return (
         <Item
+            title="Bold"
+            active={isActive}
             disabled={!isEditable}
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
-            className={isActive ? 'border rounded bg-slate-100' : ''}
-            title="Bold"
-            aria-label="Format text as bold."
         >
             <BoldIcon />
         </Item>

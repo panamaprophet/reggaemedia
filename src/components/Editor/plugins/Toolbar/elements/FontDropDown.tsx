@@ -48,11 +48,7 @@ export const FontSizeDropDown = () => {
     useRegisterCommandCritical(SELECTION_CHANGE_COMMAND, $updateFontSize);
 
     return (
-        <DropDown
-            disabled={!isEditable}
-            buttonLabel={fontSize}
-            buttonAriaLabel="Formatting options for font size"
-        >
+        <DropDown disabled={!isEditable} label={fontSize}>
             {(FONT_SIZE_OPTIONS).map(
                 ([option, text]) => (
                     <DropDownItem

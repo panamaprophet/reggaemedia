@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Chevron } from '@/components/Icons/Chevron';
+import { Button } from '@/components/Button';
 import { cx } from '@/helpers';
 
 
@@ -24,15 +25,12 @@ export const DropDownItem = ({ isActive = false, onClick, children }: ItemProps)
 }
 
 interface Props {
+    label: ReactNode;
     children: ReactNode;
     disabled?: boolean;
-    buttonLabel?: string;
-    buttonAriaLabel?: string;
-    stopCloseOnClickSelf?: boolean;
-    ButtonIconComponent?: ReactNode | null;
 }
 
-export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = false, ButtonIconComponent }: Props): JSX.Element => {
+export const DropDown = ({ children, label, disabled = false }: Props): JSX.Element => {
     const [showDropDown, setShowDropDown] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -58,19 +56,18 @@ export const DropDown = ({ children, buttonLabel, buttonAriaLabel, disabled = fa
 
     return (
         <div className="relative cursor-pointer" ref={ref}>
-            <button
+            <Button
                 disabled={disabled}
-                aria-label={buttonAriaLabel || buttonLabel}
-                className="flex items-center justify-center gap-2 p-2"
                 onClick={() => setShowDropDown(!showDropDown)}
             >
-                {ButtonIconComponent}
-                {buttonLabel && <span className="text dropdown-button-text">{buttonLabel}</span>}
-                <Chevron />
-            </button>
+                <div className="flex items-center gap-2">
+                    <span className="text dropdown-button-text">{label}</span>
+                    <Chevron />
+                </div>
+            </Button>
 
             {showDropDown && (
-                <div className='absolute border rounded bg-white p-3f' onClick={() => setShowDropDown(false)}>
+                <div className='absolute border rounded bg-white p-3' onClick={() => setShowDropDown(false)}>
                     {children}
                 </div>
             )}
