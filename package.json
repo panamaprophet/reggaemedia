@@ -21,6 +21,7 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "^10.4.14",
     "aws-cdk": "2.96.2",
+    "aws-crt": "^1.18.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.5.1",
     "next-auth": "^4.21.1",
