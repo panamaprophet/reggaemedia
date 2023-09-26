@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { cache } from 'react';
 import {
     DeleteItemCommand,
     GetItemCommand,
@@ -42,14 +43,14 @@ export const createArticle = async (article: Partial<Article>) => {
     });
 };
 
-export const getArticleById = async (id: string) => {
+export const getArticleById = cache(async (id: string) => {
     const result = await db.send(new GetItemCommand({
         TableName: tableName,
         Key: marshall({ id }),
     }));
 
     return result.Item ? unmarshall(result.Item) as Article : null;
-};
+});
 
 export const removeArticleById = async (id: string) => {
     const result = await db.send(new DeleteItemCommand({
@@ -60,7 +61,7 @@ export const removeArticleById = async (id: string) => {
     return result.$metadata.httpStatusCode === 200;
 };
 
-export const getArticles = async () => {
+export const getArticles = cache(async () => {
     const result = await db.send(new ScanCommand({
         TableName: tableName,
         Limit: 100,
@@ -73,9 +74,9 @@ export const getArticles = async () => {
         .map(item => unmarshall(item))
         .map(item => item as Article) // @todo: add transform step
         .sort(sortByDate);
-};
+});
 
-export const getRelatedArticles = async (id: string) => {
+export const getRelatedArticles = cache(async (id: string) => {
     const result = await db.send(new ScanCommand({
         TableName: tableName,
         Limit: 100,
@@ -99,9 +100,9 @@ export const getRelatedArticles = async (id: string) => {
         previous,
         next,
     }
-};
+});
 
-export const getPublishedArticles = async () => {
+export const getPublishedArticles = cache(async () => {
     const result = await db.send(new ScanCommand({
         TableName: tableName,
         Limit: 100,
@@ -114,7 +115,7 @@ export const getPublishedArticles = async () => {
     return (result.Items || [])
         .map(item => unmarshall(item) as Article)
         .sort((a, b) => b.publishedOn! - a.publishedOn!);
-};
+});
 
 export const unpublishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<Article, 'id' | 'updatedOn' | 'publishedOn'>> => {
     const result = await db.send(new UpdateItemCommand({
@@ -157,7 +158,7 @@ export const publishArticle = async ({ id }: Pick<Article, 'id'>): Promise<Pick<
     };
 };
 
-export const getTags = async () => {
+export const getTags = cache(async () => {
     const result = await getPublishedArticles();
 
     if (!result) {
@@ -171,9 +172,9 @@ export const getTags = async () => {
     }, new Set<string>());
 
     return Array.from(tags);
-};
+});
 
-export const getArticlesByTag = async (tag: string) => {
+export const getArticlesByTag = cache(async (tag: string) => {
     const result = await getPublishedArticles();
     const articles = result?.filter((item) => item.tags.includes(tag));
 
@@ -182,4 +183,4 @@ export const getArticlesByTag = async (tag: string) => {
     }
 
     return articles;
-};
+});
