@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { ArticleEditForm } from '@/components/ArticleEditForm';
-import { ToastContextProvider } from '@/components/Toasts';
+import { ContextProvider as ToastContextProvider } from '@/components/Toasts';
 import { getArticleById } from '@/services/articles';
 import { createArticle } from '@/actions/articles';
 

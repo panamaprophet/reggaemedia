@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button';
-import { Close } from '@/components/Icons/Close';
+import { Cross } from '@/components/Icons/Cross';
 import { Input } from '../Input';
 
 
@@ -15,7 +15,7 @@ export const Tag = ({ value, onChange, onRemove }: Props) => (
             <Input value={value} onChange={onChange} />
 
             <div onClick={onRemove}>
-                <Close size="xs" />
+                <Cross size="xs" />
             </div>
         </div>
     </Button>

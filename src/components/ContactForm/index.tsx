@@ -20,7 +20,7 @@ export const ContactForm = () => {
     };
 
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4 p-4">
             <label className="flex flex-col gap-1">
                 Имя:
                 <InputText

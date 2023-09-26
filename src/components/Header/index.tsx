@@ -37,7 +37,7 @@ export const Header = ({ hasInlineLogo }: Props) => {
                             </Link>
                         )}
                         <Link className="text-xs uppercase" to="/articles">Статьи</Link>
-                        <Link className="text-xs uppercase" to="/contact">Связаться c нами</Link>
+                        <Link className="text-xs uppercase" to="/contact">Связь</Link>
                     </div>
 
                     <div className="flex gap-4">
