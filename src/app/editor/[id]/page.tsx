@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { ArticleEditForm } from '@/components/ArticleEditForm';
+import { ToastContextProvider } from '@/components/Toasts';
 import { getArticleById } from '@/services/articles';
 import { createArticle } from '@/actions/articles';
 
@@ -19,9 +20,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
     }
 
     return (
-        <div className="max-w-4xl w-full mx-auto mb-4">
-            <ArticleEditForm article={article} />
-        </div>
+        <ToastContextProvider>
+            <div className="max-w-4xl w-full mx-auto mb-4">
+                <ArticleEditForm article={article} />
+            </div>
+        </ToastContextProvider>
     );
 }
 
