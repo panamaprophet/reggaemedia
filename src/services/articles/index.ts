@@ -68,7 +68,7 @@ export const getArticles = cache(async () => {
         ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
-    console.log('getArticles. consumed capacity: %s', result.ConsumedCapacity);
+    console.log('getArticles. consumed capacity: %s', result.ConsumedCapacity?.CapacityUnits);
 
     return (result.Items || [])
         .map(item => unmarshall(item))
@@ -85,7 +85,7 @@ export const getRelatedArticles = cache(async (id: string) => {
         ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
-    console.log('getRelatedArticles. consumed capacity: %s', result.ConsumedCapacity);
+    console.log('getRelatedArticles. consumed capacity: %s', result.ConsumedCapacity?.CapacityUnits);
 
     if (!result.Items || result.Items.length === 1) {
         return null;
@@ -110,7 +110,7 @@ export const getPublishedArticles = cache(async () => {
         ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
     }));
 
-    console.log('getPublishedArticles. consumed capacity: %s', result.ConsumedCapacity);
+    console.log('getPublishedArticles. consumed capacity: %s', result.ConsumedCapacity?.CapacityUnits);
 
     return (result.Items || [])
         .map(item => unmarshall(item) as Article)
