@@ -2,6 +2,7 @@ import { ReactNode, createContext, useContext, useEffect, useState } from 'react
 import { UUID } from 'crypto';
 import { Status, Props, Context } from '../../types';
 import { Container } from '../Container';
+import { Toast } from '../Toast';
 
 export const ToastContext = createContext<Context>({} as Context);
 
@@ -52,7 +53,13 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ToastContext.Provider value={{ showToast, updateToast, removeToast, promise }}>
-            <Container toasts={toasts} onClick={removeToast} />
+            <Container>
+                {toasts.map((toast) => (
+                    <Toast key={toast.id} onClick={() => removeToast(toast.id)}>
+                        {toast.message}
+                    </Toast>
+                ))}
+            </Container>
             {children}
         </ToastContext.Provider>
     );
