@@ -15,9 +15,14 @@ export default meta;
 
 export const Default: Story = {
     args: {
+        value: 'инпут с текстом',
+        placeholder: 'test@example.com',
+    },
+};
+
+export const Placeholder: Story = {
+    args: {
         value: '',
         placeholder: 'test@example.com',
-        type: 'email',
-        required: true,
     },
 };

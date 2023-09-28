@@ -14291,7 +14291,6 @@ __metadata:
     storybook: ^7.4.5
     tailwindcss: ^3.3.1
     ts-node: ^10.9.1
-    tsconfig-paths-webpack-plugin: ^4.1.0
     typescript: 5.2.2
   languageName: unknown
   linkType: soft
@@ -15760,7 +15759,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfig-paths-webpack-plugin@npm:^4.0.1, tsconfig-paths-webpack-plugin@npm:^4.1.0":
+"tsconfig-paths-webpack-plugin@npm:^4.0.1":
   version: 4.1.0
   resolution: "tsconfig-paths-webpack-plugin@npm:4.1.0"
   dependencies:

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const Page = () => (
     <div className="h-screen flex flex-col">
         <Header hasInlineLogo={true} />
-        <div className="flex items-center justify-center w-full flex-grow">
+        <div className="flex items-center justify-center w-full grow">
             <h1 className="text-2xl font-extrabold text-slate-900 border-r pr-5">404</h1>
             <h2 className="text-slate-700 ml-5">
                 Такой страницы не существует. <Link className="text-blue-600" to="/">Домой</Link>

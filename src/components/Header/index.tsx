@@ -3,7 +3,6 @@ import { Search } from '../Search';
 import { YouTube } from '../Icons/YouTube';
 import { VK } from '../Icons/VK';
 import { Instagram } from '../Icons/Instagram';
-import { Section } from '../Section';
 import { ReactNode } from 'react';
 import { cx } from '@/helpers';
 import { Logo } from '../Logo';
@@ -28,40 +27,39 @@ export const Header = ({ hasInlineLogo }: Props) => {
 
     return (
         <>
-            <Section>
-                <div className="w-full px-4 py-2 uppercase text-gray-600 flex justify-between items-center">
-                    <div className="flex gap-4 items-center">
-                        {hasInlineLogo && (
-                            <Link to="/">
-                                <Logo size="small" />
-                            </Link>
-                        )}
-                        <Link className="text-xs uppercase" to="/articles">Статьи</Link>
-                        <Link className="text-xs uppercase" to="/contact">Связь</Link>
-                    </div>
-
-                    <div className="flex gap-4">
-                        <LinkButtonWithIcon to={links.vk} color="bg-blue-500">
-                            <VK />
-                        </LinkButtonWithIcon>
-
-                        <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
-                            <YouTube />
-                        </LinkButtonWithIcon>
-
-                        <LinkButtonWithIcon to={links.instagram} color="bg-blue-500">
-                            <Instagram />
-                        </LinkButtonWithIcon>
-
-                        <Search />
-                    </div>
+            <section className="w-full px-4 py-2 border-b border-b-slate-200 uppercase text-gray-600 flex justify-between items-center">
+                <div className="flex gap-4 items-center">
+                    {hasInlineLogo && (
+                        <Link to="/">
+                            <Logo size="small" />
+                        </Link>
+                    )}
+                    <Link className="text-xs uppercase" to="/articles">Статьи</Link>
+                    <Link className="text-xs uppercase" to="/contact">Связь</Link>
                 </div>
-            </Section>
+
+                <div className="flex gap-4">
+                    <LinkButtonWithIcon to={links.vk} color="bg-blue-500">
+                        <VK />
+                    </LinkButtonWithIcon>
+
+                    <LinkButtonWithIcon to={links.youtube} color="bg-red-500">
+                        <YouTube />
+                    </LinkButtonWithIcon>
+
+                    <LinkButtonWithIcon to={links.instagram} color="bg-blue-500">
+                        <Instagram />
+                    </LinkButtonWithIcon>
+
+                    <Search />
+                </div>
+            </section>
             {!hasInlineLogo && (
                 <div className="flex justify-center items-center border-b border-b-slate-200 py-16">
                     <Logo size="medium" />
                 </div>
-            )}
+            )
+            }
         </>
     );
 };
