@@ -53,7 +53,7 @@ To be able to get full access to all protected and public paths you should creat
 Temporary solution:
 
 1. Create user account with [Cognito UI](https://console.aws.amazon.com/cognito)
-2. After creating account using UI, your account will exist, but still you will have to confirm it with CLI command:
+2. After creating account using UI, you will have to confirm it with CLI command:
 
 ```
 aws cognito-idp admin-set-user-password \
@@ -63,4 +63,4 @@ aws cognito-idp admin-set-user-password \
   --permanent
 ```
 
-This command will confirm your account and you will be ready to coding.
+This command will confirm your account and you will be ready to code.
