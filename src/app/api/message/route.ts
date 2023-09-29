@@ -8,10 +8,10 @@ export const POST = async (request: Request) => {
     const { name, email } = sender;
 
     const response = await sendEmail({
-        from: email,
+        from: ADMIN_EMAIL,
         to: ADMIN_EMAIL,
         subject: `Reggaemedia | ${name} написал письмо`,
-        body: message,
+        body: `${message}\n\n${name}\n${email}`,
     });
 
     return NextResponse.json({ success: Boolean(response) });

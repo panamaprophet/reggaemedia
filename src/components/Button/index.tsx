@@ -1,6 +1,10 @@
 import { cx } from '@/helpers';
 import { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
+const ButtonDefaults = `
+    disabled:opacity-50
+    disabled:cursor-default
+`;
 
 const ButtonTheme = {
     'default': `
@@ -64,6 +68,7 @@ export const Button = ({
 }: Props) => (
     <button
         className={cx(
+            ButtonDefaults,
             ButtonSize[size],
             ButtonTheme[theme],
             ButtonWidth[width],

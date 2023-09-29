@@ -20,11 +20,12 @@ export const ContactForm = () => {
     };
 
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4 p-4">
             <label className="flex flex-col gap-1">
                 Имя:
                 <InputText
                     value={name}
+                    required={true}
                     placeholder="василий"
                     onChange={setName}
                 />
@@ -35,6 +36,7 @@ export const ContactForm = () => {
                 <InputText
                     type="email"
                     value={email}
+                    required={true}
                     placeholder="mail@example.com"
                     onChange={setEmail}
                 />
@@ -44,6 +46,7 @@ export const ContactForm = () => {
                 Сообщение:
                 <textarea
                     value={message}
+                    required={true}
                     onChange={event => setMessage(event.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-full px-4 py-2.5"
                 />

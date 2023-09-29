@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Search as SearchIcon } from '@/components/Icons/Search';
-import { Close } from '@/components/Icons/Close';
+import { Cross } from '@/components/Icons/Cross';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { Link } from '@/components/Link';
@@ -11,17 +11,17 @@ import { getTags } from '@/actions/articles';
 export const Search = () => {
     const [isOpen, setOpen] = useState(false);
     const [tags, setTags] = useState<string[]>([]);
-    const Icon = isOpen ? Close : SearchIcon;
+    const Icon = isOpen ? Cross : SearchIcon;
 
     useEffect(() => {
         if (isOpen && tags.length === 0) {
-            getTags().then(setTags);
+            getTags().then((result) => setTags(result.tags));
         }
     }, [isOpen, tags]);
 
     return (
         <>
-            <Button onClick={() => setOpen(!isOpen)}>
+            <Button size="small" onClick={() => setOpen(!isOpen)}>
                 <Icon />
             </Button>
 

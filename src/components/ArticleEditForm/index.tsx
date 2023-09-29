@@ -12,14 +12,40 @@ import { uploadFile } from '@/actions/storage';
 import { formatArticleDate } from '@/helpers/article';
 import { theme } from '@/theme';
 import { Article } from '@/types';
+import { useToast } from '../Toasts';
 
 export const ArticleEditForm = ({ article }: { article: Article }) => {
-    const isNewArticle = Boolean(article.id);
+    const isNewArticle = !article.id || article.id === 'new';
     const [state, setState] = useState(article);
+    const toast = useToast();
 
-    const onPublish = () => state.publishedOn ? unpublishArticle(article.id) : publishArticle(article.id);
+    const onPublish = async () => {
+        const isPublished = Boolean(state.publishedOn);
 
-    const onSave = () => saveArticle(state);
+        await toast.promise(async () => {
+            const publishResult = await (
+                isPublished
+                    ? unpublishArticle(article.id)
+                    : publishArticle(article.id)
+            );
+
+            setState({
+                ...state,
+                updatedOn: publishResult.updatedOn,
+                publishedOn: publishResult.publishedOn,
+            });
+        }, {
+            pending: isPublished ? 'Отмена публикации...' : 'Публикация...',
+            resolve: isPublished ? 'Публикация отменена' : 'Опубликовано',
+            reject: 'Ошибка публикации',
+        });
+    }
+
+    const onSave = () => toast.promise(() => saveArticle(state), {
+        pending: 'Сохранение...',
+        resolve: 'Сохранено',
+        reject: 'Ошибка сохранения',
+    });
 
     return (
         <>
