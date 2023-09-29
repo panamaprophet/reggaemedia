@@ -4,7 +4,7 @@
 3. Preferred package manager is `yarn` version 2.
 
 ## .ENV file
-Environment variables file should include vars written below to be able to deploy AWS stack. Vars below is stale and should be define once for whole project.
+Environment variables file must include vars written below to be able to deploy AWS stack. Vars below is stale and should be define once for whole project.
 
 ```
 COGNITO_CALLBACK_URL=http://localhost:3000/api/auth/callback/cognito
