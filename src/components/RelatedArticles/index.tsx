@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const RelatedArticles = ({ previous, next }: Props) => (
-    <div className="grid grid-cols-2 p-4 gap-64">
+    <div className="flex flex-row justify-between gap-4">
         {previous && (<NavigationButton {...previous} direction="previous" />)}
 
         {!previous && <div data-name="spacer" />}

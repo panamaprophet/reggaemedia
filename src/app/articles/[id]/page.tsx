@@ -46,7 +46,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <>
             <Header hasInlineLogo={true} />
 
-            <article className="max-w-4xl mx-auto my-0 pb-4 flex-grow">
+            <article className="max-w-4xl mx-auto my-0 pb-4 grow">
                 <h1 className="text-3xl p-4 pt-8">
                     {articleTitle}
                 </h1>
@@ -61,7 +61,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 </div>
             </article>
 
-            <div className="max-w-4xl mx-auto empty:hidden">
+            <div className="max-w-4xl mx-auto px-4 pb-8 empty:hidden">
                 {relatedArticles && (<RelatedArticles {...relatedArticles} />)}
             </div>
 

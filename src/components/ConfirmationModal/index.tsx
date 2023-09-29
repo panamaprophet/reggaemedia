@@ -1,11 +1,14 @@
-import { Props as ModalProps, Modal } from '../Modal';
+import { Modal } from '../Modal';
 import { Button } from '../Button';
+import { ReactNode } from 'react';
 
-type Props = Omit<ModalProps, 'onClose'> & {
-    onConfirm: () => void,
-    onDecline: () => void,
-    confirmButtonText?: string,
-    declineButtonText?: string,
+type Props = {
+    isOpen: boolean;
+    children: ReactNode;
+    onConfirm: () => void;
+    onDecline: () => void;
+    confirmButtonText?: string;
+    declineButtonText?: string;
 }
 
 

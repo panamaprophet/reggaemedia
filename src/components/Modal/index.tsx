@@ -1,33 +1,26 @@
 import { ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-
-const modalSizes = {
-    'auto': 'w-auto h-auto',
-    'screen': 'w-screen h-screen'
-}
-
 const modalType = {
     'default': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ',
     'float': '',
-}
+};
 
 const modalOverlay = {
-    'float': 'bg-transparent',
-    'default': 'bg-slate-50/95' 
-}
+    'float': 'bg-transparent select-none pointer-events-none',
+    'default': 'bg-slate-50/95',
+};
 
 export interface Props {
-    children: ReactNode,
-    isOpen: boolean,
-    type?: 'default' | 'float',
-    size?: 'auto' | 'screen',
+    children: ReactNode;
+    isOpen: boolean;
+    type?: 'default' | 'float';
+    className?: string;
+    position?: { top: number, left: number };
     onClose?: () => void;
-    className?: string,
-    position?: { top: number, left: number },
 }
 
-export const Modal = ({ children, size = 'auto', type = 'default', isOpen, onClose = () => { }, position }: Props) => {
+export const Modal = ({ children, type = 'default', isOpen, onClose = () => { }, position }: Props) => {
     useEffect(() => {
         if (type !== 'float') {
             document.body.style.overflow = isOpen ? 'hidden' : 'visible';
@@ -49,9 +42,9 @@ export const Modal = ({ children, size = 'auto', type = 'default', isOpen, onClo
     }
 
     return createPortal(
-        <div className="fixed h-full w-full top-0 left-0 right-0 bottom-0 z-10">
+        <div className="fixed h-full w-full top-0 left-0 z-10">
             <div className={`fixed h-full w-full ${modalOverlay[type]}`} onClick={onClose} />
-            <div className={`fixed ${modalSizes[size]} ${modalType[type]}`} style={position}>
+            <div className={`fixed ${modalType[type]}`} style={position}>
                 {children}
             </div>
         </div >,
