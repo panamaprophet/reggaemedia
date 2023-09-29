@@ -16,7 +16,7 @@ AMAZON_SECRET_KEY= IAM credentials
 AMAZON_REGION= preferred region
 ```
 
-After defining variables above you should run command `yarn stack:deploy`. That command will generate `cdk-outputs.json` that is being gitignored, that contain another variables that should be defined in the same .env file as above. 
+After defining variables above you should run command `yarn stack:deploy`. That command will generate `cdk-outputs.json` that is being gitignored, output file contain another variables that must be defined in the same .env file as above. 
 
 ### WARNING:
 After running `yarn stack:deploy`, you always have to update your .env file, since stack is being regenerated.
@@ -52,7 +52,7 @@ To be able to get full access to all protected and public paths you should creat
 
 Temporary solution:
 
-1. Create user account with [Cognito UI](console.aws.amazon.com/cognito/v2/home?region=us-east-1#)
+1. Create user account with [Cognito UI](https://console.aws.amazon.com/cognito)
 2. After creating account using UI, your account will exist, but still you will have to confirm it with CLI command:
 
 ```
