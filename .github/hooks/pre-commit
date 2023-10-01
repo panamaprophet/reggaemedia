@@ -2,4 +2,4 @@
 
 echo "run eslint..."
 
-yarn lint
+npm run lint
