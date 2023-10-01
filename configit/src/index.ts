@@ -2,7 +2,7 @@ import { input, select } from '@inquirer/prompts';
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { executeCommandWithFileReader, executeCommandWithLogsReader } from './utils/executors';
-import { getOutputFile, isOutputExist } from './utils/outputs';
+import { getOutputFileName, isOutputExist } from './utils/outputs';
 
 const CALL_DIRECTORY = process.cwd();
 
@@ -58,7 +58,7 @@ const callCDK = async (command: string, packageManager: string) => {
 
     switch (isOutput) {
         case true: {
-            const fileName = getOutputFile(script);
+            const fileName = getOutputFileName(script);
 
             console.log('Output file exist. Filename is: ', fileName);
             
