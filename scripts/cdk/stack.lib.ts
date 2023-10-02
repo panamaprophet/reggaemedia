@@ -10,6 +10,10 @@ const ARTICLES_TABLE = 'reggaemedia_articles';
 const SETTINGS_TABLE = 'reggaemedia_settings';
 const USER_POOL_NAME = 'reggaemedia_pool';
 
+const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
+const hostname = process.env.NODE_ENV === 'production' ? process.env.HOSTNAME : 'localhost:3000';
+
+const COGNITO_CALLBACK_URL = `${protocol}${hostname}/api/auth/callback/cognito`;
 
 export class ReggaemediaCdkStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -113,12 +117,6 @@ export class ReggaemediaCdkStack extends Stack {
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
-        if (!process.env.COGNITO_CALLBACK_URL) {
-            console.log('no cognito callback url provided');
-
-            process.exit(1);
-        }
-
         const userPoolClient = userPool.addClient('client', {
             generateSecret: true,
             accessTokenValidity: Duration.minutes(60),
@@ -130,7 +128,7 @@ export class ReggaemediaCdkStack extends Stack {
                     authorizationCodeGrant: true,
                 },
                 callbackUrls: [
-                    process.env.COGNITO_CALLBACK_URL,
+                    COGNITO_CALLBACK_URL,
                 ],
             }
         });
@@ -144,5 +142,6 @@ export class ReggaemediaCdkStack extends Stack {
         new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
         new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
         new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
+        new CfnOutput(this, 'userPoolAuthCallbackUrl', { value: COGNITO_CALLBACK_URL });
     }
 }
