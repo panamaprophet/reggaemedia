@@ -7,7 +7,6 @@ import { UserPool } from 'aws-cdk-lib/aws-cognito';
 
 const BUCKET_NAME = 'reggaemedia_storage';
 const ARTICLES_TABLE = 'reggaemedia_articles';
-const SETTINGS_TABLE = 'reggaemedia_settings';
 const USER_POOL_NAME = 'reggaemedia_pool';
 
 const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
@@ -97,14 +96,6 @@ export class ReggaemediaCdkStack extends Stack {
             writeCapacity: 1,
         });
 
-        const settingsTable = new Table(this, SETTINGS_TABLE, {
-            partitionKey: {
-                name: 'key',
-                type: AttributeType.STRING,
-            },
-            removalPolicy: RemovalPolicy.DESTROY,
-        });
-
         const userPool = new UserPool(this, USER_POOL_NAME, {
             userPoolName: USER_POOL_NAME,
             selfSignUpEnabled: false,
@@ -138,7 +129,6 @@ export class ReggaemediaCdkStack extends Stack {
 
         new CfnOutput(this, 'bucket', { value: bucket.bucketName });
         new CfnOutput(this, 'articles', { value: articlesTable.tableName });
-        new CfnOutput(this, 'settings', { value: settingsTable.tableName });
         new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
         new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
         new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
