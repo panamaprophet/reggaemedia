@@ -25,14 +25,24 @@ const readLineWithValidation = async (question: string, validate: (value: string
     return validate(value) ? value : readLineWithValidation(question, validate);
 };
 
-const validatePasswordByPasswordPolicy = (password: string, policy: PasswordPolicyType = {}) => {
+const validateEmail = (value: string) => value.split('@').every(part => part.length);
+
+const validateName = (value: string) => value.length > 0;
+
+const validatePassword = (password: string, policy: PasswordPolicyType = {}) => {
     const { MinimumLength = 0, RequireLowercase, RequireNumbers, RequireSymbols, RequireUppercase } = policy;
 
-    if (password.length <= MinimumLength) return false;
-    if (RequireLowercase && !/[a-z]/.test(password)) return false;
-    if (RequireUppercase && !/[A-Z]/.test(password)) return false;
-    if (RequireNumbers && !/[0-9]/.test(password)) return false;
-    if (RequireSymbols && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) return false;
+    if (
+        (password.length < MinimumLength) ||
+        (RequireLowercase && !/[a-z]/.test(password)) ||
+        (RequireUppercase && !/[A-Z]/.test(password)) ||
+        (RequireNumbers && !/[0-9]/.test(password)) ||
+        (RequireSymbols && !/[!@#$%^&*(),.?":{}|<>]/.test(password))
+    ) {
+        console.log('\ninvalid password. constraints = %o\n', policy);
+
+        return false;
+    }
 
     return true;
 };
@@ -43,16 +53,15 @@ const validatePasswordByPasswordPolicy = (password: string, policy: PasswordPoli
 
     const stackName = String(process.env.npm_package_name);
     const { Stacks = [] } = await cloudFormationClient.send(new DescribeStacksCommand({ StackName: stackName }));
-
     const outputs = Stacks[0]?.Outputs ?? [];
 
     const userPoolId = outputs?.find(({ OutputKey }) => OutputKey === 'cognitoUserPoolId')?.OutputValue;
     const userPool = await cognitoIdpClient.send(new DescribeUserPoolCommand({ UserPoolId: userPoolId }));
     const passwordPolicy = userPool.UserPool?.Policies?.PasswordPolicy;
 
-    const email = await readLineWithValidation('user email = ', value => value.split('@').every(part => part.length));
-    const password = await readLineWithValidation('user password = ', value => validatePasswordByPasswordPolicy(value, passwordPolicy));
-    const name = await readLineWithValidation('user name = ', value => value.length > 0);
+    const email = await readLineWithValidation('user email = ', validateEmail);
+    const password = await readLineWithValidation('user password = ', value => validatePassword(value, passwordPolicy));
+    const name = await readLineWithValidation('user name = ', validateName);
 
     const { User } = await cognitoIdpClient.send(new AdminCreateUserCommand({
         UserPoolId: userPoolId,
