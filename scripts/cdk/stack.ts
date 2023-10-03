@@ -6,6 +6,6 @@ import { ReggaemediaCdkStack } from './stack.lib';
 
 const app = new App();
 
-const stackName = 'reggae-media-stack';
+const stackName = String(process.env.npm_package_name);
 
 new ReggaemediaCdkStack(app, stackName, { stackName });

@@ -16,26 +16,18 @@ export class ReggaemediaCdkStack extends Stack {
         super(scope, id, props);
 
         const bucket = new Bucket(this, BUCKET_NAME, {
-            cors: [
-                {
-                    allowedMethods: [
-                        HttpMethods.GET,
-                        HttpMethods.HEAD,
-                        HttpMethods.PUT,
-                        HttpMethods.POST,
-                        HttpMethods.DELETE,
-                    ],
-                    allowedOrigins: [
-                        '*',
-                    ],
-                    allowedHeaders: [
-                        '*',
-                    ],
-                    exposedHeaders: [
-                        'Access-Control-Allow-Origin'
-                    ],
-                },
-            ],
+            cors: [{
+                allowedMethods: [
+                    HttpMethods.GET,
+                    HttpMethods.HEAD,
+                    HttpMethods.PUT,
+                    HttpMethods.POST,
+                    HttpMethods.DELETE,
+                ],
+                allowedOrigins: ['*'],
+                allowedHeaders: ['*'],
+                exposedHeaders: ['Access-Control-Allow-Origin'],
+            }],
             publicReadAccess: true,
             removalPolicy: RemovalPolicy.DESTROY,
             blockPublicAccess: BlockPublicAccess.BLOCK_ACLS,
@@ -79,6 +71,7 @@ export class ReggaemediaCdkStack extends Stack {
             },
         });
 
+<<<<<<< Updated upstream
         articlesTable.addGlobalSecondaryIndex({
             indexName: 'aliasIndex',
             partitionKey: {
@@ -101,6 +94,8 @@ export class ReggaemediaCdkStack extends Stack {
             removalPolicy: RemovalPolicy.DESTROY,
         });
 
+=======
+>>>>>>> Stashed changes
         const userPool = new UserPool(this, USER_POOL_NAME, {
             userPoolName: USER_POOL_NAME,
             selfSignUpEnabled: false,
@@ -135,14 +130,19 @@ export class ReggaemediaCdkStack extends Stack {
             }
         });
 
-        // @todo: consider using of ses to deliver the notifications
-        // new CfnEmailIdentity(this, 'root', { emailIdentity: EMAIL_IDENTITY });
-
         new CfnOutput(this, 'bucket', { value: bucket.bucketName });
+<<<<<<< Updated upstream
         new CfnOutput(this, 'articles', { value: articlesTable.tableName });
         new CfnOutput(this, 'settings', { value: settingsTable.tableName });
         new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
         new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
         new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
+=======
+        new CfnOutput(this, 'tableArticles', { value: articlesTable.tableName });
+        new CfnOutput(this, 'cognitoUserPoolId', { value: userPool.userPoolId });
+        new CfnOutput(this, 'cognitoClientId', { value: userPoolClient.userPoolClientId });
+        new CfnOutput(this, 'cognitoClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
+        new CfnOutput(this, 'cognitoCallbackUrl', { value: COGNITO_CALLBACK_URL });
+>>>>>>> Stashed changes
     }
 }
