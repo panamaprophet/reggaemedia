@@ -16,6 +16,7 @@
     "storybook:build": "storybook build"
   },
   "devDependencies": {
+    "@aws-sdk/client-cloudformation": "^3.421.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.309.0",
     "@aws-sdk/client-dynamodb": "^3.306.0",
     "@aws-sdk/client-s3": "^3.306.0",

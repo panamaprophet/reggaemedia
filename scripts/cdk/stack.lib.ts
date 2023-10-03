@@ -7,9 +7,12 @@ import { UserPool } from 'aws-cdk-lib/aws-cognito';
 
 const BUCKET_NAME = 'reggaemedia_storage';
 const ARTICLES_TABLE = 'reggaemedia_articles';
-const SETTINGS_TABLE = 'reggaemedia_settings';
 const USER_POOL_NAME = 'reggaemedia_pool';
 
+const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
+const hostname = process.env.NODE_ENV === 'production' ? process.env.HOSTNAME : 'localhost:3000';
+
+const COGNITO_CALLBACK_URL = `${protocol}${hostname}/api/auth/callback/cognito`;
 
 export class ReggaemediaCdkStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -71,48 +74,14 @@ export class ReggaemediaCdkStack extends Stack {
             },
         });
 
-<<<<<<< Updated upstream
-        articlesTable.addGlobalSecondaryIndex({
-            indexName: 'aliasIndex',
-            partitionKey: {
-                name: 'alias',
-                type: AttributeType.STRING,
-            },
-            sortKey: {
-                name: 'createdOn',
-                type: AttributeType.NUMBER,
-            },
-            readCapacity: 1,
-            writeCapacity: 1,
-        });
-
-        const settingsTable = new Table(this, SETTINGS_TABLE, {
-            partitionKey: {
-                name: 'key',
-                type: AttributeType.STRING,
-            },
-            removalPolicy: RemovalPolicy.DESTROY,
-        });
-
-=======
->>>>>>> Stashed changes
         const userPool = new UserPool(this, USER_POOL_NAME, {
             userPoolName: USER_POOL_NAME,
             selfSignUpEnabled: false,
-            // @todo: consider the using of MFA
-            // mfa: Mfa.REQUIRED,
-            // mfaMessage: 'Код проверки {####}',
             signInAliases: {
                 email: true,
             },
             removalPolicy: RemovalPolicy.DESTROY,
         });
-
-        if (!process.env.COGNITO_CALLBACK_URL) {
-            console.log('no cognito callback url provided');
-
-            process.exit(1);
-        }
 
         const userPoolClient = userPool.addClient('client', {
             generateSecret: true,
@@ -125,24 +94,16 @@ export class ReggaemediaCdkStack extends Stack {
                     authorizationCodeGrant: true,
                 },
                 callbackUrls: [
-                    process.env.COGNITO_CALLBACK_URL,
+                    COGNITO_CALLBACK_URL,
                 ],
             }
         });
 
         new CfnOutput(this, 'bucket', { value: bucket.bucketName });
-<<<<<<< Updated upstream
-        new CfnOutput(this, 'articles', { value: articlesTable.tableName });
-        new CfnOutput(this, 'settings', { value: settingsTable.tableName });
-        new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
-        new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
-        new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
-=======
         new CfnOutput(this, 'tableArticles', { value: articlesTable.tableName });
         new CfnOutput(this, 'cognitoUserPoolId', { value: userPool.userPoolId });
         new CfnOutput(this, 'cognitoClientId', { value: userPoolClient.userPoolClientId });
         new CfnOutput(this, 'cognitoClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
         new CfnOutput(this, 'cognitoCallbackUrl', { value: COGNITO_CALLBACK_URL });
->>>>>>> Stashed changes
     }
 }
