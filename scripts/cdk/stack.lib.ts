@@ -19,26 +19,18 @@ export class ReggaemediaCdkStack extends Stack {
         super(scope, id, props);
 
         const bucket = new Bucket(this, BUCKET_NAME, {
-            cors: [
-                {
-                    allowedMethods: [
-                        HttpMethods.GET,
-                        HttpMethods.HEAD,
-                        HttpMethods.PUT,
-                        HttpMethods.POST,
-                        HttpMethods.DELETE,
-                    ],
-                    allowedOrigins: [
-                        '*',
-                    ],
-                    allowedHeaders: [
-                        '*',
-                    ],
-                    exposedHeaders: [
-                        'Access-Control-Allow-Origin'
-                    ],
-                },
-            ],
+            cors: [{
+                allowedMethods: [
+                    HttpMethods.GET,
+                    HttpMethods.HEAD,
+                    HttpMethods.PUT,
+                    HttpMethods.POST,
+                    HttpMethods.DELETE,
+                ],
+                allowedOrigins: ['*'],
+                allowedHeaders: ['*'],
+                exposedHeaders: ['Access-Control-Allow-Origin'],
+            }],
             publicReadAccess: true,
             removalPolicy: RemovalPolicy.DESTROY,
             blockPublicAccess: BlockPublicAccess.BLOCK_ACLS,
@@ -82,26 +74,9 @@ export class ReggaemediaCdkStack extends Stack {
             },
         });
 
-        articlesTable.addGlobalSecondaryIndex({
-            indexName: 'aliasIndex',
-            partitionKey: {
-                name: 'alias',
-                type: AttributeType.STRING,
-            },
-            sortKey: {
-                name: 'createdOn',
-                type: AttributeType.NUMBER,
-            },
-            readCapacity: 1,
-            writeCapacity: 1,
-        });
-
         const userPool = new UserPool(this, USER_POOL_NAME, {
             userPoolName: USER_POOL_NAME,
             selfSignUpEnabled: false,
-            // @todo: consider the using of MFA
-            // mfa: Mfa.REQUIRED,
-            // mfaMessage: 'Код проверки {####}',
             signInAliases: {
                 email: true,
             },
@@ -124,14 +99,11 @@ export class ReggaemediaCdkStack extends Stack {
             }
         });
 
-        // @todo: consider using of ses to deliver the notifications
-        // new CfnEmailIdentity(this, 'root', { emailIdentity: EMAIL_IDENTITY });
-
         new CfnOutput(this, 'bucket', { value: bucket.bucketName });
-        new CfnOutput(this, 'articles', { value: articlesTable.tableName });
-        new CfnOutput(this, 'userPoolId', { value: userPool.userPoolId });
-        new CfnOutput(this, 'userPoolClientId', { value: userPoolClient.userPoolClientId });
-        new CfnOutput(this, 'userPoolClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
-        new CfnOutput(this, 'userPoolAuthCallbackUrl', { value: COGNITO_CALLBACK_URL });
+        new CfnOutput(this, 'tableArticles', { value: articlesTable.tableName });
+        new CfnOutput(this, 'cognitoUserPoolId', { value: userPool.userPoolId });
+        new CfnOutput(this, 'cognitoClientId', { value: userPoolClient.userPoolClientId });
+        new CfnOutput(this, 'cognitoClientSecret', { value: String(userPoolClient.userPoolClientSecret.unsafeUnwrap()) });
+        new CfnOutput(this, 'cognitoCallbackUrl', { value: COGNITO_CALLBACK_URL });
     }
 }
